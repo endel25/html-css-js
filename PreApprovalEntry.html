@@ -2585,8 +2585,6 @@
                                     <input type="checkbox" id="edit-driverToggle" onchange="toggleDriverDetails()"
                                         class="ml-2" />
                                 </div>
-
-
                             </div>
 
                             <!-- Driver Details -->
@@ -2822,7 +2820,7 @@
         console.log(`📡 Fetching visitor data: page=${page}, limit=${limit}`);
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
-                const url = `http://192.168.3.74:3001/appointment?page=${page}&limit=${limit}`;
+                const url = `http://192.168.3.73:3001/appointment?page=${page}&limit=${limit}`;
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
@@ -3007,7 +3005,7 @@
     async function fetchVisitorById(visitorId, retries = 3) {
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
-                const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
+                const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -3060,14 +3058,15 @@
     async function openVisitorModal(visitorId) {
         const visitor = await fetchVisitorById(visitorId);
         if (!visitor) return;
-    
+
         originalVisitorData = { ...visitor };
-    
+
         const populateField = (id, value, defaultValue = '') => {
             const element = document.getElementById(`edit-${id}`);
             if (element) element.value = value ?? defaultValue;
         };
-    
+
+        // Populate existing fields
         populateField('firstname', visitor.firstname);
         populateField('lastname', visitor.lastname);
         populateField('gender', visitor.gender);
@@ -3088,16 +3087,25 @@
         populateField('drivermobile', visitor.drivermobile);
         populateField('drivernationalid', visitor.drivernationalid);
         populateField('notes', visitor.notes);
-    
+
+        // Handle driver details checkbox
+        const driverToggle = document.getElementById('edit-driverToggle');
+        const driverDetails = document.getElementById('driverDetails');
+        const hasDriverDetails = visitor.drivername || visitor.drivermobile || visitor.drivernationalid || visitor.driverphoto;
+        if (driverToggle && driverDetails) {
+            driverToggle.checked = hasDriverDetails;
+            driverDetails.classList.toggle('hidden', !hasDriverDetails);
+        }
+
         const setPhotoPreview = async (previewId, path, visitorId, type) => {
             const preview = document.getElementById(previewId);
             if (!preview) return;
-    
+
             preview.classList.remove('hidden');
-    
+
             if (path && path.trim() !== '') {
                 try {
-                    const photoUrl = `http://192.168.3.74:3001/appointment/${visitorId}/photo?type=${type}`;
+                    const photoUrl = `http://192.168.3.73:3001/appointment/${visitorId}/photo?type=${type}`;
                     const response = await fetch(photoUrl, { method: 'GET', mode: 'cors' });
                     if (!response.ok) throw new Error('Photo fetch failed');
                     const blob = await response.blob();
@@ -3112,14 +3120,16 @@
                 preview.src = 'https://via.placeholder.com/150';
             }
         };
-    
+
         await setPhotoPreview('mainPreview', visitor.photo, visitorId, 'photo');
         await setPhotoPreview('driverPreview', visitor.driverphoto, visitorId, 'driverphoto');
-    
+
         document.getElementById('visitorForm').setAttribute('data-id', visitorId);
         document.getElementById('visitorModal').style.display = 'block';
     }
-    
+
+
+
     // Handle form submission
     document.getElementById('visitorForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -3205,7 +3215,7 @@
                 `;
     
                 try {
-                    const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
+                    const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}`, {
                         method: 'PUT',
                         body,
                     });
@@ -3248,7 +3258,7 @@
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
         async function attemptApprove(attempt = 1, maxAttempts = 3) {
             try {
-                const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
+                const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ gatepassApproved: true }),
@@ -3282,7 +3292,7 @@
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
         async function attemptDisapprove(attempt = 1, maxAttempts = 3) {
             try {
-                const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
+                const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ gatepassApproved: false }),
@@ -3327,12 +3337,26 @@
     
     document.querySelector('.modal .close')?.addEventListener('click', closeVisitorModal);
     
-    // Toggle driver details
+    // Toggle driver details visibility
     window.toggleDriverDetails = function () {
         const driverDetails = document.getElementById('driverDetails');
         const driverToggle = document.getElementById('edit-driverToggle');
         if (driverDetails && driverToggle) {
             driverDetails.classList.toggle('hidden', !driverToggle.checked);
+            if (!driverToggle.checked) {
+                // Clear driver fields when unchecked
+                ['drivername', 'drivermobile', 'drivernationalid'].forEach(field => {
+                    const element = document.getElementById(`edit-${field}`);
+                    if (element) element.value = '';
+                });
+                const driverPhoto = document.getElementById('edit-driverphoto');
+                if (driverPhoto) driverPhoto.value = '';
+                const driverPreview = document.getElementById('driverPreview');
+                if (driverPreview) {
+                    driverPreview.src = 'https://via.placeholder.com/150';
+                    driverPreview.classList.add('hidden');
+                }
+            }
         }
     };
     </script>

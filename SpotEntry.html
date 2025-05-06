@@ -3388,8 +3388,8 @@ const showMessage = (msg = 'Example notification text.', type = 'success', posit
 
 async function fetchVisitors() {
     try {
-        console.log('Fetching visitors from http://192.168.3.74:3001/visitors');
-        const response = await fetch(`http://192.168.3.74:3001/visitors?t=${new Date().getTime()}`, {
+        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
+        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -3529,7 +3529,7 @@ function toggleDriverDetails() {
             document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
             const driverPreview = document.getElementById('driverPreview');
             if (visitor.driverphoto) {
-                const driverPhotoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
                 driverPreview.src = '';
                 driverPreview.src = driverPhotoUrl;
                 driverPreview.style.display = 'block';
@@ -3699,7 +3699,7 @@ function openEditModal(id) {
 
     const mainPreview = document.getElementById('mainPreview');
     if (visitor.photo) {
-        const photoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
         console.log('Setting mainPreview URL:', photoUrl);
         mainPreview.src = ''; // Clear src to force reload
         mainPreview.src = photoUrl;
@@ -3723,7 +3723,7 @@ function openEditModal(id) {
 
     const driverPreview = document.getElementById('driverPreview');
     if (visitor.driverphoto) {
-        const driverPhotoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
         console.log('Setting driverPreview URL:', driverPhotoUrl);
         driverPreview.src = ''; // Clear src to force reload
         driverPreview.src = driverPhotoUrl;
@@ -4090,7 +4090,7 @@ document.getElementById('editForm').addEventListener('submit', async function (e
                 console.log(`${key}:`, value instanceof File ? value.name : value);
             }
 
-            const response = await fetch(`http://192.168.3.74:3001/visitors/${updatedVisitor.id}`, {
+            const response = await fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
                 method: 'PATCH',
                 body: apiFormData,
             });
@@ -4121,7 +4121,7 @@ document.getElementById('editForm').addEventListener('submit', async function (e
             // Update previews after successful update
             const mainPreview = document.getElementById('mainPreview');
             if (responseData.photo) {
-                const photoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(responseData.photo)}?t=${new Date().getTime()}`;
+                const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(responseData.photo)}?t=${new Date().getTime()}`;
                 mainPreview.src = '';
                 mainPreview.src = photoUrl;
                 mainPreview.style.display = 'block';
@@ -4142,7 +4142,7 @@ document.getElementById('editForm').addEventListener('submit', async function (e
 
             const driverPreview = document.getElementById('driverPreview');
             if (responseData.driverphoto) {
-                const driverPhotoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(responseData.driverphoto)}?t=${new Date().getTime()}`;
+                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(responseData.driverphoto)}?t=${new Date().getTime()}`;
                 driverPreview.src = '';
                 driverPreview.src = driverPhotoUrl;
                 driverPreview.style.display = 'block';
@@ -4283,7 +4283,7 @@ async function deleteVisitor(id) {
         .then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://192.168.3.74:3001/visitors/${id}`, {
+                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
                         method: 'DELETE',
                     });
 

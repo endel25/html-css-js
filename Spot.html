@@ -3286,7 +3286,7 @@
                 const mainPreview = document.getElementById('mainPreview');
                 const photoInput = form.elements['photo'];
                 if (photoInput && visitor.photo !== undefined) {
-                    const photoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+                    const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
                     if (mainPreview) {
                         mainPreview.src = photoUrl;
                         mainPreview.classList.remove('hidden');
@@ -3321,7 +3321,7 @@
                 }
         
                 try {
-                    const response = await fetch(`http://192.168.3.74:3001/visitors/nationalid/${encodeURIComponent(trimmedNationalId)}`, {
+                    const response = await fetch(`http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(trimmedNationalId)}`, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
                     });
@@ -3552,8 +3552,8 @@
                                     Creating...
                                 `;
                             }
-                            console.log("Sending to http://192.168.3.74:3001/visitors");
-                            const response = await fetch("http://192.168.3.74:3001/visitors", {
+                            console.log("Sending to http://192.168.3.73:3001/visitors");
+                            const response = await fetch("http://192.168.3.73:3001/visitors", {
                                 method: "POST",
                                 body: formData,
                             });
