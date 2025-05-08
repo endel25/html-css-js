@@ -3343,25 +3343,10 @@
         const driverToggle = document.getElementById('edit-driverToggle');
         if (driverDetails && driverToggle) {
             driverDetails.classList.toggle('hidden', !driverToggle.checked);
-            if (!driverToggle.checked) {
-                // Clear driver fields when unchecked
-                ['drivername', 'drivermobile', 'drivernationalid'].forEach(field => {
-                    const element = document.getElementById(`edit-${field}`);
-                    if (element) element.value = '';
-                });
-                const driverPhoto = document.getElementById('edit-driverphoto');
-                if (driverPhoto) driverPhoto.value = '';
-                const driverPreview = document.getElementById('driverPreview');
-                if (driverPreview) {
-                    driverPreview.src = 'https://via.placeholder.com/150';
-                    driverPreview.classList.add('hidden');
-                }
-            }
         }
     };
     </script>
     
-
     <script src="assets/js/alpine-collaspe.min.js"></script>
     <script src="assets/js/alpine-persist.min.js"></script>
     <script defer src="assets/js/alpine-ui.min.js"></script>
