@@ -454,7 +454,7 @@
     <video id="cameraPreview" style="display: none;"></video>
     <canvas id="cameraCanvas" style="display: none;"></canvas>
 
-    <script>
+ <script>
         let currentFileInputId = '';
 
         function showModal(fileInputId) {
@@ -640,7 +640,7 @@
         async function checkFormStatus(email, date, time) {
             try {
                 const response = await fetch(
-                    `http://192.168.3.73:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
+                    `http://192.168.3.77:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
                     {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' }
@@ -950,7 +950,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://192.168.3.73:3001/appointment/create', {
+                    const response = await fetch('http://192.168.3.77:3001/appointment/create', {
                         method: 'POST',
                         body: formattedData
                     });
@@ -1101,7 +1101,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', initializeForm);
-    </script>
+    </script> 
+
+
 </body>
 
 </html>

@@ -281,6 +281,23 @@
                 transform: rotate(360deg);
             }
         }
+
+
+#personname-suggestions {
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+  }
+
+  #personname-suggestions .suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  #personname-suggestions .suggestion-item:hover {
+    background-color: #f3f4f6;
+  }
     </style>
 </head>
 
@@ -2882,15 +2899,54 @@
                                     </div>
                                 </div>
                                 <div class="flex sm:flex-row flex-col">
-                                    <label for="visit" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Purpose of Visit</label>
-                                    <input type="text" id="visit" name="visit" placeholder="Enter visit purpose" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <label for="visit"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Purpose of
+                                        Visit</label>
+                                    <select id="visit" name="visit"
+                                        class="text-xs form-select w-1/3 border rounded px-3 py-2">
+                                        <option value="">Select purpose</option>
+                                        <option value="Business Meeting">Business Meeting</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Delivery">Delivery</option>
+                                        <option value="Maintenance/Service">Maintenance/Service</option>
+                                        <option value="Training/Workshop">Training/Workshop</option>
+                                        <option value="Official Visit">Official Visit</option>
+                                        <option value="Personal Visit">Personal Visit</option>
+                                        <option value="Client Meeting">Client Meeting</option>
+                                        <option value="Vendor Meeting">Vendor Meeting</option>
+                                        <option value="Site Inspection">Site Inspection</option>
+                                        <option value="Audit">Audit</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Medical Appointment">Medical Appointment</option>
+                                        <option value="Student Admission">Student Admission</option>
+                                        <option value="Others">Others (please specify)</option>
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
                                     <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
+                             
+
                                 <div class="flex sm:flex-row flex-col">
                                     <label for="personname" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Person Name</label>
-                                    <input type="text" id="personname" name="personname" placeholder="Enter name of person to meet" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <div class="relative w-1/3">
+                                      <input
+                                        type="text"
+                                        id="personname"
+                                        name="personname"
+                                        placeholder="Enter name of person to meet"
+                                        class="text-xs form-input w-full border rounded px-3 py-2"
+                                        autocomplete="off"
+                                      />
+                                      <div
+                                        id="personname-suggestions"
+                                        class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto hidden"
+                                      ></div>
+                                    </div>
                                     <span class="error text-xs text-red-500" id="error-personname"></span>
-                                </div>
+                                  </div>
                                 <div class="flex sm:flex-row flex-col">
                                     <label for="department" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Department</label>
                                     <input type="text" id="department" name="department" placeholder="Enter the visiting department" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
@@ -3011,587 +3067,729 @@
 
 
 
-         
-             
-       
+            <script>
+                let currentFileInputId = '';
 
-        <script>
-            let currentFileInputId = '';
-        
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
+
+                const visitSelect = document.getElementById('visit');
+                const customPurposeInput = document.getElementById('custom-purpose');
+ 
+                visitSelect.addEventListener('change', function () {
+                    if (this.value === 'Others') {
+                        customPurposeInput.classList.remove('hidden');
+                    } else {
+                        customPurposeInput.classList.add('hidden');
+                    }
+                });
+              
+                function debounce(func, wait) {
+                  let timeout;
+                  return function executedFunction(...args) {
                     const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
+                      clearTimeout(timeout);
+                      func(...args);
                     };
                     clearTimeout(timeout);
                     timeout = setTimeout(later, wait);
-                };
-            }
-        
-            function showModal(fileInputId) {
-                currentFileInputId = fileInputId;
-                const modal = document.getElementById('photoModal');
-                console.log('Attempting to show photoModal, element:', modal);
-                if (modal) {
+                  };
+                }
+              
+                function showModal(fileInputId) {
+                  currentFileInputId = fileInputId;
+                  const modal = document.getElementById('photoModal');
+                  console.log('Attempting to show photoModal, element:', modal);
+                  if (modal) {
                     modal.style.display = 'flex';
-                } else {
+                  } else {
                     console.warn('photoModal element not found; ensure <div id="photoModal"> exists in HTML');
+                  }
                 }
-            }
-        
-            function closeModal() {
-                const modal = document.getElementById('photoModal');
-                console.log('Attempting to close photoModal, element:', modal);
-                if (modal) {
+              
+                function closeModal() {
+                  const modal = document.getElementById('photoModal');
+                  console.log('Attempting to close photoModal, element:', modal);
+                  if (modal) {
                     modal.style.display = 'none';
-                } else {
+                  } else {
                     console.warn('photoModal element not found');
+                  }
+                  stopCamera();
                 }
-                stopCamera();
-            }
-        
-            function openGallery() {
-                const fileInput = document.getElementById(currentFileInputId);
-                if (fileInput) {
+              
+                function openGallery() {
+                  const fileInput = document.getElementById(currentFileInputId);
+                  if (fileInput) {
                     fileInput.removeAttribute('capture');
                     fileInput.click();
-                } else {
+                  } else {
                     console.error(`File input ${currentFileInputId} not found`);
+                  }
+                  closeModal();
                 }
-                closeModal();
-            }
-        
-            function openCamera() {
-                const fileInput = document.getElementById(currentFileInputId);
-                if (fileInput) {
+              
+                function openCamera() {
+                  const fileInput = document.getElementById(currentFileInputId);
+                  if (fileInput) {
                     fileInput.setAttribute('capture', 'environment');
                     fileInput.click();
-                } else {
+                  } else {
                     console.error(`File input ${currentFileInputId} not found`);
+                  }
+                  closeModal();
                 }
-                closeModal();
-            }
-        
-            function startCamera(fileInput) {
-                const video = document.getElementById('cameraPreview');
-                const canvas = document.getElementById('cameraCanvas');
-                if (video && canvas) {
+              
+                function startCamera(fileInput) {
+                  const video = document.getElementById('cameraPreview');
+                  const canvas = document.getElementById('cameraCanvas');
+                  if (video && canvas) {
                     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                        .then(stream => {
-                            video.srcObject = stream;
-                            video.style.display = 'block';
-                            video.play();
-                            const captureBtn = document.createElement('button');
-                            captureBtn.textContent = 'Capture Photo';
-                            captureBtn.className = 'btn-outline-primary';
-                            captureBtn.onclick = () => {
-                                canvas.width = video.videoWidth;
-                                canvas.height = video.videoHeight;
-                                canvas.getContext('2d').drawImage(video, 0, 0);
-                                canvas.toBlob(blob => {
-                                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                                    const dataTransfer = new DataTransfer();
-                                    dataTransfer.items.add(file);
-                                    fileInput.files = dataTransfer.files;
-                                    fileInput.dispatchEvent(new Event('change'));
-                                    stopCamera();
-                                }, 'image/jpeg');
-                            };
-                            document.body.appendChild(captureBtn);
-                        })
-                        .catch(err => {
-                            console.error('Camera access denied:', err);
-                            showError('error-' + currentFileInputId, 'Unable to access camera');
-                        });
-                } else {
+                      .then(stream => {
+                        video.srcObject = stream;
+                        video.style.display = 'block';
+                        video.play();
+                        const captureBtn = document.createElement('button');
+                        captureBtn.textContent = 'Capture Photo';
+                        captureBtn.className = 'btn-outline-primary';
+                        captureBtn.onclick = () => {
+                          canvas.width = video.videoWidth;
+                          canvas.height = video.videoHeight;
+                          canvas.getContext('2d').drawImage(video, 0, 0);
+                          canvas.toBlob(blob => {
+                            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+                            fileInput.dispatchEvent(new Event('change'));
+                            stopCamera();
+                          }, 'image/jpeg');
+                        };
+                        document.body.appendChild(captureBtn);
+                      })
+                      .catch(err => {
+                        console.error('Camera access denied:', err);
+                        showError('error-' + currentFileInputId, 'Unable to access camera');
+                      });
+                  } else {
                     console.error('cameraPreview or cameraCanvas not found');
+                  }
                 }
-            }
-        
-            function stopCamera() {
-                const video = document.getElementById('cameraPreview');
-                const stream = video?.srcObject;
-                if (stream) {
+              
+                function stopCamera() {
+                  const video = document.getElementById('cameraPreview');
+                  const stream = video?.srcObject;
+                  if (stream) {
                     stream.getTracks().forEach(track => track.stop());
+                  }
+                  if (video) video.style.display = 'none';
+                  const captureBtn = document.querySelector('button[onclick*="capture"]');
+                  if (captureBtn) captureBtn.remove();
                 }
-                if (video) video.style.display = 'none';
-                const captureBtn = document.querySelector('button[onclick*="capture"]');
-                if (captureBtn) captureBtn.remove();
-            }
-        
-            function previewImage(input, id) {
-                const file = input?.files[0];
-                const img = document.getElementById(id);
-                if (file && img) {
+              
+                function previewImage(input, id) {
+                  const file = input?.files[0];
+                  const img = document.getElementById(id);
+                  if (file && img) {
                     const reader = new FileReader();
                     reader.onload = e => {
-                        img.src = e.target.result;
-                        img.classList.remove('hidden');
+                      img.src = e.target.result;
+                      img.classList.remove('hidden');
                     };
                     reader.readAsDataURL(file);
-                } else if (img) {
+                  } else if (img) {
                     img.classList.add('hidden');
+                  }
                 }
-            }
-        
-            function toggleDriverDetails() {
-                const driverDetails = document.getElementById('driverDetails');
-                if (driverDetails) driverDetails.classList.toggle('hidden');
-            }
-        
-            function showError(id, msg) {
-                const element = document.getElementById(id);
-                if (element) element.innerText = msg;
-            }
-        
-            function clearErrors() {
-                document.querySelectorAll(".error").forEach(el => el.innerText = '');
-            }
-        
-            const validateField = (name, value, formData = {}) => {
-                let error = '';
-                const requiredFields = ['lastname', 'gender', 'contactnumber', 'date', 'time', 'nationalid', 'visit', 'personname', 'department', 'durationtime', 'visitortype'];
-                const driverToggle = document.getElementById('driverToggle')?.checked;
-        
-                const element = document.getElementById(name);
-                if (name === 'firstname' && (!value || value.trim() === '')) {
+              
+                function toggleDriverDetails() {
+                  const driverDetails = document.getElementById('driverDetails');
+                  if (driverDetails) driverDetails.classList.toggle('hidden');
+                }
+              
+                function showError(id, msg) {
+                  const element = document.getElementById(id);
+                  if (element) element.innerText = msg;
+                }
+              
+                function clearErrors() {
+                  document.querySelectorAll('.error').forEach(el => (el.innerText = ''));
+                }
+              
+                const validateField = (name, value, formData = {}) => {
+                  let error = '';
+                  const requiredFields = [
+                    'lastname',
+                    'gender',
+                    'contactnumber',
+                    'date',
+                    'time',
+                    'nationalid',
+                    'visit',
+                    'personname',
+                    'department',
+                    'durationtime',
+                    'visitortype',
+                  ];
+                  const driverToggle = document.getElementById('driverToggle')?.checked;
+              
+                  const element = document.getElementById(name);
+                  if (name === 'firstname' && (!value || value.trim() === '')) {
                     error = 'First name is required and cannot be empty';
-                }
-                if (name === 'email' && (!value || value.trim() === '')) {
+                  }
+                  if (name === 'email' && (!value || value.trim() === '')) {
                     error = 'Email is required and cannot be empty';
-                }
-                if (name === 'photo' && !element?.dataset.existingPhoto && (!value || !input?.files?.length)) {
+                  }
+                  if (
+                    name === 'photo' &&
+                    !element?.dataset.existingPhoto &&
+                    (!value || !input?.files?.length)
+                  ) {
                     error = 'Photo is required';
-                }
-        
-                if (requiredFields.includes(name) && !value) {
-                    error = `${name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')} is required`;
-                } else if (name === 'durationunit' && driverToggle && !value) {
+                  }
+              
+                  if (requiredFields.includes(name) && !value) {
+                    error = `${name
+                      .charAt(0)
+                      .toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')} is required`;
+                  } else if (name === 'durationunit' && driverToggle && !value) {
                     error = 'Duration unit is required when driver details are included';
-                }
-                switch (name) {
+                  }
+                  switch (name) {
                     case 'firstname':
                     case 'lastname':
-                        if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                            error = `${name === 'firstname' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
-                        }
-                        break;
+                      if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
+                        error = `${name === 'firstname' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
+                      }
+                      break;
                     case 'personname':
-                        if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                            error = 'Person name must be at least 2 characters and contain only letters';
-                        }
-                        break;
+                      if (value && !/^[a-zA-Z\s]{2,100}$/.test(value)) {
+                        error =
+                          'Person name must be at least 2 characters, up to 100, and contain only letters and spaces';
+                      }
+                      break;
                     case 'drivername':
-                        if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                            error = 'Driver name must be at least 2 characters and contain only letters';
-                        }
-                        break;
+                      if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
+                        error =
+                          'Driver name must be at least 2 characters and contain only letters';
+                      }
+                      break;
                     case 'contactnumber':
-                        if (value && !/^\d+$/.test(value)) {
-                            error = 'Phone number must contain only digits';
-                        }
-                        break;
+                      if (value && !/^\d+$/.test(value)) {
+                        error = 'Phone number must contain only digits';
+                      }
+                      break;
                     case 'drivermobile':
-                        if (value && !/^\d+$/.test(value)) {
-                            error = 'Phone number must contain only digits';
-                        }
-                        break;
+                      if (value && !/^\d+$/.test(value)) {
+                        error = 'Phone number must contain only digits';
+                      }
+                      break;
                     case 'nationalid':
-                        if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                            error = 'National ID must be at least 4 characters (letters and numbers allowed)';
-                        }
-                        break;
+                      if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                        error =
+                          'National ID must be at least 4 characters (letters and numbers allowed)';
+                      }
+                      break;
                     case 'drivernationalid':
-                        if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                            error = 'National ID must be at least 4 characters (letters and numbers allowed)';
-                        }
-                        break;
+                      if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                        error =
+                          'National ID must be at least 4 characters (letters and numbers allowed)';
+                      }
+                      break;
                     case 'email':
-                        if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-                            error = 'Please enter a valid email address';
-                        }
-                        break;
+                      if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+                        error = 'Please enter a valid email address';
+                      }
+                      break;
                     case 'gender':
-                        if (!value) {
-                            error = 'Please select a gender';
-                        }
-                        break;
+                      if (!value) {
+                        error = 'Please select a gender';
+                      }
+                      break;
                     case 'visitortype':
-                        if (!value) {
-                            error = 'Please select a visitor type';
-                        }
-                        break;
+                      if (!value) {
+                        error = 'Please select a visitor type';
+                      }
+                      break;
                     case 'durationunit':
-                        if (value && !['Hours', 'Minutes', 'Days'].includes(value)) {
-                            error = 'Duration unit must be "Hours", "Minutes", or "Days"';
-                        }
-                        break;
+                      if (value && !['Hours', 'Minutes', 'Days'].includes(value)) {
+                        error = 'Duration unit must be "Hours", "Minutes", or "Days"';
+                      }
+                      break;
                     case 'time':
-                        if (value && formData.date) {
-                            const selectedDate = new Date(formData.date);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            selectedDate.setHours(0, 0, 0, 0);
-                            if (selectedDate.getTime() === today.getTime()) {
-                                const [hours, minutes] = value.split(':').map(Number);
-                                const now = new Date();
-                                if (hours < now.getHours() || (hours === now.getHours() && minutes <= now.getMinutes())) {
-                                    error = 'Allocation time cannot be in the past for today';
-                                }
-                            }
+                      if (value && formData.date) {
+                        const selectedDate = new Date(formData.date);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        selectedDate.setHours(0, 0, 0, 0);
+                        if (selectedDate.getTime() === today.getTime()) {
+                          const [hours, minutes] = value.split(':').map(Number);
+                          const now = new Date();
+                          if (
+                            hours < now.getHours() ||
+                            (hours === now.getHours() && minutes <= now.getMinutes())
+                          ) {
+                            error = 'Allocation time cannot be in the past for today';
+                          }
                         }
-                        break;
+                      }
+                      break;
                     case 'durationtime':
-                        if (value && !/^(\d{1,3}|[0-9]{1,2}:[0-5][0-9])$/.test(value)) {
-                            error = 'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
-                        }
-                        break;
+                      if (value && !/^(\d{1,3}|[0-9]{1,2}:[0-5][0-9])$/.test(value)) {
+                        error =
+                          'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
+                      }
+                      break;
                     case 'date':
-                        if (value) {
-                            const selectedDate = new Date(value);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            if (selectedDate < today) {
-                                error = 'Date must be today or later';
-                            }
+                      if (value) {
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (selectedDate < today) {
+                          error = 'Date must be today or later';
                         }
-                        break;
-                }
-                return error;
-            };
-        
-            function populateForm(formId, visitor) {
-                const form = document.getElementById(formId);
-                if (!form) {
+                      }
+                      break;
+                  }
+                  return error;
+                };
+              
+                function populateForm(formId, visitor) {
+                  const form = document.getElementById(formId);
+                  if (!form) {
                     console.error(`Form with ID '${formId}' not found`);
                     return;
-                }
-        
-                const fields = ['firstname', 'lastname', 'contactnumber', 'email', 'gender'];
-                fields.forEach(field => {
+                  }
+              
+                  const fields = ['firstname', 'lastname', 'contactnumber', 'email', 'gender'];
+                  fields.forEach(field => {
                     const element = form.elements[field];
                     if (element && visitor[field] !== undefined) {
-                        element.value = visitor[field] || '';
-                        if (element.dataset) element.dataset.populated = 'true';
-                        console.log(`Populated ${field} with: ${visitor[field] || 'undefined'}`);
+                      element.value = visitor[field] || '';
+                      if (element.dataset) element.dataset.populated = 'true';
+                      console.log(`Populated ${field} with: ${visitor[field] || 'undefined'}`);
                     } else if (!element) {
-                        console.warn(`Element for ${field} not found in form ${formId}`);
+                      console.warn(`Element for ${field} not found in form ${formId}`);
                     } else {
-                        console.log(`No data for ${field} in visitor object`);
+                      console.log(`No data for ${field} in visitor object`);
                     }
-                });
-        
-                const mainPreview = document.getElementById('mainPreview');
-                const photoInput = form.elements['photo'];
-                if (photoInput && visitor.photo !== undefined) {
-                    const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+                  });
+              
+                  const mainPreview = document.getElementById('mainPreview');
+                  const photoInput = form.elements['photo'];
+                  if (photoInput && visitor.photo !== undefined) {
+                    const photoUrl = `http://192.168.3.77:3001/uploads/${encodeURIComponent(
+                      visitor.photo
+                    )}?t=${new Date().getTime()}`;
                     if (mainPreview) {
-                        mainPreview.src = photoUrl;
-                        mainPreview.classList.remove('hidden');
+                      mainPreview.src = photoUrl;
+                      mainPreview.classList.remove('hidden');
                     }
                     if (photoInput.dataset) photoInput.dataset.existingPhoto = visitor.photo;
                     console.log(`Populated photo with: ${visitor.photo}`);
-                } else if (mainPreview) {
+                  } else if (mainPreview) {
                     mainPreview.src = '';
                     mainPreview.classList.add('hidden');
-                    if (photoInput && photoInput.dataset) delete photoInput.dataset.existingPhoto;
+                    if (photoInput && photoInput.dataset)
+                      delete photoInput.dataset.existingPhoto;
+                  }
+              
+                  const firstnameElement = form.elements['firstname'];
+                  if (!firstnameElement.value || firstnameElement.value.trim() === '') {
+                    console.warn(
+                      'Firstname is empty after population. Visitor data may be incomplete:',
+                      visitor
+                    );
+                    showError(
+                      'error-firstname',
+                      'First name is required and cannot be empty after loading visitor data'
+                    );
+                  }
                 }
-        
-                const firstnameElement = form.elements['firstname'];
-                if (!firstnameElement.value || firstnameElement.value.trim() === '') {
-                    console.warn('Firstname is empty after population. Visitor data may be incomplete:', visitor);
-                    showError('error-firstname', 'First name is required and cannot be empty after loading visitor data');
-                }
-            }
-        
-            async function checkNationalId(nationalid, formId) {
-                console.log(`Checking National ID: "${nationalid}" for form ${formId}`);
-                const trimmedNationalId = nationalid.trim();
-                if (!trimmedNationalId) {
+              
+                async function checkNationalId(nationalid, formId) {
+                  console.log(`Checking National ID: "${nationalid}" for form ${formId}`);
+                  const trimmedNationalId = nationalid.trim();
+                  if (!trimmedNationalId) {
                     console.log('National ID is empty or only spaces, no action taken');
                     return;
-                }
-        
-                if (trimmedNationalId.length < 4) {
+                  }
+              
+                  if (trimmedNationalId.length < 4) {
                     console.log('National ID too short, waiting for more input');
                     showError('error-nationalid', 'National ID must be at least 4 characters');
                     return;
-                }
-        
-                try {
-                    const response = await fetch(`http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(trimmedNationalId)}`, {
+                  }
+              
+                  try {
+                    const response = await fetch(
+                      `http://192.168.3.77:3001/visitors/nationalid/${encodeURIComponent(
+                        trimmedNationalId
+                      )}`,
+                      {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
-                    });
+                      }
+                    );
                     console.log(`Fetch response status: ${response.status}`);
                     if (response.ok) {
-                        const visitor = await response.json();
-                        console.log('Visitor data fetched:', visitor);
-                        populateForm(formId, visitor);
-                        showMessage('Visitor data loaded', 'success');
+                      const visitor = await response.json();
+                      console.log('Visitor data fetched:', visitor);
+                      populateForm(formId, visitor);
+                      showMessage('Visitor data loaded', 'success');
                     } else if (response.status === 404) {
-                        console.log('No visitor found for national ID, allowing new entry');
-                        // showMessage('No existing visitor found, please fill the form', 'info');
+                      console.log('No visitor found for national ID, allowing new entry');
+                      // showMessage('No existing visitor found, please fill the form', 'info');
                     } else {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+                      throw new Error(`HTTP error! Status: ${response.status}`);
                     }
-                } catch (error) {
+                  } catch (error) {
                     console.error('Error in checkNationalId:', error.message);
                     showMessage('Failed to check National ID', 'error');
-                } finally {
+                  } finally {
                     const form = document.getElementById(formId);
                     if (form) {
-                        form.classList.remove('hidden');
-                        form.style.display = 'block';
+                      form.classList.remove('hidden');
+                      form.style.display = 'block';
                     }
+                  }
                 }
-            }
-        
-            const attachLiveValidation = () => {
-                document.querySelectorAll("input, select, textarea").forEach(input => {
-                    input.addEventListener("input", () => {
-                        const formData = {
-                            date: document.getElementById("date")?.value,
-                            time: document.getElementById("time")?.value,
-                        };
-                        const error = validateField(input.id, input.value, formData);
-                        showError("error-" + input.id, error);
+              
+                async function fetchPersonNameSuggestions(query) {
+                  const suggestionsContainer = document.getElementById('personname-suggestions');
+                  if (!query || query.trim() === '') {
+                    suggestionsContainer.classList.add('hidden');
+                    return;
+                  }
+              
+                  try {
+                    const response = await fetch(
+                      `http://192.168.3.77:3001/users/search?query=${encodeURIComponent(
+                        query
+                      )}`,
+                      {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' },
+                      }
+                    );
+              
+                    if (response.ok) {
+                      const { users } = await response.json();
+                      suggestionsContainer.innerHTML = '';
+                      if (users.length === 0) {
+                        suggestionsContainer.classList.add('hidden');
+                        return;
+                      }
+              
+                      users.forEach(user => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        const fullName = `${user.firstName} ${user.lastName}`.trim();
+                        div.textContent = fullName;
+                        div.addEventListener('click', () => {
+                          const personnameInput = document.getElementById('personname');
+                          personnameInput.value = fullName;
+                          suggestionsContainer.classList.add('hidden');
+                          const error = validateField('personname', fullName);
+                          showError('error-personname', error);
+                        });
+                        suggestionsContainer.appendChild(div);
+                      });
+                      suggestionsContainer.classList.remove('hidden');
+                    } else {
+                      console.error('Failed to fetch suggestions:', response.status);
+                      suggestionsContainer.classList.add('hidden');
+                    }
+                  } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                    suggestionsContainer.classList.add('hidden');
+                  }
+                }
+              
+                const attachLiveValidation = () => {
+                  document.querySelectorAll('input, select, textarea').forEach(input => {
+                    input.addEventListener('input', () => {
+                      const formData = {
+                        date: document.getElementById('date')?.value,
+                        time: document.getElementById('time')?.value,
+                      };
+                      const error = validateField(input.id, input.value, formData);
+                      showError('error-' + input.id, error);
                     });
-                });
-            };
-        
-            const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-                // const toast = window.Swal.mixin({
-                //     toast: true,
-                //     position: position,
-                //     showConfirmButton: false,
-                //     timer: duration,
-                //     showCloseButton: showCloseButton,
-                //     padding: '5px 10px',
-                //     width: '200px', // Medium size
-                //     customClass: {
-                //         popup: 'medium-toast',
-                //         title: 'medium-toast-title'
-                //     }
-                // });
-
-
-    const toast = window.Swal.mixin({
-    toast: true,
-    position: position,
-    showConfirmButton: false,
-    timer: duration,
-    showCloseButton: showCloseButton,
-    padding: '5px 10px',
-    width: '300px',
-    fontSize: '14px', // Add this
-    customClass: {
-        popup: 'medium-toast',
-        title: 'medium-toast-title'
-    }
-});
-        
-                toast.fire({
+                  });
+                };
+              
+                const showMessage = (
+                  msg = 'Example notification text.',
+                  type = 'success',
+                  position = 'top-right',
+                  showCloseButton = true,
+                  duration = 2000
+                ) => {
+                  const toast = window.Swal.mixin({
+                    toast: true,
+                    position: position,
+                    showConfirmButton: false,
+                    timer: duration,
+                    showCloseButton: showCloseButton,
+                    padding: '5px 10px',
+                    width: '300px',
+                    fontSize: '14px',
+                    customClass: {
+                      popup: 'medium-toast',
+                      title: 'medium-toast-title',
+                    },
+                  });
+              
+                  toast.fire({
                     icon: type,
                     title: msg,
-                });
-            };
-        
-            document.addEventListener("DOMContentLoaded", () => {
-                attachLiveValidation();
-        
-                const nationalIdInput = document.getElementById('nationalid');
-                if (nationalIdInput) {
+                  });
+                };
+              
+                document.addEventListener('DOMContentLoaded', () => {
+                  attachLiveValidation();
+              
+                  const nationalIdInput = document.getElementById('nationalid');
+                  if (nationalIdInput) {
                     console.log('Attached national ID input listener');
-                    nationalIdInput.addEventListener('input', debounce((e) => {
+                    nationalIdInput.addEventListener(
+                      'input',
+                      debounce(e => {
                         checkNationalId(e.target.value, 'visitorForm');
-                    }, 500));
-                } else {
+                      }, 500)
+                    );
+                  } else {
                     console.error('National ID input element not found');
-                }
-        
-                const form = document.getElementById("visitorForm");
-                if (!form) {
+                  }
+              
+                  const personnameInput = document.getElementById('personname');
+                  if (personnameInput) {
+                    console.log('Attached personname input listener');
+                    personnameInput.addEventListener(
+                      'input',
+                      debounce(e => {
+                        fetchPersonNameSuggestions(e.target.value);
+                      }, 300)
+                    );
+              
+                    document.addEventListener('click', e => {
+                      const suggestionsContainer = document.getElementById(
+                        'personname-suggestions'
+                      );
+                      if (
+                        !personnameInput.contains(e.target) &&
+                        !suggestionsContainer.contains(e.target)
+                      ) {
+                        suggestionsContainer.classList.add('hidden');
+                      }
+                    });
+                  } else {
+                    console.error('Personname input element not found');
+                  }
+              
+                  const form = document.getElementById('visitorForm');
+                  if (!form) {
                     console.error("Form with ID 'visitorForm' not found");
                     return;
-                }
-        
-                console.log("Form found, attaching submit listener");
-        
-                form.addEventListener("submit", async (e) => {
+                  }
+              
+                  console.log('Form found, attaching submit listener');
+              
+                  form.addEventListener('submit', async e => {
                     e.preventDefault();
-                    console.log("Form submission triggered");
+                    console.log('Form submission triggered');
                     clearErrors();
                     let valid = true;
-        
+              
                     const formData = new FormData();
                     const validationFormData = {
-                        date: form.elements["date"]?.value || "",
-                        time: form.elements["time"]?.value || "",
+                      date: form.elements['date']?.value || '',
+                      time: form.elements['time']?.value || '',
                     };
-        
+              
                     const fields = [
-                        "firstname", "lastname", "gender", "contactnumber", "email",
-                        "date", "time", "nationalid", "visit", "personname",
-                        "department", "durationtime", "durationunit", "visitortype",
-                        "vehicletype", "vehiclenumber", "drivername", "drivermobile",
-                        "drivernationalid", "notes"
+                      'firstname',
+                      'lastname',
+                      'gender',
+                      'contactnumber',
+                      'email',
+                      'date',
+                      'time',
+                      'nationalid',
+                      'visit',
+                      'personname',
+                      'department',
+                      'durationtime',
+                      'durationunit',
+                      'visitortype',
+                      'vehicletype',
+                      'vehiclenumber',
+                      'drivername',
+                      'drivermobile',
+                      'drivernationalid',
+                      'notes',
                     ];
-        
+              
                     for (const id of fields) {
-                        const element = form.elements[id];
-                        const value = element?.value?.trim() || "";
-                        if (id === "firstname") {
-                            console.log(`Appending Firstname: "${value}"`);
-                            formData.append("Firstname", value);
-                        } else {
-                            formData.append(id, value);
-                        }
-                        const errorMsg = validateField(id, value, validationFormData);
-                        if (errorMsg) {
-                            showError("error-" + id, errorMsg);
-                            valid = false;
-                        }
+                      const element = form.elements[id];
+                      const value = element?.value?.trim() || '';
+                      if (id === 'firstname') {
+                        console.log(`Appending Firstname: "${value}"`);
+                        formData.append('Firstname', value);
+                      } else {
+                        formData.append(id, value);
+                      }
+                      const errorMsg = validateField(id, value, validationFormData);
+                      if (errorMsg) {
+                        showError('error-' + id, errorMsg);
+                        valid = false;
+                      }
                     }
-        
+              
                     const firstname = form.elements['firstname']?.value?.trim() || '';
                     const email = form.elements['email']?.value?.trim() || '';
                     console.log(`Final Firstname value: "${firstname}"`);
                     if (firstname) formData.set('Firstname', firstname);
                     if (email) formData.set('email', email);
-        
-                    const photoInput = form.elements["photo"];
+              
+                    const photoInput = form.elements['photo'];
                     const hasNewPhoto = photoInput?.files && photoInput.files.length > 0;
                     const hasExistingPhoto = photoInput?.dataset.existingPhoto;
                     if (hasNewPhoto) {
-                        formData.append("photoFile", photoInput.files[0]);
+                      formData.append('photoFile', photoInput.files[0]);
                     } else if (hasExistingPhoto) {
-                        formData.append("photo", hasExistingPhoto);
+                      formData.append('photo', hasExistingPhoto);
                     } else {
-                        showError("error-photo", "Photo is required");
-                        valid = false;
+                      showError('error-photo', 'Photo is required');
+                      valid = false;
                     }
-        
+              
                     if (!firstname) {
-                        showError("error-firstname", "First name is required and cannot be empty");
-                        valid = false;
+                      showError('error-firstname', 'First name is required and cannot be empty');
+                      valid = false;
                     }
                     if (!email) {
-                        showError("error-email", "Email is required and cannot be empty");
-                        valid = false;
+                      showError('error-email', 'Email is required and cannot be empty');
+                      valid = false;
                     }
-        
-                    const driverToggle = form.elements["driverToggle"]?.checked;
-                    formData.append("driverToggle", driverToggle.toString());
-                    const driverPhoto = form.elements["driverphoto"]?.files[0];
+              
+                    const driverToggle = form.elements['driverToggle']?.checked;
+                    formData.append('driverToggle', driverToggle.toString());
+                    const driverPhoto = form.elements['driverphoto']?.files[0];
                     if (driverToggle && driverPhoto) {
-                        formData.append("driverPhotoFile", driverPhoto);
+                      formData.append('driverPhotoFile', driverPhoto);
                     }
-                    if (driverToggle && (!driverPhoto || !/\.(jpg|jpeg|png)$/i.test(driverPhoto?.name))) {
-                        showError("error-driverphoto", "Upload driver .jpg/.png image");
-                        valid = false;
+                    if (
+                      driverToggle &&
+                      (!driverPhoto || !/\.(jpg|jpeg|png)$/i.test(driverPhoto?.name))
+                    ) {
+                      showError('error-driverphoto', 'Upload driver .jpg/.png image');
+                      valid = false;
                     }
-        
-                    const vehType = form.elements["vehicletype"]?.value?.trim();
-                    const vehNum = form.elements["vehiclenumber"]?.value?.trim();
+              
+                    const vehType = form.elements['vehicletype']?.value?.trim();
+                    const vehNum = form.elements['vehiclenumber']?.value?.trim();
                     if (vehType && !/^.{2,20}$/.test(vehType)) {
-                        showError("error-vehicletype", "Enter valid vehicle type");
-                        valid = false;
+                      showError('error-vehicletype', 'Enter valid vehicle type');
+                      valid = false;
                     }
                     if (vehType && !/^[A-Za-z0-9]{6,12}$/.test(vehNum)) {
-                        showError("error-vehiclenumber", "Enter valid vehicle number");
-                        valid = false;
+                      showError('error-vehiclenumber', 'Enter valid vehicle number');
+                      valid = false;
                     }
-        
+              
                     if (driverToggle) {
-                        const dName = form.elements["drivername"]?.value?.trim();
-                        const dMob = form.elements["drivermobile"]?.value?.trim();
-                        const dNid = form.elements["drivernationalid"]?.value?.trim();
-                        if (!/^[A-Za-z\s]{2,50}$/.test(dName)) {
-                            showError("error-drivername", "Enter valid driver name");
-                            valid = false;
-                        }
-                        if (!/^\d{5,15}$/.test(dMob)) {
-                            showError("error-drivermobile", "Enter valid mobile");
-                            valid = false;
-                        }
-                        if (!/^[a-zA-Z0-9]{4,}$/.test(dNid)) {
-                            showError("error-drivernationalid", "Enter valid ID");
-                            valid = false;
-                        }
-                    }
-        
-                    const notes = form.elements["notes"]?.value?.trim();
-                    if (notes?.length > 500 || /<script/i.test(notes)) {
-                        showError("error-notes", "Invalid notes content");
+                      const dName = form.elements['drivername']?.value?.trim();
+                      const dMob = form.elements['drivermobile']?.value?.trim();
+                      const dNid = form.elements['drivernationalid']?.value?.trim();
+                      if (!/^[A-Za-z\s]{2,50}$/.test(dName)) {
+                        showError('error-drivername', 'Enter valid driver name');
                         valid = false;
+                      }
+                      if (!/^\d{5,15}$/.test(dMob)) {
+                        showError('error-drivermobile', 'Enter valid mobile');
+                        valid = false;
+                      }
+                      if (!/^[a-zA-Z0-9]{4,}$/.test(dNid)) {
+                        showError('error-drivernationalid', 'Enter valid ID');
+                        valid = false;
+                      }
                     }
-        
+              
+                    const notes = form.elements['notes']?.value?.trim();
+                    if (notes?.length > 500 || /<script/i.test(notes)) {
+                      showError('error-notes', 'Invalid notes content');
+                      valid = false;
+                    }
+              
                     if (validationFormData.date) {
-                        const [year, month, day] = validationFormData.date.split("-");
-                        formData.set("date", `${day}-${month}-${year}`);
+                      const [year, month, day] = validationFormData.date.split('-');
+                      formData.set('date', `${day}-${month}-${year}`);
                     }
-        
-                    console.log("FormData contents before send:");
+              
+                    console.log('FormData contents before send:');
                     for (let [key, value] of formData.entries()) {
-                        console.log(`${key}: ${value instanceof File ? value.name : value}`);
+                      console.log(`${key}: ${value instanceof File ? value.name : value}`);
                     }
-        
+              
                     if (valid) {
-                        try {
-                            const submitBtn = document.getElementById("submitBtn");
-                            if (submitBtn) {
-                                submitBtn.disabled = true;
-                                submitBtn.innerHTML = `
-                                    <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                                    </svg>
-                                    Creating...
-                                `;
-                            }
-                            console.log("Sending to http://192.168.3.73:3001/visitors");
-                            const response = await fetch("http://192.168.3.73:3001/visitors", {
-                                method: "POST",
-                                body: formData,
-                            });
-        
-                            if (!response.ok) {
-                                const errorData = await response.json().catch(() => ({}));
-                                throw new Error(errorData.message || `HTTP ${response.status}`);
-                            }
-        
-                            const result = await response.json();
-                            console.log("API response:", result);
-        
-                            sessionStorage.setItem('visitorCreated', 'true');
-        
-                            if (form) {
-                                form.reset();
-                                document.getElementById("mainPreview")?.classList.add("hidden");
-                                document.getElementById("driverPreview")?.classList.add("hidden");
-                                document.getElementById("driverDetails")?.classList.add("hidden");
-                            }
-        
-                            window.location.href = 'SpotEntry.html';
-                        } catch (error) {
-                            console.error("Submission error:", error.message);
-                            showError("error-notes", error.message || "Failed to submit form");
-                        } finally {
-                            const submitBtn = document.getElementById("submitBtn");
-                            if (submitBtn) {
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = "Create";
-                            }
+                      try {
+                        const submitBtn = document.getElementById('submitBtn');
+                        if (submitBtn) {
+                          submitBtn.disabled = true;
+                          submitBtn.innerHTML = `
+                                              <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                  <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                  <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                              </svg>
+                                              Creating...
+                                          `;
                         }
+                        console.log('Sending to http://192.168.3.77:3001/visitors');
+                        const response = await fetch('http://192.168.3.77:3001/visitors', {
+                          method: 'POST',
+                          body: formData,
+                        });
+              
+                        if (!response.ok) {
+                          const errorData = await response.json().catch(() => ({}));
+                          throw new Error(errorData.message || `HTTP ${response.status}`);
+                        }
+              
+                        const result = await response.json();
+                        console.log('API response:', result);
+              
+                        sessionStorage.setItem('visitorCreated', 'true');
+              
+                        if (form) {
+                          form.reset();
+                          document.getElementById('mainPreview')?.classList.add('hidden');
+                          document.getElementById('driverPreview')?.classList.add('hidden');
+                          document.getElementById('driverDetails')?.classList.add('hidden');
+                        }
+              
+                        window.location.href = 'SpotEntry.html';
+                      } catch (error) {
+                        console.error('Submission error:', error.message);
+                        showError('error-notes', error.message || 'Failed to submit form');
+                      } finally {
+                        const submitBtn = document.getElementById('submitBtn');
+                        if (submitBtn) {
+                          submitBtn.disabled = false;
+                          submitBtn.innerHTML = 'Create';
+                        }
+                      }
                     } else {
-                        console.log("Validation failed");
+                      console.log('Validation failed');
                     }
+                  });
                 });
-            });
-        </script>
+              </script>
+
+         
+             
+           
+        
+            
 
             <script src="assets/js/custom.js"></script>
 
