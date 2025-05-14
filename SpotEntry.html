@@ -23,6 +23,50 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
+
+        /* Ensure the button and image are aligned in the same row */
+        .flex.items-center {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style the "Choose Photo" button */
+        .choose-photo-btn {
+            height: 34px;
+            /* Set a fixed height for consistency */
+            line-height: 1.5;
+            /* Adjust line height for text alignment */
+            box-sizing: border-box;
+        }
+
+        /* Style the image preview */
+        .photo-preview {
+            height: 34px;
+            /* Match the button height */
+            width: auto;
+            /* Maintain aspect ratio */
+            object-fit: cover;
+            /* Ensure the image fits nicely */
+            display: none;
+            /* Hidden by default */
+            transition: transform 0.3s ease;
+            /* Smooth transition for zoom effect */
+        }
+
+        /* Show the image preview when a file is selected */
+        .photo-preview[src]:not([src=""]) {
+            display: inline-block;
+            /* Show the image when it has a valid src */
+        }
+
+        /* Zoom-out effect on hover */
+        .photo-preview:hover {
+            transform: scale(4.5);
+            /* Enlarge the image by 1.5x */
+            z-index: 10;
+            /* Ensure the image appears above other elements */
+        }
+
         /* Table Styles */
         .table-container {
             background-color: #fff;
@@ -492,6 +536,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -1895,7 +1940,8 @@
                             <a href="index.html" class="main-logo flex shrink-0 items-center">
                                 <img class="inline w-8 ltr:-ml-1 rtl:-mr-1" src="assets/images/icon.png" alt="image" />
                                 <span
-                                    class="hidden align-middle text-2xl font-semibold transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ENDEL DIGITAL</span>
+                                    class="hidden align-middle text-2xl font-semibold transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ENDEL
+                                    DIGITAL</span>
                             </a>
 
                             <a href="javascript:;"
@@ -3034,309 +3080,333 @@
                     </ul>
                 </div>
             </header>
-             <div class="dvanimation animate__animated p-6">
-        <!--start main content-->
-        <div class="table-container">
-            <div class="px-6 py-4 border-b text-xl font-semibold flex items-center justify-between">
-                <span>Visitor Appointment Data</span>
-                <div class="mb-2">
-                    <a href="spot.html" class="btn btn-sm btn-primary rounded-full btn-primary">
-                        Schedule Appointment
-                    </a>
+            <div class="dvanimation animate__animated p-6">
+                <!--start main content-->
+                <div class="table-container">
+                    <div class="px-6 py-4 border-b text-xl font-semibold flex items-center justify-between">
+                        <span>Visitor Appointment Data</span>
+                        <div class="mb-2">
+                            <a href="spot.html" class="btn btn-sm btn-primary rounded-full btn-primary">
+                                Schedule Appointment
+                            </a>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2 flex items-center justify-between">
+                        <div class="dataTable-dropdown">
+                            <label>
+                                <select class="dataTable-selector">
+                                    <option value="5">5</option>
+                                    <option value="10" selected="">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                </select> entries per page
+                            </label>
+                        </div>
+                        <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..."
+                                type="text"></div>
+                    </div>
+                    <div class="table-scroll">
+                        <table id="visitorTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>National ID</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="visitorTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer" id="panelFooter">
+                        <span id="paginationInfo">Showing 0 to 0 of 0 entries</span>
+                        <div class="pagination">
+                            <button id="prevPage" onclick="previousPage()">Previous</button>
+                            <button id="nextPage" onclick="nextPage()">Next</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="px-4 py-2 flex items-center justify-between">
-                <div class="dataTable-dropdown">
-                    <label>
-                        <select class="dataTable-selector">
-                            <option value="5">5</option>
-                            <option value="10" selected="">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select> entries per page
-                    </label>
-                </div>
-                <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..." type="text"></div>
-            </div>
-            <div class="table-scroll">
-                <table id="visitorTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Contact Number</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>National ID</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="visitorTableBody">
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer" id="panelFooter">
-                <span id="paginationInfo">Showing 0 to 0 of 0 entries</span>
-                <div class="pagination">
-                    <button id="prevPage" onclick="previousPage()">Previous</button>
-                    <button id="nextPage" onclick="nextPage()">Next</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- Edit Modal -->
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <div class="px-2 py-2 border-b text-xl font-semibold text-center"
-                    style="font-family: 'Nunito', sans-serif; position: relative;">
-                    Edit Visitor Appointment Details
-                    <span class="cancel-icon"
-                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
-                        onclick="closeEditModal()">×</span>
+                <!-- Edit Modal -->
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <div class="px-2 py-2 border-b text-xl font-semibold text-center"
+                            style="font-family: 'Nunito', sans-serif; position: relative;">
+                            Edit Visitor Appointment Details
+                            <span class="cancel-icon"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
+                                onclick="closeEditModal()">×</span>
+                        </div>
+                        <form id="editForm" class="p-3 space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="hidden" id="edit-id" name="id">
+                                <div class="flex items-center">
+                                    <label for="edit-firstname" class="w-40 text-sm font-medium">First Name</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-firstname" name="firstname"
+                                            placeholder="Enter first name"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-firstname"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-lastname" class="w-40 text-sm font-medium">Last Name</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-lastname" name="lastname"
+                                            placeholder="Enter last name"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-lastname"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-gender" class="w-40 text-sm font-medium">Gender</label>
+                                    <div class="flex-1">
+                                        <select id="edit-gender" name="gender"
+                                            class="w-full text-xs px-3 py-2 border rounded">
+                                            <option value="">Select gender</option>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                            <option>Other</option>
+                                        </select>
+                                        <span class="error text-red-500 text-xs" id="error-gender"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-contactnumber" class="w-40 text-sm font-medium">Contact
+                                        Number</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-contactnumber" name="contactnumber"
+                                            placeholder="Enter contact number"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-contactnumber"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-email" class="w-40 text-sm font-medium">Email Address</label>
+                                    <div class="flex-1">
+                                        <input type="email" id="edit-email" name="email"
+                                            placeholder="Enter email address"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-email"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-date" class="w-40 text-sm font-medium">Meeting Date</label>
+                                    <div class="flex-1">
+                                        <input type="date" id="edit-date" name="date"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-date"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-time" class="w-40 text-sm font-medium">Meeting Time</label>
+                                    <div class="flex-1">
+                                        <input type="time" id="edit-time" name="time"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-time"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-nationalid" class="w-40 text-sm font-medium">National ID</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-nationalid" name="nationalid"
+                                            placeholder="Enter national ID"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-nationalid"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-photo" class="w-40 text-sm font-medium">Visitor Photo</label>
+                                    <div class="flex-1 flex items-center space-x-2">
+                                        <input type="file" id="edit-photo" name="photo"
+                                            accept="image/jpeg,image/png,image/jpg" class="hidden"
+                                            onchange="previewImage(this, 'mainPreview')" />
+                                        <button type="button"
+                                            class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+                                            onclick="showModal('edit-photo')">Choose Photo</button>
+                                        <img id="mainPreview" src="" alt="Photo Preview" class="photo-preview"
+                                            style="display: none;" />
+                                        <span class="error text-red-500 text-xs block mt-1" id="error-photo"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of Visit</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-visit" name="visit"
+                                            placeholder="Enter visit purpose"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-visit"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-personname" name="personname"
+                                            placeholder="Enter person to meet"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-personname"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-department" name="department"
+                                            placeholder="Enter department"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-department"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-durationtime" class="w-40 text-sm font-medium">Expected
+                                        Duration</label>
+                                    <div class="flex-1 flex gap-2">
+                                        <select id="edit-durationUnit" name="durationUnit"
+                                            class="w-2/3 text-xs px-3 py-2 border rounded">
+                                            <option value="">Select unit</option>
+                                            <option value="Hours">Hours</option>
+                                            <option value="Minutes">Minutes</option>
+                                            <option value="Days">Days</option>
+                                        </select>
+                                        <input type="number" id="edit-durationtime" name="durationtime"
+                                            placeholder="Enter duration" class="w-1/3 text-xs px-3 py-2 border rounded"
+                                            min="1" />
+                                    </div>
+                                    <span class="error text-red-500 text-xs" id="error-durationtime"></span>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-visitortype" class="w-40 text-sm font-medium">Visitor Type</label>
+                                    <div class="flex-1">
+                                        <select id="edit-visitortype" name="visitortype"
+                                            class="w-full text-xs px-3 py-2 border rounded">
+                                            <option value="">Select visitor type</option>
+                                            <option>Vendor</option>
+                                            <option>Client</option>
+                                            <option>Interview</option>
+                                            <option>Guest</option>
+                                        </select>
+                                        <span class="error text-red-500 text-xs" id="error-visitortype"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-vehicletype" class="w-40 text-sm font-medium">Vehicle Type</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-vehicletype" name="vehicletype"
+                                            placeholder="Enter vehicle type"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-vehicletype"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="edit-vehiclenumber" class="w-40 text-sm font-medium">Vehicle
+                                        Number</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-vehiclenumber" name="vehiclenumber"
+                                            placeholder="Enter vehicle number"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <span class="error text-red-500 text-xs" id="error-vehiclenumber"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <label class="w-40 text-sm font-medium">Include Driver?</label>
+                                    <input type="checkbox" id="edit-driverToggle" onchange="toggleDriverDetails()" />
+                                </div>
+                            </div>
+                            <div id="driverDetails" class="hidden border-t pt-4 space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex items-center">
+                                        <label for="edit-drivername" class="w-40 text-sm font-medium">Driver
+                                            Name</label>
+                                        <div class="flex-1">
+                                            <input type="text" id="edit-drivername" name="drivername"
+                                                placeholder="Enter driver name"
+                                                class="w-full text-xs px-3 py-2 border rounded" />
+                                            <span class="error text-red-500 text-xs" id="error-drivername"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="edit-drivermobile" class="w-40 text-sm font-medium">Driver
+                                            Mobile</label>
+                                        <div class="flex-1">
+                                            <input type="text" id="edit-drivermobile" name="drivermobile"
+                                                placeholder="Enter driver mobile"
+                                                class="w-full text-xs px-3 py-2 border rounded" />
+                                            <span class="error text-red-500 text-xs" id="error-drivermobile"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="edit-drivernationalid" class="w-40 text-sm font-medium">Driver
+                                            National
+                                            ID</label>
+                                        <div class="flex-1">
+                                            <input type="text" id="edit-drivernationalid" name="drivernationalid"
+                                                placeholder="Enter driver national ID"
+                                                class="w-full text-xs px-3 py-2 border rounded" />
+                                            <span class="error text-red-500 text-xs" id="error-drivernationalid"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="edit-driverphoto" class="w-40 text-sm font-medium">Driver
+                                            Photo</label>
+                                        <div class="flex-1 flex items-center space-x-2">
+                                            <input type="file" id="edit-driverphoto" name="driverphoto"
+                                                accept="image/jpeg,image/png,image/jpg" class="hidden"
+                                                onchange="previewImage(this, 'driverPreview')" />
+                                            <button type="button"
+                                                class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+                                                onclick="showModal('edit-driverphoto')">Choose Photo</button>
+                                            <img id="driverPreview" src="" alt="Driver Photo Preview"
+                                                class="photo-preview" style="display: none;" />
+                                            <span class="error text-red-500 text-xs block mt-1"
+                                                id="error-driverphoto"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <label for="edit-notes" class="w-40 text-sm font-medium pt-2">Notes</label>
+                                <div class="flex-1">
+                                    <textarea id="edit-notes" name="notes" rows="2" placeholder="Enter any notes..."
+                                        class="w-full text-xs px-3 py-2 border rounded"></textarea>
+                                    <span class="error text-red-500 text-xs" id="error-notes"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-start mt-6 space-x-2">
+                                <button type="submit" id="updateBtn"
+                                    class="btn btn-sm btn-outline-primary rounded-full">Update</button>
+                                <button type="button" id="approveBtn"
+                                    class="btn btn-outline-success btn-sm rounded-full">Approve</button>
+                                <button type="button" id="disapproveBtn"
+                                    class="btn btn-outline-danger btn-sm rounded-full">Disapprove</button>
+                                <button type="button" id="inProgressBtn"
+                                    class="btn btn-sm btn-outline-primary rounded-full">In Progress</button>
+                                <button type="button" id="completeBtn"
+                                    class="btn btn-sm btn-outline-primary rounded-full">Complete</button>
+                                <button type="button" id="exitBtn"
+                                    class="btn btn-sm btn-outline-primary rounded-full">Exit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form id="editForm" class="p-3 space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="hidden" id="edit-id" name="id">
-                        <div class="flex items-center">
-                            <label for="edit-firstname" class="w-40 text-sm font-medium">First Name</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-firstname" name="firstname" placeholder="Enter first name"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-firstname"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-lastname" class="w-40 text-sm font-medium">Last Name</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-lastname" name="lastname" placeholder="Enter last name"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-lastname"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-gender" class="w-40 text-sm font-medium">Gender</label>
-                            <div class="flex-1">
-                                <select id="edit-gender" name="gender" class="w-full text-xs px-3 py-2 border rounded">
-                                    <option value="">Select gender</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                                <span class="error text-red-500 text-xs" id="error-gender"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-contactnumber" class="w-40 text-sm font-medium">Contact Number</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-contactnumber" name="contactnumber"
-                                    placeholder="Enter contact number" class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-contactnumber"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-email" class="w-40 text-sm font-medium">Email Address</label>
-                            <div class="flex-1">
-                                <input type="email" id="edit-email" name="email" placeholder="Enter email address"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-email"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-date" class="w-40 text-sm font-medium">Date</label>
-                            <div class="flex-1">
-                                <input type="date" id="edit-date" name="date"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-date"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-time" class="w-40 text-sm font-medium">Time</label>
-                            <div class="flex-1">
-                                <input type="time" id="edit-time" name="time"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-time"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-nationalid" class="w-40 text-sm font-medium">National ID</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-nationalid" name="nationalid"
-                                    placeholder="Enter national ID" class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-nationalid"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-photo" class="w-40 text-sm font-medium">Visitor Photo</label>
-                            <div class="flex-1">
-                                <input type="file" id="edit-photo" name="photo" accept="image/jpeg,image/png,image/jpg"
-                                    class="hidden" onchange="previewImage(this, 'mainPreview')" />
-                                <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                    onclick="showModal('edit-photo')">Choose Photo</button>
-                                <img id="mainPreview" src="" alt="Photo Preview"
-                                    style="max-width: 100px; max-height: 100px; margin-top: 5px; display: none;"
-                                    class="mt-2" />
-                                <span class="error text-red-500 text-xs block mt-1" id="error-photo"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of Visit</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-visit" name="visit" placeholder="Enter visit purpose"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-visit"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-personname" name="personname"
-                                    placeholder="Enter person to meet" class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-personname"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-department" name="department" placeholder="Enter department"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-department"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-durationtime" class="w-40 text-sm font-medium">Expected Duration</label>
-                            <div class="flex-1 flex gap-2">
-                                <select id="edit-durationUnit" name="durationUnit"
-                                    class="w-2/3 text-xs px-3 py-2 border rounded">
-                                    <option value="">Select unit</option>
-                                    <option value="Hours">Hours</option>
-                                    <option value="Minutes">Minutes</option>
-                                    <option value="Days">Days</option>
-                                </select>
-                                <input type="number" id="edit-durationtime" name="durationtime"
-                                    placeholder="Enter duration" class="w-1/3 text-xs px-3 py-2 border rounded" min="1" />
-                            </div>
-                            <span class="error text-red-500 text-xs" id="error-durationtime"></span>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-visitortype" class="w-40 text-sm font-medium">Visitor Type</label>
-                            <div class="flex-1">
-                                <select id="edit-visitortype" name="visitortype"
-                                    class="w-full text-xs px-3 py-2 border rounded">
-                                    <option value="">Select visitor type</option>
-                                    <option>Vendor</option>
-                                    <option>Client</option>
-                                    <option>Interview</option>
-                                    <option>Guest</option>
-                                </select>
-                                <span class="error text-red-500 text-xs" id="error-visitortype"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-vehicletype" class="w-40 text-sm font-medium">Vehicle Type</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-vehicletype" name="vehicletype"
-                                    placeholder="Enter vehicle type" class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-vehicletype"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label for="edit-vehiclenumber" class="w-40 text-sm font-medium">Vehicle Number</label>
-                            <div class="flex-1">
-                                <input type="text" id="edit-vehiclenumber" name="vehiclenumber"
-                                    placeholder="Enter vehicle number" class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-red-500 text-xs" id="error-vehiclenumber"></span>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <label class="w-40 text-sm font-medium">Include Driver?</label>
-                            <input type="checkbox" id="edit-driverToggle" onchange="toggleDriverDetails()" />
-                        </div>
-                    </div>
-                    <div id="driverDetails" class="hidden border-t pt-4 space-y-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="flex items-center">
-                                <label for="edit-drivername" class="w-40 text-sm font-medium">Driver Name</label>
-                                <div class="flex-1">
-                                    <input type="text" id="edit-drivername" name="drivername"
-                                        placeholder="Enter driver name" class="w-full text-xs px-3 py-2 border rounded" />
-                                    <span class="error text-red-500 text-xs" id="error-drivername"></span>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <label for="edit-drivermobile" class="w-40 text-sm font-medium">Driver Mobile</label>
-                                <div class="flex-1">
-                                    <input type="text" id="edit-drivermobile" name="drivermobile"
-                                        placeholder="Enter driver mobile" class="w-full text-xs px-3 py-2 border rounded" />
-                                    <span class="error text-red-500 text-xs" id="error-drivermobile"></span>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <label for="edit-drivernationalid" class="w-40 text-sm font-medium">Driver National
-                                    ID</label>
-                                <div class="flex-1">
-                                    <input type="text" id="edit-drivernationalid" name="drivernationalid"
-                                        placeholder="Enter driver national ID"
-                                        class="w-full text-xs px-3 py-2 border rounded" />
-                                    <span class="error text-red-500 text-xs" id="error-drivernationalid"></span>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <label for="edit-driverphoto" class="w-40 text-sm font-medium">Driver Photo</label>
-                                <div class="flex-1">
-                                    <input type="file" id="edit-driverphoto" name="driverphoto"
-                                        accept="image/jpeg,image/png,image/jpg" class="hidden"
-                                        onchange="previewImage(this, 'driverPreview')" />
-                                    <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                        onclick="showModal('edit-driverphoto')">Choose Photo</button>
-                                    <img id="driverPreview" src="" alt="Driver Photo Preview"
-                                        style="max-width: 100px; max-height: 100px; margin-top: 5px; display: none;"
-                                        class="mt-2" />
-                                    <span class="error text-red-500 text-xs block mt-1" id="error-driverphoto"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <label for="edit-notes" class="w-40 text-sm font-medium pt-2">Notes</label>
-                        <div class="flex-1">
-                            <textarea id="edit-notes" name="notes" rows="2" placeholder="Enter any notes..."
-                                class="w-full text-xs px-3 py-2 border rounded"></textarea>
-                            <span class="error text-red-500 text-xs" id="error-notes"></span>
-                        </div>
-                    </div>
-                    <div class="flex justify-start mt-6 space-x-2">
-                        <button type="submit" id="updateBtn"
-                            class="btn btn-sm btn-outline-primary rounded-full">Update</button>
-                        <button type="button" id="approveBtn"
-                            class="btn btn-outline-success btn-sm rounded-full">Approve</button>
-                        <button type="button" id="disapproveBtn"
-                            class="btn btn-outline-danger btn-sm rounded-full">Disapprove</button>
-                        <button type="button" id="inProgressBtn"
-                            class="btn btn-sm btn-outline-primary rounded-full">In Progress</button>
-                        <button type="button" id="completeBtn"
-                            class="btn btn-sm btn-outline-primary rounded-full">Complete</button>
-                        <button type="button" id="exitBtn"
-                            class="btn btn-sm btn-outline-primary rounded-full">Exit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Photo Modal -->
-        <div id="photoModal" class="modal">
-            <div class="modal-content1">
-                <h3>Select Photo Source</h3>
-                <button class="gallery-btn" onclick="openGallery()">Gallery</button>
-                <button class="camera-btn" onclick="openCamera()">Camera</button>
-                <button class="close-btn" onclick="closeModal()">Close</button>
-            </div>
-        </div>
+                <!-- Photo Modal -->
+                <div id="photoModal" class="modal">
+                    <div class="modal-content1">
+                        <h3>Select Photo Source</h3>
+                        <button class="gallery-btn" onclick="openGallery()">Gallery</button>
+                        <button class="camera-btn" onclick="openCamera()">Camera</button>
+                        <button class="close-btn" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
 
-        <video id="cameraPreview" style="display: none;"></video>
-        <canvas id="cameraCanvas" style="display: none;"></canvas>
-    </div>
+                <video id="cameraPreview" style="display: none;"></video>
+                <canvas id="cameraCanvas" style="display: none;"></canvas>
+            </div>
 
 
 
@@ -3346,252 +3416,252 @@
             </div>
             <!-- end footer section -->
 
-                     
-  <script>let visitors = [];
-let currentFileInputId = '';
-let currentPage = 1;
-let entriesPerPage = 10;
-let searchQuery = '';
 
-// Toast message function
-const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: position,
-        showConfirmButton: false,
-        timer: duration,
-        showCloseButton: showCloseButton,
-        padding: '10px 20px',
-    });
+            <script>let visitors = [];
+                let currentFileInputId = '';
+                let currentPage = 1;
+                let entriesPerPage = 10;
+                let searchQuery = '';
 
-    toast.fire({
-        icon: type,
-        title: msg,
-    });
-};
+                // Toast message function
+                const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
+                    const toast = window.Swal.mixin({
+                        toast: true,
+                        position: position,
+                        showConfirmButton: false,
+                        timer: duration,
+                        showCloseButton: showCloseButton,
+                        padding: '10px 20px',
+                    });
 
-async function fetchVisitors() {
-    try {
-        console.log('Fetching visitors from http://192.168.3.75:3001/visitors');
-        const response = await fetch(`http://192.168.3.75:3001/visitors?t=${new Date().getTime()}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
+                    toast.fire({
+                        icon: type,
+                        title: msg,
+                    });
+                };
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+                async function fetchVisitors() {
+                    try {
+                        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
+                        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        });
 
-        const data = await response.json();
-        console.log('Fetched data:', data);
-        visitors = data.map(visitor => ({
-            ...visitor,
-            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-            durationunit: visitor.durationunit || '',
-        }));
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
 
-        if (visitors.length === 0) {
-            console.warn('No visitors fetched from the server');
-        }
+                        const data = await response.json();
+                        console.log('Fetched data:', data);
+                        visitors = data.map(visitor => ({
+                            ...visitor,
+                            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
+                            durationunit: visitor.durationunit || '',
+                        }));
 
-        localStorage.setItem('visitors', JSON.stringify(visitors));
-        populateTable();
-    } catch (error) {
-        console.error('Failed to fetch visitors:', error.message);
-        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
-        if (visitors.length === 0) {
-            console.warn('No cached visitors available either');
-        }
-        populateTable();
-    }
-}
+                        if (visitors.length === 0) {
+                            console.warn('No visitors fetched from the server');
+                        }
 
-function showModal(fileInputId) {
-    currentFileInputId = fileInputId;
-    document.getElementById('photoModal').style.display = 'flex';
-}
+                        localStorage.setItem('visitors', JSON.stringify(visitors));
+                        populateTable();
+                    } catch (error) {
+                        console.error('Failed to fetch visitors:', error.message);
+                        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
+                        if (visitors.length === 0) {
+                            console.warn('No cached visitors available either');
+                        }
+                        populateTable();
+                    }
+                }
 
-function closeModal() {
-    document.getElementById('photoModal').style.display = 'none';
-    stopCamera();
-}
+                function showModal(fileInputId) {
+                    currentFileInputId = fileInputId;
+                    document.getElementById('photoModal').style.display = 'flex';
+                }
 
-function openGallery() {
-    const fileInput = document.getElementById(currentFileInputId);
-    fileInput.removeAttribute('capture');
-    fileInput.click();
-    closeModal();
-}
-
-function openCamera() {
-    startCamera(document.getElementById(currentFileInputId));
-    closeModal();
-}
-
-function startCamera(fileInput) {
-    const video = document.getElementById('cameraPreview');
-    const canvas = document.getElementById('cameraCanvas');
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(stream => {
-            video.srcObject = stream;
-            video.style.display = 'block';
-            video.play();
-            const captureBtn = document.createElement('button');
-            captureBtn.textContent = 'Capture Photo';
-            captureBtn.className = 'btn-outline-primary';
-            captureBtn.onclick = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                canvas.toBlob(blob => {
-                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
-                    fileInput.dispatchEvent(new Event('change'));
+                function closeModal() {
+                    document.getElementById('photoModal').style.display = 'none';
                     stopCamera();
-                }, 'image/jpeg');
-            };
-            document.body.appendChild(captureBtn);
-        })
-        .catch(err => {
-            console.error('Camera access denied:', err);
-        });
-}
+                }
 
-function stopCamera() {
-    const video = document.getElementById('cameraPreview');
-    const stream = video.srcObject;
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
-    video.style.display = 'none';
-    const captureBtn = document.querySelector('button[onclick*="capture"]');
-    if (captureBtn) captureBtn.remove();
-}
+                function openGallery() {
+                    const fileInput = document.getElementById(currentFileInputId);
+                    fileInput.removeAttribute('capture');
+                    fileInput.click();
+                    closeModal();
+                }
 
-function previewImage(input, id) {
-    const file = input.files ? input.files[0] : null;
-    const img = document.getElementById(id);
-    console.log('Previewing image for', id, 'with file:', file);
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            img.src = e.target.result;
-            img.style.display = 'block';
-            console.log('Image preview updated for', id, 'to', e.target.result);
-        };
-        reader.onerror = () => console.error('Error reading file for', id);
-        reader.readAsDataURL(file);
-    } else {
-        img.style.display = 'none';
-        console.log('No file selected for', id, 'hiding preview');
-    }
-}
+                function openCamera() {
+                    startCamera(document.getElementById(currentFileInputId));
+                    closeModal();
+                }
 
-function toggleDriverDetails() {
-    const driverDetails = document.getElementById('driverDetails');
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (!driverDetails || !driverToggle) {
-        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
-        return;
-    }
+                function startCamera(fileInput) {
+                    const video = document.getElementById('cameraPreview');
+                    const canvas = document.getElementById('cameraCanvas');
+                    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                        .then(stream => {
+                            video.srcObject = stream;
+                            video.style.display = 'block';
+                            video.play();
+                            const captureBtn = document.createElement('button');
+                            captureBtn.textContent = 'Capture Photo';
+                            captureBtn.className = 'btn-outline-primary';
+                            captureBtn.onclick = () => {
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                canvas.getContext('2d').drawImage(video, 0, 0);
+                                canvas.toBlob(blob => {
+                                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(file);
+                                    fileInput.files = dataTransfer.files;
+                                    fileInput.dispatchEvent(new Event('change'));
+                                    stopCamera();
+                                }, 'image/jpeg');
+                            };
+                            document.body.appendChild(captureBtn);
+                        })
+                        .catch(err => {
+                            console.error('Camera access denied:', err);
+                        });
+                }
 
-    const isHidden = !driverToggle.checked;
-    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
-    driverDetails.classList.toggle('hidden', isHidden);
+                function stopCamera() {
+                    const video = document.getElementById('cameraPreview');
+                    const stream = video.srcObject;
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                    video.style.display = 'none';
+                    const captureBtn = document.querySelector('button[onclick*="capture"]');
+                    if (captureBtn) captureBtn.remove();
+                }
 
-    driverDetails.style.display = isHidden ? 'none' : 'grid';
-    void driverDetails.offsetHeight;
+                function previewImage(input, id) {
+                    const file = input.files ? input.files[0] : null;
+                    const img = document.getElementById(id);
+                    console.log('Previewing image for', id, 'with file:', file);
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            img.src = e.target.result;
+                            img.style.display = 'block';
+                            console.log('Image preview updated for', id, 'to', e.target.result);
+                        };
+                        reader.onerror = () => console.error('Error reading file for', id);
+                        reader.readAsDataURL(file);
+                    } else {
+                        img.style.display = 'none';
+                        console.log('No file selected for', id, 'hiding preview');
+                    }
+                }
 
-    if (driverToggle.checked) {
-        console.log('Showing driver details');
-        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
-        if (visitor) {
-            document.getElementById('edit-drivername').value = visitor.drivername || '';
-            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
-            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
-            const driverPreview = document.getElementById('driverPreview');
-            if (visitor.driverphoto) {
-                const driverPhotoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-                driverPreview.src = '';
-                driverPreview.src = driverPhotoUrl;
-                driverPreview.style.display = 'block';
-                console.log('Driver photo URL set to:', driverPhotoUrl);
-            } else {
-                driverPreview.src = '';
-                driverPreview.style.display = 'none';
-                console.log('No driver photo available for visitor');
-            }
-        }
-    } else {
-        console.log('Hiding driver details');
-        document.getElementById('edit-drivername').value = '';
-        document.getElementById('edit-drivermobile').value = '';
-        document.getElementById('edit-drivernationalid').value = '';
-        document.getElementById('driverPreview').style.display = 'none';
-    }
-    console.log('Driver details state after toggle:', {
-        className: driverDetails.className,
-        style: driverDetails.style.display,
-        offsetHeight: driverDetails.offsetHeight
-    });
-}
+                function toggleDriverDetails() {
+                    const driverDetails = document.getElementById('driverDetails');
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (!driverDetails || !driverToggle) {
+                        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
+                        return;
+                    }
 
-function setButtonVisibility(visitorId, state) {
-    const buttons = ['approveBtn', 'disapproveBtn', 'inProgressBtn', 'completeBtn', 'exitBtn'];
-    buttons.forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            btn.style.display = 'none';
-        }
-    });
+                    const isHidden = !driverToggle.checked;
+                    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
+                    driverDetails.classList.toggle('hidden', isHidden);
 
-    const updateBtn = document.getElementById('updateBtn');
-    if (updateBtn) {
-        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
-    }
+                    driverDetails.style.display = isHidden ? 'none' : 'grid';
+                    void driverDetails.offsetHeight;
 
-    if (state === 'approve') {
-        document.getElementById('approveBtn').style.display = 'inline-block';
-        document.getElementById('disapproveBtn').style.display = 'inline-block';
-    } else if (state === 'inProgress') {
-        document.getElementById('inProgressBtn').style.display = 'inline-block';
-    } else if (state === 'complete') {
-        document.getElementById('completeBtn').style.display = 'inline-block';
-    } else if (state === 'exit') {
-        document.getElementById('exitBtn').style.display = 'inline-block';
-    }
+                    if (driverToggle.checked) {
+                        console.log('Showing driver details');
+                        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
+                        if (visitor) {
+                            document.getElementById('edit-drivername').value = visitor.drivername || '';
+                            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
+                            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
+                            const driverPreview = document.getElementById('driverPreview');
+                            if (visitor.driverphoto) {
+                                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                                driverPreview.src = '';
+                                driverPreview.src = driverPhotoUrl;
+                                driverPreview.style.display = 'block';
+                                console.log('Driver photo URL set to:', driverPhotoUrl);
+                            } else {
+                                driverPreview.src = '';
+                                driverPreview.style.display = 'none';
+                                console.log('No driver photo available for visitor');
+                            }
+                        }
+                    } else {
+                        console.log('Hiding driver details');
+                        document.getElementById('edit-drivername').value = '';
+                        document.getElementById('edit-drivermobile').value = '';
+                        document.getElementById('edit-drivernationalid').value = '';
+                        document.getElementById('driverPreview').style.display = 'none';
+                    }
+                    console.log('Driver details state after toggle:', {
+                        className: driverDetails.className,
+                        style: driverDetails.style.display,
+                        offsetHeight: driverDetails.offsetHeight
+                    });
+                }
 
-    sessionStorage.setItem(`buttonState_${visitorId}`, state);
-}
+                function setButtonVisibility(visitorId, state) {
+                    const buttons = ['approveBtn', 'disapproveBtn', 'inProgressBtn', 'completeBtn', 'exitBtn'];
+                    buttons.forEach(btnId => {
+                        const btn = document.getElementById(btnId);
+                        if (btn) {
+                            btn.style.display = 'none';
+                        }
+                    });
 
-function populateTable() {
-    const tableBody = document.getElementById('visitorTableBody');
-    if (!tableBody) {
-        console.error('Table body not found');
-        return;
-    }
-    tableBody.innerHTML = '';
+                    const updateBtn = document.getElementById('updateBtn');
+                    if (updateBtn) {
+                        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
+                    }
 
-    const filteredVisitors = visitors.filter(
-        visitor =>
-            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.contactnumber?.includes(searchQuery) ||
-            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+                    if (state === 'approve') {
+                        document.getElementById('approveBtn').style.display = 'inline-block';
+                        document.getElementById('disapproveBtn').style.display = 'inline-block';
+                    } else if (state === 'inProgress') {
+                        document.getElementById('inProgressBtn').style.display = 'inline-block';
+                    } else if (state === 'complete') {
+                        document.getElementById('completeBtn').style.display = 'inline-block';
+                    } else if (state === 'exit') {
+                        document.getElementById('exitBtn').style.display = 'inline-block';
+                    }
 
-    const start = (currentPage - 1) * entriesPerPage;
-    const end = start + entriesPerPage;
-    const paginatedVisitors = filteredVisitors.slice(start, end);
+                    sessionStorage.setItem(`buttonState_${visitorId}`, state);
+                }
 
-    if (paginatedVisitors.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
-    } else {
-        paginatedVisitors.forEach(visitor => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+                function populateTable() {
+                    const tableBody = document.getElementById('visitorTableBody');
+                    if (!tableBody) {
+                        console.error('Table body not found');
+                        return;
+                    }
+                    tableBody.innerHTML = '';
+
+                    const filteredVisitors = visitors.filter(
+                        visitor =>
+                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.contactnumber?.includes(searchQuery) ||
+                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+
+                    const start = (currentPage - 1) * entriesPerPage;
+                    const end = start + entriesPerPage;
+                    const paginatedVisitors = filteredVisitors.slice(start, end);
+
+                    if (paginatedVisitors.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
+                    } else {
+                        paginatedVisitors.forEach(visitor => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
                 <td>${visitor.id}</td>
                 <td>${visitor.firstname || ''}</td>
                 <td>${visitor.lastname || ''}</td>
@@ -3614,565 +3684,565 @@ function populateTable() {
                     </div>
                 </td>
             `;
-            tableBody.appendChild(row);
-        });
-    }
+                            tableBody.appendChild(row);
+                        });
+                    }
 
-    const totalEntries = filteredVisitors.length;
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
-    const showingStart = totalEntries === 0 ? 0 : start + 1;
-    const showingEnd = Math.min(end, totalEntries);
-    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
+                    const totalEntries = filteredVisitors.length;
+                    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+                    const showingStart = totalEntries === 0 ? 0 : start + 1;
+                    const showingEnd = Math.min(end, totalEntries);
+                    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
 
-    const prevButton = document.getElementById('prevPage');
-    const nextButton = document.getElementById('nextPage');
-    const paginationDiv = document.querySelector('.pagination');
-    if (totalEntries > entriesPerPage) {
-        paginationDiv.style.display = 'flex';
-        prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
-    } else {
-        paginationDiv.style.display = 'none';
-    }
-}
+                    const prevButton = document.getElementById('prevPage');
+                    const nextButton = document.getElementById('nextPage');
+                    const paginationDiv = document.querySelector('.pagination');
+                    if (totalEntries > entriesPerPage) {
+                        paginationDiv.style.display = 'flex';
+                        prevButton.disabled = currentPage === 1;
+                        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
+                    } else {
+                        paginationDiv.style.display = 'none';
+                    }
+                }
 
-function previousPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        populateTable();
-    }
-}
+                function previousPage() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        populateTable();
+                    }
+                }
 
-function nextPage() {
-    const filteredVisitors = visitors.filter(
-        visitor =>
-            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.contactnumber?.includes(searchQuery) ||
-            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
-    if (currentPage < totalPages) {
-        currentPage++;
-        populateTable();
-    }
-}
+                function nextPage() {
+                    const filteredVisitors = visitors.filter(
+                        visitor =>
+                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.contactnumber?.includes(searchQuery) ||
+                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        populateTable();
+                    }
+                }
 
-function openEditModal(id) {
-    const visitor = visitors.find(v => v.id == id);
-    if (!visitor) {
-        console.error('Visitor not found for id:', id);
-        return;
-    }
+                function openEditModal(id) {
+                    const visitor = visitors.find(v => v.id == id);
+                    if (!visitor) {
+                        console.error('Visitor not found for id:', id);
+                        return;
+                    }
 
-    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
+                    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
 
-    const fields = [
-        'edit-id', 'edit-firstname', 'edit-lastname', 'edit-contactnumber', 'edit-nationalid',
-        'edit-gender', 'edit-email', 'edit-date', 'edit-time', 'edit-visit',
-        'edit-personname', 'edit-department', 'edit-durationUnit', 'edit-durationtime',
-        'edit-visitortype', 'edit-vehicletype', 'edit-vehiclenumber', 'edit-notes',
-        'edit-drivername', 'edit-drivermobile', 'edit-drivernationalid'
-    ];
-    fields.forEach(fieldId => {
-        const element = document.getElementById(fieldId);
-        if (!element) {
-            console.error(`Element not found for ID: ${fieldId}`);
-            return;
-        }
-        const value = visitor[fieldId.replace('edit-', '')] || visitor[fieldId.replace('edit-', '').toLowerCase()] || '';
-        if (element.type === 'checkbox') {
-            element.checked = !!value;
-        } else if (element.type === 'select-one') {
-            element.value = value;
-        } else {
-            element.value = value;
-        }
-    });
+                    const fields = [
+                        'edit-id', 'edit-firstname', 'edit-lastname', 'edit-contactnumber', 'edit-nationalid',
+                        'edit-gender', 'edit-email', 'edit-date', 'edit-time', 'edit-visit',
+                        'edit-personname', 'edit-department', 'edit-durationUnit', 'edit-durationtime',
+                        'edit-visitortype', 'edit-vehicletype', 'edit-vehiclenumber', 'edit-notes',
+                        'edit-drivername', 'edit-drivermobile', 'edit-drivernationalid'
+                    ];
+                    fields.forEach(fieldId => {
+                        const element = document.getElementById(fieldId);
+                        if (!element) {
+                            console.error(`Element not found for ID: ${fieldId}`);
+                            return;
+                        }
+                        const value = visitor[fieldId.replace('edit-', '')] || visitor[fieldId.replace('edit-', '').toLowerCase()] || '';
+                        if (element.type === 'checkbox') {
+                            element.checked = !!value;
+                        } else if (element.type === 'select-one') {
+                            element.value = value;
+                        } else {
+                            element.value = value;
+                        }
+                    });
 
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (driverToggle) {
-        driverToggle.checked = !!visitor.drivername;
-        toggleDriverDetails();
-    }
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (driverToggle) {
+                        driverToggle.checked = !!visitor.drivername;
+                        toggleDriverDetails();
+                    }
 
-    const editDateInput = document.getElementById('edit-date');
-    if (editDateInput && editDateInput.tagName.toLowerCase() === 'input') {
-        if (visitor.date && visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
-            const [day, month, year] = visitor.date.split('-');
-            editDateInput.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        } else {
-            editDateInput.value = '';
-        }
-    } else {
-        console.error('Date input element not found or invalid');
-    }
+                    const editDateInput = document.getElementById('edit-date');
+                    if (editDateInput && editDateInput.tagName.toLowerCase() === 'input') {
+                        if (visitor.date && visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                            const [day, month, year] = visitor.date.split('-');
+                            editDateInput.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                        } else {
+                            editDateInput.value = '';
+                        }
+                    } else {
+                        console.error('Date input element not found or invalid');
+                    }
 
-    const mainPreview = document.getElementById('mainPreview');
-    if (visitor.photo) {
-        const photoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
-        console.log('Setting mainPreview URL:', photoUrl);
-        mainPreview.src = '';
-        mainPreview.src = photoUrl;
-        mainPreview.style.display = 'block';
-        const imgTest = new Image();
-        imgTest.src = photoUrl;
-        imgTest.onload = () => {
-            console.log('Main photo loaded successfully:', photoUrl);
-            mainPreview.style.display = 'block';
-        };
-        imgTest.onerror = () => {
-            console.error('Main photo failed to load at:', photoUrl);
-            mainPreview.src = '';
-            mainPreview.style.display = 'none';
-        };
-    } else {
-        console.log('No main photo available for visitor:', visitor.id);
-        mainPreview.src = '';
-        mainPreview.style.display = 'none';
-    }
+                    const mainPreview = document.getElementById('mainPreview');
+                    if (visitor.photo) {
+                        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+                        console.log('Setting mainPreview URL:', photoUrl);
+                        mainPreview.src = '';
+                        mainPreview.src = photoUrl;
+                        mainPreview.style.display = 'block';
+                        const imgTest = new Image();
+                        imgTest.src = photoUrl;
+                        imgTest.onload = () => {
+                            console.log('Main photo loaded successfully:', photoUrl);
+                            mainPreview.style.display = 'block';
+                        };
+                        imgTest.onerror = () => {
+                            console.error('Main photo failed to load at:', photoUrl);
+                            mainPreview.src = '';
+                            mainPreview.style.display = 'none';
+                        };
+                    } else {
+                        console.log('No main photo available for visitor:', visitor.id);
+                        mainPreview.src = '';
+                        mainPreview.style.display = 'none';
+                    }
 
-    const driverPreview = document.getElementById('driverPreview');
-    if (visitor.driverphoto) {
-        const driverPhotoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-        console.log('Setting driverPreview URL:', driverPhotoUrl);
-        driverPreview.src = '';
-        driverPreview.src = driverPhotoUrl;
-        driverPreview.style.display = 'block';
-        const driverImgTest = new Image();
-        driverImgTest.src = driverPhotoUrl;
-        driverImgTest.onload = () => {
-            console.log('Driver photo loaded successfully:', driverPhotoUrl);
-            driverPreview.style.display = 'block';
-        };
-        driverImgTest.onerror = () => {
-            console.error('Driver photo failed to load at:', driverPhotoUrl);
-            driverPreview.src = '';
-            driverPreview.style.display = 'none';
-        };
-    } else {
-        console.log('No driver photo available for visitor:', visitor.id);
-        driverPreview.src = '';
-        driverPreview.style.display = 'none';
-    }
+                    const driverPreview = document.getElementById('driverPreview');
+                    if (visitor.driverphoto) {
+                        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                        console.log('Setting driverPreview URL:', driverPhotoUrl);
+                        driverPreview.src = '';
+                        driverPreview.src = driverPhotoUrl;
+                        driverPreview.style.display = 'block';
+                        const driverImgTest = new Image();
+                        driverImgTest.src = driverPhotoUrl;
+                        driverImgTest.onload = () => {
+                            console.log('Driver photo loaded successfully:', driverPhotoUrl);
+                            driverPreview.style.display = 'block';
+                        };
+                        driverImgTest.onerror = () => {
+                            console.error('Driver photo failed to load at:', driverPhotoUrl);
+                            driverPreview.src = '';
+                            driverPreview.style.display = 'none';
+                        };
+                    } else {
+                        console.log('No driver photo available for visitor:', visitor.id);
+                        driverPreview.src = '';
+                        driverPreview.style.display = 'none';
+                    }
 
-    // Display current status
-    const statusDisplay = document.getElementById('statusDisplay');
-    if (statusDisplay) {
-        if (visitor.isApproved) {
-            statusDisplay.textContent = 'Status: Approved';
-        } else if (visitor.isApproved === false) {
-            statusDisplay.textContent = 'Status: Disapproved';
-        } else if (visitor.inprogress) {
-            statusDisplay.textContent = 'Status: In Progress';
-        } else if (visitor.complete) {
-            statusDisplay.textContent = 'Status: Complete';
-        } else if (visitor.exit) {
-            statusDisplay.textContent = 'Status: Exited';
-        } else {
-            statusDisplay.textContent = 'Status: Pending';
-        }
-    }
+                    // Display current status
+                    const statusDisplay = document.getElementById('statusDisplay');
+                    if (statusDisplay) {
+                        if (visitor.isApproved) {
+                            statusDisplay.textContent = 'Status: Approved';
+                        } else if (visitor.isApproved === false) {
+                            statusDisplay.textContent = 'Status: Disapproved';
+                        } else if (visitor.inprogress) {
+                            statusDisplay.textContent = 'Status: In Progress';
+                        } else if (visitor.complete) {
+                            statusDisplay.textContent = 'Status: Complete';
+                        } else if (visitor.exit) {
+                            statusDisplay.textContent = 'Status: Exited';
+                        } else {
+                            statusDisplay.textContent = 'Status: Pending';
+                        }
+                    }
 
-    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
-    setButtonVisibility(id, buttonState);
+                    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
+                    setButtonVisibility(id, buttonState);
 
-    document.getElementById('editModal').style.display = 'flex';
-    console.log('Edit modal opened successfully');
-}
+                    document.getElementById('editModal').style.display = 'flex';
+                    console.log('Edit modal opened successfully');
+                }
 
-function closeEditModal() {
-    console.log('Closing edit modal');
-    const editModal = document.getElementById('editModal');
-    const editForm = document.getElementById('editForm');
-    const mainPreview = document.getElementById('mainPreview');
-    const driverPreview = document.getElementById('driverPreview');
+                function closeEditModal() {
+                    console.log('Closing edit modal');
+                    const editModal = document.getElementById('editModal');
+                    const editForm = document.getElementById('editForm');
+                    const mainPreview = document.getElementById('mainPreview');
+                    const driverPreview = document.getElementById('driverPreview');
 
-    if (editModal) {
-        editModal.style.display = 'none';
-    }
-    if (editForm) {
-        editForm.reset();
-    }
-    if (mainPreview) {
-        mainPreview.src = '';
-        mainPreview.style.display = 'none';
-        console.log('Main preview reset');
-    }
-    if (driverPreview) {
-        driverPreview.src = '';
-        driverPreview.style.display = 'none';
-        console.log('Driver preview reset');
-    }
-    clearErrors();
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (driverToggle) {
-        driverToggle.checked = false;
-        toggleDriverDetails();
-    }
-}
+                    if (editModal) {
+                        editModal.style.display = 'none';
+                    }
+                    if (editForm) {
+                        editForm.reset();
+                    }
+                    if (mainPreview) {
+                        mainPreview.src = '';
+                        mainPreview.style.display = 'none';
+                        console.log('Main preview reset');
+                    }
+                    if (driverPreview) {
+                        driverPreview.src = '';
+                        driverPreview.style.display = 'none';
+                        console.log('Driver preview reset');
+                    }
+                    clearErrors();
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (driverToggle) {
+                        driverToggle.checked = false;
+                        toggleDriverDetails();
+                    }
+                }
 
-function clearErrors() {
-    document.querySelectorAll('.error').forEach(error => error.textContent = '');
-}
+                function clearErrors() {
+                    document.querySelectorAll('.error').forEach(error => error.textContent = '');
+                }
 
-function validateForm(visitor) {
-    let isValid = true;
-    clearErrors();
-    console.log('Validating form:', visitor);
+                function validateForm(visitor) {
+                    let isValid = true;
+                    clearErrors();
+                    console.log('Validating form:', visitor);
 
-    const requiredFields = [
-        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
-        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
-        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
-        { key: 'contactnumber', error: 'Contact number is required' },
-        { key: 'nationalid', error: 'National ID is required' },
-        { key: 'gender', error: 'Gender is required' },
-        { key: 'date', error: 'Date is required' },
-        { key: 'time', error: 'Time is required' },
-        { key: 'visit', error: 'Purpose of visit is required' },
-        { key: 'personname', error: 'Person name is required' },
-        { key: 'department', error: 'Department is required' },
-        { key: 'durationUnit', values: ['Hours', 'Minutes', 'Days'], error: 'Duration unit is required (Hours, Minutes, Days)' },
-        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
-        { key: 'visitortype', error: 'Visitor type is required' },
-    ];
+                    const requiredFields = [
+                        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
+                        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
+                        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
+                        { key: 'contactnumber', error: 'Contact number is required' },
+                        { key: 'nationalid', error: 'National ID is required' },
+                        { key: 'gender', error: 'Gender is required' },
+                        { key: 'date', error: 'Date is required' },
+                        { key: 'time', error: 'Time is required' },
+                        { key: 'visit', error: 'Purpose of visit is required' },
+                        { key: 'personname', error: 'Person name is required' },
+                        { key: 'department', error: 'Department is required' },
+                        { key: 'durationUnit', values: ['Hours', 'Minutes', 'Days'], error: 'Duration unit is required (Hours, Minutes, Days)' },
+                        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
+                        { key: 'visitortype', error: 'Visitor type is required' },
+                    ];
 
-    requiredFields.forEach(field => {
-        const value = visitor[field.key];
-        if (!value || value === '') {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        } else if (field.regex && !field.regex.test(value)) {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        } else if (field.values && !field.values.includes(value)) {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        } else if (field.check && !field.check(value)) {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        }
-    });
+                    requiredFields.forEach(field => {
+                        const value = visitor[field.key];
+                        if (!value || value === '') {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        } else if (field.regex && !field.regex.test(value)) {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        } else if (field.values && !field.values.includes(value)) {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        } else if (field.check && !field.check(value)) {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        }
+                    });
 
-    if (visitor.date) {
-        let formattedDate = visitor.date;
-        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
-            const [day, month, year] = visitor.date.split('-');
-            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        }
-        const today = new Date().toISOString().split('T')[0];
-        if (formattedDate < today) {
-            document.getElementById('error-date').textContent = 'Date cannot be in the past';
-            isValid = false;
-        }
-    }
+                    if (visitor.date) {
+                        let formattedDate = visitor.date;
+                        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                            const [day, month, year] = visitor.date.split('-');
+                            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                        }
+                        const today = new Date().toISOString().split('T')[0];
+                        if (formattedDate < today) {
+                            document.getElementById('error-date').textContent = 'Date cannot be in the past';
+                            isValid = false;
+                        }
+                    }
 
-    if (visitor.driverToggle) {
-        const driverFields = [
-            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
-            { key: 'drivermobile', error: 'Driver mobile is required' },
-            { key: 'drivernationalid', error: 'Driver national ID is required' },
-        ];
-        driverFields.forEach(field => {
-            const value = visitor[field.key];
-            if (!value || value === '') {
-                document.getElementById(`error-${field.key}`).textContent = field.error;
-                isValid = false;
-            } else if (field.regex && !field.regex.test(value)) {
-                document.getElementById(`error-${field.key}`).textContent = field.error;
-                isValid = false;
-            }
-        });
-    }
+                    if (visitor.driverToggle) {
+                        const driverFields = [
+                            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
+                            { key: 'drivermobile', error: 'Driver mobile is required' },
+                            { key: 'drivernationalid', error: 'Driver national ID is required' },
+                        ];
+                        driverFields.forEach(field => {
+                            const value = visitor[field.key];
+                            if (!value || value === '') {
+                                document.getElementById(`error-${field.key}`).textContent = field.error;
+                                isValid = false;
+                            } else if (field.regex && !field.regex.test(value)) {
+                                document.getElementById(`error-${field.key}`).textContent = field.error;
+                                isValid = false;
+                            }
+                        });
+                    }
 
-    if (!isValid) {
-        console.log('Validation failed for:', visitor);
-        showMessage('Please fix the errors in the form', 'error');
-    }
-    return isValid;
-}
+                    if (!isValid) {
+                        console.log('Validation failed for:', visitor);
+                        showMessage('Please fix the errors in the form', 'error');
+                    }
+                    return isValid;
+                }
 
-async function updateVisitorStatus(visitorId, status) {
-    if (!visitorId) {
-        showMessage('No visitor ID provided', 'error');
-        return;
-    }
+                async function updateVisitorStatus(visitorId, status) {
+                    if (!visitorId) {
+                        showMessage('No visitor ID provided', 'error');
+                        return;
+                    }
 
-    try {
-        const response = await fetch(`http://192.168.3.75:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+                    try {
+                        const response = await fetch(`http://192.168.3.73:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
-        }
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
+                        }
 
-        const updatedVisitor = await response.json();
-        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | inprogress: ${updatedVisitor.inprogress} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
+                        const updatedVisitor = await response.json();
+                        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | inprogress: ${updatedVisitor.inprogress} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
 
-        // Update local visitors array
-        const index = visitors.findIndex(v => v.id == visitorId);
-        if (index !== -1) {
-            visitors[index] = {
-                ...visitors[index],
-                ...updatedVisitor,
-                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
-            };
-            localStorage.setItem('visitors', JSON.stringify(visitors));
-        }
+                        // Update local visitors array
+                        const index = visitors.findIndex(v => v.id == visitorId);
+                        if (index !== -1) {
+                            visitors[index] = {
+                                ...visitors[index],
+                                ...updatedVisitor,
+                                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
+                            };
+                            localStorage.setItem('visitors', JSON.stringify(visitors));
+                        }
 
-        showMessage(`Visitor status updated to ${status}`, 'success');
-    } catch (error) {
-        console.error('Error updating status:', error);
-        showMessage(`Failed to update status: ${error.message}`, 'error');
-    }
-}
+                        showMessage(`Visitor status updated to ${status}`, 'success');
+                    } catch (error) {
+                        console.error('Error updating status:', error);
+                        showMessage(`Failed to update status: ${error.message}`, 'error');
+                    }
+                }
 
-document.getElementById('editForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    clearErrors();
-    console.log('Edit form submitted');
- 
-    const formData = new FormData(this);
-    const updatedVisitor = {
-        id: formData.get('id'),
-        firstname: formData.get('firstname')?.trim(),
-        lastname: formData.get('lastname')?.trim(),
-        contactnumber: formData.get('contactnumber')?.trim(),
-        nationalid: formData.get('nationalid')?.trim(),
-        gender: formData.get('gender'),
-        email: formData.get('email')?.trim(),
-        date: formData.get('date'),
-        time: formData.get('time'),
-        visit: formData.get('visit')?.trim(),
-        personname: formData.get('personname')?.trim(),
-        department: formData.get('department')?.trim(),
-        durationUnit: formData.get('durationUnit'),
-        durationtime: formData.get('durationtime'),
-        visitortype: formData.get('visitortype'),
-        vehicletype: formData.get('vehicletype')?.trim(),
-        vehiclenumber: formData.get('vehiclenumber')?.trim(),
-        drivername: formData.get('drivername')?.trim(),
-        drivermobile: formData.get('drivermobile')?.trim(),
-        drivernationalid: formData.get('drivernationalid')?.trim(),
-        notes: formData.get('notes')?.trim(),
-        driverToggle: document.getElementById('edit-driverToggle').checked,
-        photo: formData.get('photo'),
-        driverphoto: formData.get('driverphoto'),
-    };
- 
-    if (validateForm(updatedVisitor)) {
-        const submitBtn = document.getElementById('updateBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
+                document.getElementById('editForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    clearErrors();
+                    console.log('Edit form submitted');
+
+                    const formData = new FormData(this);
+                    const updatedVisitor = {
+                        id: formData.get('id'),
+                        firstname: formData.get('firstname')?.trim(),
+                        lastname: formData.get('lastname')?.trim(),
+                        contactnumber: formData.get('contactnumber')?.trim(),
+                        nationalid: formData.get('nationalid')?.trim(),
+                        gender: formData.get('gender'),
+                        email: formData.get('email')?.trim(),
+                        date: formData.get('date'),
+                        time: formData.get('time'),
+                        visit: formData.get('visit')?.trim(),
+                        personname: formData.get('personname')?.trim(),
+                        department: formData.get('department')?.trim(),
+                        durationUnit: formData.get('durationUnit'),
+                        durationtime: formData.get('durationtime'),
+                        visitortype: formData.get('visitortype'),
+                        vehicletype: formData.get('vehicletype')?.trim(),
+                        vehiclenumber: formData.get('vehiclenumber')?.trim(),
+                        drivername: formData.get('drivername')?.trim(),
+                        drivermobile: formData.get('drivermobile')?.trim(),
+                        drivernationalid: formData.get('drivernationalid')?.trim(),
+                        notes: formData.get('notes')?.trim(),
+                        driverToggle: document.getElementById('edit-driverToggle').checked,
+                        photo: formData.get('photo'),
+                        driverphoto: formData.get('driverphoto'),
+                    };
+
+                    if (validateForm(updatedVisitor)) {
+                        const submitBtn = document.getElementById('updateBtn');
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `
             <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
             </svg>
             Updating...
         `;
- 
-        // Prepare FormData for the API
-        const apiFormData = new FormData();
-        Object.keys(updatedVisitor).forEach(key => {
-            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
-                apiFormData.append(key, updatedVisitor[key]);
-            }
-        });
-        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
- 
-        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
-        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
-        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
- 
-        if (hasPhoto) {
-            apiFormData.append('photoFile', updatedVisitor.photo);
-        } else if (existingVisitor?.photo) {
-            apiFormData.append('photo', existingVisitor.photo);
-        }
- 
-        if (hasDriverPhoto) {
-            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
-        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
-            apiFormData.append('driverphoto', existingVisitor.driverphoto);
-        }
- 
-        // Log FormData for debugging
-        console.log('Sending PATCH with FormData for id:', updatedVisitor.id);
-        for (const [key, value] of apiFormData.entries()) {
-            console.log(`${key}:`, value instanceof File ? value.name : value);
-        }
- 
-        // Initiate PATCH request and redirect immediately
-        fetch(`http://192.168.3.75:3001/visitors/${updatedVisitor.id}`, {
-            method: 'PATCH',
-            body: apiFormData,
-        })
-            .then(async response => {
-                const responseData = await response.json();
-                console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
- 
-                if (!response.ok) {
-                    throw new Error(responseData.message || `HTTP ${response.status}`);
-                }
- 
-                // Update local visitors array
-                const index = visitors.findIndex(v => v.id == updatedVisitor.id);
-                if (index !== -1) {
-                    visitors[index] = {
-                        ...visitors[index],
-                        ...responseData,
-                        date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
-                        photo: responseData.photo || visitors[index].photo || null,
-                        driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
-                    };
-                    console.log('Updated visitor in array:', JSON.stringify(visitors[index], null, 2));
-                    localStorage.setItem('visitors', JSON.stringify(visitors));
-                } else {
-                    console.warn('Visitor not found in array for id:', updatedVisitor.id);
-                }
- 
-                // Update UI after successful update (optional, since user is redirected)
-                await fetchVisitors();
-                showMessage('Visitor updated successfully', 'success');
-            })
-            .catch(error => {
-                console.error('Failed to update visitor:', error.message);
-                showMessage(`Failed to update visitor: ${error.message}`, 'error');
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Update';
-            });
- 
-        // Redirect immediately after initiating the request
-        closeEditModal();
-    }
-});
 
-async function deleteVisitor(id) {
-    const swalWithBootstrapButtons = window.Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-secondary',
-            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-        },
-        buttonsStyling: false,
-    });
+                        // Prepare FormData for the API
+                        const apiFormData = new FormData();
+                        Object.keys(updatedVisitor).forEach(key => {
+                            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
+                                apiFormData.append(key, updatedVisitor[key]);
+                            }
+                        });
+                        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
 
-    swalWithBootstrapButtons
-        .fire({
-            title: 'Are you sure?',
-            text: 'This action cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true,
-            padding: '2em',
-        })
-        .then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`http://192.168.3.75:3001/visitors/${id}`, {
-                        method: 'DELETE',
+                        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
+                        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
+                        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
+
+                        if (hasPhoto) {
+                            apiFormData.append('photoFile', updatedVisitor.photo);
+                        } else if (existingVisitor?.photo) {
+                            apiFormData.append('photo', existingVisitor.photo);
+                        }
+
+                        if (hasDriverPhoto) {
+                            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
+                        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
+                            apiFormData.append('driverphoto', existingVisitor.driverphoto);
+                        }
+
+                        // Log FormData for debugging
+                        console.log('Sending PATCH with FormData for id:', updatedVisitor.id);
+                        for (const [key, value] of apiFormData.entries()) {
+                            console.log(`${key}:`, value instanceof File ? value.name : value);
+                        }
+
+                        // Initiate PATCH request and redirect immediately
+                        fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
+                            method: 'PATCH',
+                            body: apiFormData,
+                        })
+                            .then(async response => {
+                                const responseData = await response.json();
+                                console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
+
+                                if (!response.ok) {
+                                    throw new Error(responseData.message || `HTTP ${response.status}`);
+                                }
+
+                                // Update local visitors array
+                                const index = visitors.findIndex(v => v.id == updatedVisitor.id);
+                                if (index !== -1) {
+                                    visitors[index] = {
+                                        ...visitors[index],
+                                        ...responseData,
+                                        date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
+                                        photo: responseData.photo || visitors[index].photo || null,
+                                        driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
+                                    };
+                                    console.log('Updated visitor in array:', JSON.stringify(visitors[index], null, 2));
+                                    localStorage.setItem('visitors', JSON.stringify(visitors));
+                                } else {
+                                    console.warn('Visitor not found in array for id:', updatedVisitor.id);
+                                }
+
+                                // Update UI after successful update (optional, since user is redirected)
+                                await fetchVisitors();
+                                showMessage('Visitor updated successfully', 'success');
+                            })
+                            .catch(error => {
+                                console.error('Failed to update visitor:', error.message);
+                                showMessage(`Failed to update visitor: ${error.message}`, 'error');
+                            })
+                            .finally(() => {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = 'Update';
+                            });
+
+                        // Redirect immediately after initiating the request
+                        closeEditModal();
+                    }
+                });
+
+                async function deleteVisitor(id) {
+                    const swalWithBootstrapButtons = window.Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-secondary',
+                            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+                        },
+                        buttonsStyling: false,
                     });
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || `HTTP ${response.status}`);
-                    }
+                    swalWithBootstrapButtons
+                        .fire({
+                            title: 'Are you sure?',
+                            text: 'This action cannot be undone.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, delete it!',
+                            cancelButtonText: 'No, cancel!',
+                            reverseButtons: true,
+                            padding: '2em',
+                        })
+                        .then(async (result) => {
+                            if (result.isConfirmed) {
+                                try {
+                                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
+                                        method: 'DELETE',
+                                    });
 
-                    visitors = visitors.filter(v => v.id != id);
-                    localStorage.setItem('visitors', JSON.stringify(visitors));
-                    populateTable();
-                    showMessage('Visitor deleted successfully', 'success');
-                } catch (error) {
-                    console.error('Failed to delete visitor:', error.message);
-                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
-                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
+                                    if (!response.ok) {
+                                        const errorData = await response.json();
+                                        throw new Error(errorData.message || `HTTP ${response.status}`);
+                                    }
+
+                                    visitors = visitors.filter(v => v.id != id);
+                                    localStorage.setItem('visitors', JSON.stringify(visitors));
+                                    populateTable();
+                                    showMessage('Visitor deleted successfully', 'success');
+                                } catch (error) {
+                                    console.error('Failed to delete visitor:', error.message);
+                                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
+                                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
+                                }
+                            }
+                        });
                 }
-            }
-        });
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const selector = document.querySelector('.dataTable-selector');
-    if (selector) selector.id = 'entriesPerPage';
-    const input = document.querySelector('.dataTable-input');
-    if (input) input.id = 'searchInput';
+                document.addEventListener('DOMContentLoaded', () => {
+                    const selector = document.querySelector('.dataTable-selector');
+                    if (selector) selector.id = 'entriesPerPage';
+                    const input = document.querySelector('.dataTable-input');
+                    if (input) input.id = 'searchInput';
 
-    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
-        entriesPerPage = parseInt(this.value);
-        currentPage = 1;
-        populateTable();
-    });
+                    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
+                        entriesPerPage = parseInt(this.value);
+                        currentPage = 1;
+                        populateTable();
+                    });
 
-    document.getElementById('searchInput')?.addEventListener('input', function () {
-        searchQuery = this.value;
-        currentPage = 1;
-        populateTable();
-    });
+                    document.getElementById('searchInput')?.addEventListener('input', function () {
+                        searchQuery = this.value;
+                        currentPage = 1;
+                        populateTable();
+                    });
 
-    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
-        previewImage(e.target, 'mainPreview');
-    });
-    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
-        previewImage(e.target, 'driverPreview');
-    });
+                    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
+                        previewImage(e.target, 'mainPreview');
+                    });
+                    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
+                        previewImage(e.target, 'driverPreview');
+                    });
 
-    document.getElementById('approveBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'approve');
-        setButtonVisibility(visitorId, 'inProgress');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('approveBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'approve');
+                        setButtonVisibility(visitorId, 'inProgress');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'disapprove');
-        setButtonVisibility(visitorId, 'exit');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'disapprove');
+                        setButtonVisibility(visitorId, 'exit');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('inProgressBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'inprogress');
-        setButtonVisibility(visitorId, 'complete');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('inProgressBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'inprogress');
+                        setButtonVisibility(visitorId, 'complete');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('completeBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'complete');
-        setButtonVisibility(visitorId, 'exit');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('completeBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'complete');
+                        setButtonVisibility(visitorId, 'exit');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('exitBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'exit');
-        setButtonVisibility(visitorId, 'none');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('exitBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'exit');
+                        setButtonVisibility(visitorId, 'none');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    fetchVisitors();
+                    fetchVisitors();
 
-    if (sessionStorage.getItem('visitorCreated') === 'true') {
-        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
-        sessionStorage.removeItem('visitorCreated');
-    }
-});</script>
-  
+                    if (sessionStorage.getItem('visitorCreated') === 'true') {
+                        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
+                        sessionStorage.removeItem('visitorCreated');
+                    }
+                });</script>
+
 
 
 

@@ -3652,7 +3652,7 @@
             appointmentsList: [],
             async fetchAppointments() {
               try {
-                const response = await fetch('http://192.168.3.75:3001/appointment');
+                const response = await fetch('http://192.168.3.73:3001/appointment');
                 if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
                 }

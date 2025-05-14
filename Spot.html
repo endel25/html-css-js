@@ -298,6 +298,51 @@
   #personname-suggestions .suggestion-item:hover {
     background-color: #f3f4f6;
   }
+
+        .photo-preview:hover {
+            transform: scale(4.5);
+            /* Enlarge the image by 1.5x */
+            z-index: 10;
+            /* Ensure the image appears above other elements */
+        }
+ 
+        .photo-preview:hover {
+            transform: scale(4.5);
+            /* Enlarge the image by 1.5x */
+            z-index: 10;
+            /* Ensure the image appears above other elements */
+        }
+ 
+ 
+        /* Style the image preview */
+        .photo-preview {
+            height: 34px;
+            /* Match the button height */
+            width: auto;
+            /* Maintain aspect ratio */
+            object-fit: cover;
+            /* Ensure the image fits nicely */
+            display: none;
+            /* Hidden by default */
+            transition: transform 0.3s ease;
+            /* Smooth transition for zoom effect */
+        }
+ 
+        /* Show the image preview when a file is selected */
+        .photo-preview[src]:not([src=""]) {
+            display: inline-block;
+            /* Show the image when it has a valid src */
+        }
+ 
+        /* Zoom-out effect on hover */
+        .photo-preview:hover {
+            transform: scale(4.5);
+            /* Enlarge the image by 1.5x */
+            z-index: 10;
+            /* Ensure the image appears above other elements */
+        }
+ 
+ 
     </style>
 </head>
 
@@ -2895,7 +2940,7 @@
                                     <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs" onclick="showModal('photo')">Choose Photo</button>
                                     <span class="error text-xs text-red-500" id="error-photo"></span>
                                     <div class="mt-2">
-                                        <img id="mainPreview" class="w-24 h-16 rounded border hidden" />
+                                        <img id="mainPreview" class="photo-preview" />
                                     </div>
                                 </div>
                                 <div class="flex sm:flex-row flex-col">
@@ -3016,7 +3061,7 @@
                                         <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs" onclick="showModal('driverphoto')">Choose Photo</button>
                                         <span class="error text-xs text-red-500" id="error-driverphoto"></span>
                                         <div class="mt-2">
-                                            <img id="driverPreview" class="w-24 h-16 rounded border hidden" />
+                                            <img id="driverPreview" class="photo-preview" />
                                         </div>
                                     </div>
                                 </div>
@@ -3376,7 +3421,7 @@
                   const mainPreview = document.getElementById('mainPreview');
                   const photoInput = form.elements['photo'];
                   if (photoInput && visitor.photo !== undefined) {
-                    const photoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(
+                    const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(
                       visitor.photo
                     )}?t=${new Date().getTime()}`;
                     if (mainPreview) {
@@ -3421,7 +3466,7 @@
               
                   try {
                     const response = await fetch(
-                      `http://192.168.3.75:3001/visitors/nationalid/${encodeURIComponent(
+                      `http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(
                         trimmedNationalId
                       )}`,
                       {
@@ -3462,7 +3507,7 @@
               
                   try {
                     const response = await fetch(
-                      `http://192.168.3.75:3001/users/search?query=${encodeURIComponent(
+                      `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(
                         query
                       )}`,
                       {
@@ -3744,8 +3789,8 @@
                                               Creating...
                                           `;
                         }
-                        console.log('Sending to http://192.168.3.75:3001/visitors');
-                        const response = await fetch('http://192.168.3.75:3001/visitors', {
+                        console.log('Sending to http://192.168.3.73:3001/visitors');
+                        const response = await fetch('http://192.168.3.73:3001/visitors', {
                           method: 'POST',
                           body: formData,
                         });
@@ -4093,7 +4138,7 @@
                     const mainPreview = document.getElementById('mainPreview');
                     const photoInput = form.elements['photo'];
                     if (photoInput && visitor.photo !== undefined) {
-                        const photoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(
+                        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(
                             visitor.photo
                         )}?t=${new Date().getTime()}`;
                         if (mainPreview) {
@@ -4138,7 +4183,7 @@
                 
                     try {
                         const response = await fetch(
-                            `http://192.168.3.75:3001/visitors/nationalid/${encodeURIComponent(
+                            `http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(
                                 trimmedNationalId
                             )}`,
                             {
@@ -4179,7 +4224,7 @@
                 
                     try {
                         const response = await fetch(
-                            `http://192.168.3.75:3001/users/search?query=${encodeURIComponent(
+                            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(
                                 query
                             )}`,
                             {
@@ -4462,7 +4507,7 @@
                             }
                 
                             // Initiate API call without awaiting
-                            fetch('http://192.168.3.75:3001/visitors', {
+                            fetch('http://192.168.3.73:3001/visitors', {
                                 method: 'POST',
                                 body: formData,
                             })
