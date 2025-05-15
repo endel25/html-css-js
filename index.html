@@ -2929,7 +2929,7 @@
 
   <!-- Today's Visitor Table -->
   <div class="panel">
-    <h3 class="mb-2 text-lg"><b>Today's Visitor</b></h3>
+    <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
     <div class="overflow-x-auto">
       <div class="table-container">
         <table id="myTable" class="table-hover whitespace-nowrap w-full">
@@ -2941,17 +2941,77 @@
               <th>Allocated Time</th>
               <th>Host</th>
               <th>Purpose</th>
+              <th>National ID</th>
+              <th>Pending Approval</th>
+              <th>InCampus</th>
+              <th>Complete</th>
+              <th>Exit Approval</th>
+              <th>Action</th> <!-- New column for toggle button -->
             </tr>
           </thead>
-          <tbody x-data="appointments" x-init="fetchAppointments()">
-            <template x-for="appointment in appointmentsList" :key="appointment.id">
+          <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
+            <template x-if="appointmentsList.length === 0">
               <tr>
-                <td x-text="appointment.firstname"></td>
-                <td x-text="appointment.lastname"></td>
+                <td colspan="12" class="text-center">No visitors available</td>
+              </tr>
+            </template>
+            <template x-for="(appointment, index) in appointmentsList" :key="appointment.id">
+              <tr>
+                <td x-text="appointment.firstName"></td>
+                <td x-text="appointment.lastName"></td>
                 <td x-text="appointment.date"></td>
-                <td x-text="appointment.time"></td>
-                <td x-text="appointment.personname"></td>
-                <td x-text="appointment.visit"></td>
+                <td x-text="appointment.allocatedTime"></td>
+                <td x-text="appointment.host"></td>
+                <td x-text="appointment.purpose"></td>
+                <td x-text="appointment.nationalId"></td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="approval-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].pendingApproval"
+                    x-bind:checked="appointmentsList[index].pendingApproval"
+                    disabled
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="progress-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].inCampus"
+                    x-bind:checked="appointmentsList[index].inCampus"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="complete-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].complete"
+                    x-bind:checked="appointmentsList[index].complete"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="exit-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].exitApproval"
+                    x-bind:checked="appointmentsList[index].exitApproval"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+                <td>
+                  <button
+                    class="toggle-button"
+                    @click="toggleApproval(appointment.id, appointmentsList[index].pendingApproval)"
+                  >
+                    <span x-text="appointmentsList[index].pendingApproval ? 'Disapprove' : 'Approve'"></span>
+                  </button>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -2964,87 +3024,90 @@
 <div class="mb-5 grid grid-cols-1">
   <!-- Visitor Details Table -->
   <div class="panel">
-  <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
-  <div class="overflow-x-auto">
-    <div class="table-container">
-      <table id="myTable" class="table-hover whitespace-nowrap w-full">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date</th>
-            <th>Allocated Time</th>
-            <th>Host</th>
-            <th>Purpose</th>
-            <th>National ID</th>
-            <th>Pending Approval</th>
-            <th>InCampus</th>
-            <th>Complete</th>
-            <th>Exit Approval</th>
-          </tr>
-        </thead>
-        <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
-          <template x-if="appointmentsList.length === 0">
+    <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
+    <div class="overflow-x-auto">
+      <div class="table-container">
+        <table id="myTable" class="table-hover whitespace-nowrap w-full">
+          <thead>
             <tr>
-              <td colspan="11" class="text-center">No visitors available</td>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date</th>
+              <th>Allocated Time</th>
+              <th>Host</th>
+              <th>Purpose</th>
+              <th>National ID</th>
+              <th>Pending Approval</th>
+              <th>InCampus</th>
+              <th>Complete</th>
+              <th>Exit Approval</th>
             </tr>
-          </template>
-          <template x-for="(appointment, index) in appointmentsList" :key="appointment.id">
-            <tr>
-              <td x-text="appointment.firstName"></td>
-              <td x-text="appointment.lastName"></td>
-              <td x-text="appointment.date"></td>
-              <td x-text="appointment.allocatedTime"></td>
-              <td x-text="appointment.host"></td>
-              <td x-text="appointment.purpose"></td>
-              <td x-text="appointment.nationalId"></td>
-              <td>
-                <input
-                  type="checkbox"
-                  class="approval-checkbox"
-                  :data-id="appointment.id"
-                  x-model="appointmentsList[index].pendingApproval"
-                  x-bind:checked="appointmentsList[index].pendingApproval"
-                  disabled
-                >
-              </td>
-              <td>
-                <input
-                  type="checkbox"
-                  class="progress-checkbox"
-                  :data-id="appointment.id"
-                  x-model="appointmentsList[index].inCampus"
-                  x-bind:checked="appointmentsList[index].inCampus"
-                  @change="updateAppointment(appointmentsList[index])"
-                >
-              </td>
-              <td>
-                <input
-                  type="checkbox"
-                  class="complete-checkbox"
-                  :data-id="appointment.id"
-                  x-model="appointmentsList[index].complete"
-                  x-bind:checked="appointmentsList[index].complete"
-                  @change="updateAppointment(appointmentsList[index])"
-                >
-              </td>
-              <td>
-                <input
-                  type="checkbox"
-                  class="exit-checkbox"
-                  :data-id="appointment.id"
-                  x-model="appointmentsList[index].exitApproval"
-                  x-bind:checked="appointmentsList[index].exitApproval"
-                  @change="updateAppointment(appointmentsList[index])"
-                >
-              </td>
-            </tr>
-          </template>
-        </tbody>
-      </table>
+          </thead>
+          <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
+            <template x-if="appointmentsList.length === 0">
+              <tr>
+                <td colspan="11" class="text-center">No visitors available</td>
+              </tr>
+            </template>
+            <template x-for="(appointment, index) in appointmentsList" :key="appointment.id">
+              <tr>
+                <td x-text="appointment.firstName"></td>
+                <td x-text="appointment.lastName"></td>
+                <td x-text="appointment.date"></td>
+                <td x-text="appointment.allocatedTime"></td>
+                <td x-text="appointment.host"></td>
+                <td x-text="appointment.purpose"></td>
+                <td x-text="appointment.nationalId"></td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="approval-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].pendingApproval"
+                    x-bind:checked="appointmentsList[index].pendingApproval"
+                    disabled
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="progress-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].inCampus"
+                    x-bind:checked="appointmentsList[index].inCampus"
+                    @change="updateAppointment(appointmentsList[index])"
+                    disabled
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="complete-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].complete"
+                    x-bind:checked="appointmentsList[index].complete"
+                    @change="updateAppointment(appointmentsList[index])"
+                    disabled
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="exit-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].exitApproval"
+                    x-bind:checked="appointmentsList[index].exitApproval"
+                    @change="updateAppointment(appointmentsList[index])"
+                    disabled
+                  >
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </div>
             </div>
             <!-- end main content section -->
@@ -3069,7 +3132,8 @@
     <script src="assets/js/custom.js"></script>
 
     <!-- Backend sript -->
-    <script>
+
+  <script>
     document.addEventListener('alpine:init', () => {
       // Main section
       Alpine.data('scrollToTop', () => ({
@@ -3163,8 +3227,8 @@
                   host: item.personname || 'Unknown',
                   purpose: item.visit || 'N/A',
                   nationalId: item.nationalid || 'N/A',
-                  pendingApproval: item.isApproved ?? true,
-                  inCampus: item.inprogress ?? false,
+                  pendingApproval:  true,
+                  inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false), // Set inCampus to true if pendingApproval is true
                   complete: item.complete ?? false,
                   exitApproval: item.exit ?? false,
                   firstname: item.firstname || 'Unknown',
@@ -3183,7 +3247,7 @@
                   purpose: item.visit || 'N/A',
                   nationalId: item.nationalid || 'N/A',
                   pendingApproval: item.isApproved ?? true,
-                  inCampus: item.inprogress ?? false,
+                  inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false), // Set inCampus to true if pendingApproval is true
                   complete: item.complete ?? false,
                   exitApproval: item.exit ?? false,
                   firstname: item.firstname || 'Unknown',
@@ -3223,12 +3287,30 @@
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
               this.showMessage('Visitor status updated successfully.');
+              await this.fetchAppointments(); // Refresh the list to reflect updated states
             } else {
               throw new Error('No status change detected.');
             }
           } catch (error) {
             console.error('Error updating visitor status:', error);
             this.showMessage('Failed to update visitor status.', 'error');
+          }
+        },
+        async toggleApproval(id, currentStatus) {
+          try {
+            const status = currentStatus ? 'disapprove' : 'approve';
+            const response = await fetch(`http://192.168.3.75:3001/visitors/${id}/status/${status}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            this.showMessage(`Visitor ${status}d successfully.`);
+            await this.fetchAppointments(); // Refresh the list to reflect updated states
+          } catch (error) {
+            console.error('Error toggling approval status:', error);
+            this.showMessage('Failed to toggle approval status.', 'error');
           }
         },
         showMessage(msg = '', type = 'success') {
@@ -3412,20 +3494,15 @@
       }));
     });
 
-    // New script to disable and check all Pending Approval checkboxes
+    // Script to disable and check all Pending Approval checkboxes
     document.addEventListener('DOMContentLoaded', () => {
-      // Select all checkboxes with class 'approval-checkbox'
       const approvalCheckboxes = document.querySelectorAll('.approval-checkbox');
-      
-      // Loop through each checkbox and set it to checked and disabled
       approvalCheckboxes.forEach(checkbox => {
-        checkbox.checked = true; // Set checkbox to checked
-        checkbox.disabled = true; // Ensure checkbox is disabled
+        checkbox.checked = true;
+        checkbox.disabled = true;
       });
     });
   </script>
-
-
     <!-- login-logout frontend script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
