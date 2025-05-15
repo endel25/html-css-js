@@ -3500,7 +3500,7 @@
     ],
     async fetchAppointments() {
       try {
-        const response = await fetch('http://192.168.3.73:3001/appointment');
+        const response = await fetch('http://192.168.3.74:3001/appointment');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -3531,7 +3531,7 @@
     },
     async updateAppointment(appointment) {
       try {
-        const response = await fetch(`http://192.168.3.73:3001/appointment/${appointment.id}`, {
+        const response = await fetch(`http://192.168.3.74:3001/appointment/${appointment.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
