@@ -3378,8 +3378,8 @@
                                     class="btn btn-outline-success btn-sm rounded-full">Approve</button>
                                 <button type="button" id="disapproveBtn"
                                     class="btn btn-outline-danger btn-sm rounded-full">Disapprove</button>
-                                <button type="button" id="inProgressBtn"
-                                    class="btn btn-sm btn-outline-primary rounded-full">In Progress</button>
+                                <!-- <button type="button" id="inProgressBtn"
+                                    class="btn btn-sm btn-outline-primary rounded-full">In Progress</button> -->
                                 <button type="button" id="completeBtn"
                                     class="btn btn-sm btn-outline-primary rounded-full">Complete</button>
                                 <button type="button" id="exitBtn"
@@ -3412,251 +3412,250 @@
             <!-- end footer section -->
 
 
-            <script>let visitors = [];
-                let currentFileInputId = '';
-                let currentPage = 1;
-                let entriesPerPage = 10;
-                let searchQuery = '';
+            <script>
+                let visitors = [];
+let currentFileInputId = '';
+let currentPage = 1;
+let entriesPerPage = 10;
+let searchQuery = '';
 
-                // Toast message function
-                const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-                    const toast = window.Swal.mixin({
-                        toast: true,
-                        position: position,
-                        showConfirmButton: false,
-                        timer: duration,
-                        showCloseButton: showCloseButton,
-                        padding: '10px 20px',
-                    });
+// Toast message function
+const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: position,
+        showConfirmButton: false,
+        timer: duration,
+        showCloseButton: showCloseButton,
+        padding: '10px 20px',
+    });
 
-                    toast.fire({
-                        icon: type,
-                        title: msg,
-                    });
-                };
+    toast.fire({
+        icon: type,
+        title: msg,
+    });
+};
 
-                async function fetchVisitors() {
-                    try {
-                        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
-                        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
-                            method: 'GET',
-                            headers: { 'Content-Type': 'application/json' },
-                        });
+async function fetchVisitors() {
+    try {
+        console.log('Fetching visitors from http://192.168.3.75:3001/visitors');
+        const response = await fetch(`http://192.168.3.75:3001/visitors?t=${new Date().getTime()}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
 
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-                        const data = await response.json();
-                        console.log('Fetched data:', data);
-                        visitors = data.map(visitor => ({
-                            ...visitor,
-                            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-                            durationunit: visitor.durationunit || '',
-                        }));
+        const data = await response.json();
+        console.log('Fetched data:', data);
+        visitors = data.map(visitor => ({
+            ...visitor,
+            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
+            durationunit: visitor.durationunit || '',
+        }));
 
-                        if (visitors.length === 0) {
-                            console.warn('No visitors fetched from the server');
-                        }
+        if (visitors.length === 0) {
+            console.warn('No visitors fetched from the server');
+        }
 
-                        localStorage.setItem('visitors', JSON.stringify(visitors));
-                        populateTable();
-                    } catch (error) {
-                        console.error('Failed to fetch visitors:', error.message);
-                        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
-                        if (visitors.length === 0) {
-                            console.warn('No cached visitors available either');
-                        }
-                        populateTable();
-                    }
-                }
+        localStorage.setItem('visitors', JSON.stringify(visitors));
+        populateTable();
+    } catch (error) {
+        console.error('Failed to fetch visitors:', error.message);
+        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
+        if (visitors.length === 0) {
+            console.warn('No cached visitors available either');
+        }
+        populateTable();
+    }
+}
 
-                function showModal(fileInputId) {
-                    currentFileInputId = fileInputId;
-                    document.getElementById('photoModal').style.display = 'flex';
-                }
+function showModal(fileInputId) {
+    currentFileInputId = fileInputId;
+    document.getElementById('photoModal').style.display = 'flex';
+}
 
-                function closeModal() {
-                    document.getElementById('photoModal').style.display = 'none';
+function closeModal() {
+    document.getElementById('photoModal').style.display = 'none';
+    stopCamera();
+}
+
+function openGallery() {
+    const fileInput = document.getElementById(currentFileInputId);
+    fileInput.removeAttribute('capture');
+    fileInput.click();
+    closeModal();
+}
+
+function openCamera() {
+    startCamera(document.getElementById(currentFileInputId));
+    closeModal();
+}
+
+function startCamera(fileInput) {
+    const video = document.getElementById('cameraPreview');
+    const canvas = document.getElementById('cameraCanvas');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(stream => {
+            video.srcObject = stream;
+            video.style.display = 'block';
+            video.play();
+            const captureBtn = document.createElement('button');
+            captureBtn.textContent = 'Capture Photo';
+            captureBtn.className = 'btn-outline-primary';
+            captureBtn.onclick = () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                canvas.toBlob(blob => {
+                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                    fileInput.dispatchEvent(new Event('change'));
                     stopCamera();
-                }
+                }, 'image/jpeg');
+            };
+            document.body.appendChild(captureBtn);
+        })
+        .catch(err => {
+            console.error('Camera access denied:', err);
+        });
+}
 
-                function openGallery() {
-                    const fileInput = document.getElementById(currentFileInputId);
-                    fileInput.removeAttribute('capture');
-                    fileInput.click();
-                    closeModal();
-                }
+function stopCamera() {
+    const video = document.getElementById('cameraPreview');
+    const stream = video.srcObject;
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+    video.style.display = 'none';
+    const captureBtn = document.querySelector('button[onclick*="capture"]');
+    if (captureBtn) captureBtn.remove();
+}
 
-                function openCamera() {
-                    startCamera(document.getElementById(currentFileInputId));
-                    closeModal();
-                }
+function previewImage(input, id) {
+    const file = input.files ? input.files[0] : null;
+    const img = document.getElementById(id);
+    console.log('Previewing image for', id, 'with file:', file);
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            console.log('Image preview updated for', id, 'to', e.target.result);
+        };
+        reader.onerror = () => console.error('Error reading file for', id);
+        reader.readAsDataURL(file);
+    } else {
+        img.style.display = 'none';
+        console.log('No file selected for', id, 'hiding preview');
+    }
+}
 
-                function startCamera(fileInput) {
-                    const video = document.getElementById('cameraPreview');
-                    const canvas = document.getElementById('cameraCanvas');
-                    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                        .then(stream => {
-                            video.srcObject = stream;
-                            video.style.display = 'block';
-                            video.play();
-                            const captureBtn = document.createElement('button');
-                            captureBtn.textContent = 'Capture Photo';
-                            captureBtn.className = 'btn-outline-primary';
-                            captureBtn.onclick = () => {
-                                canvas.width = video.videoWidth;
-                                canvas.height = video.videoHeight;
-                                canvas.getContext('2d').drawImage(video, 0, 0);
-                                canvas.toBlob(blob => {
-                                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                                    const dataTransfer = new DataTransfer();
-                                    dataTransfer.items.add(file);
-                                    fileInput.files = dataTransfer.files;
-                                    fileInput.dispatchEvent(new Event('change'));
-                                    stopCamera();
-                                }, 'image/jpeg');
-                            };
-                            document.body.appendChild(captureBtn);
-                        })
-                        .catch(err => {
-                            console.error('Camera access denied:', err);
-                        });
-                }
+function toggleDriverDetails() {
+    const driverDetails = document.getElementById('driverDetails');
+    const driverToggle = document.getElementById('edit-driverToggle');
+    if (!driverDetails || !driverToggle) {
+        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
+        return;
+    }
 
-                function stopCamera() {
-                    const video = document.getElementById('cameraPreview');
-                    const stream = video.srcObject;
-                    if (stream) {
-                        stream.getTracks().forEach(track => track.stop());
-                    }
-                    video.style.display = 'none';
-                    const captureBtn = document.querySelector('button[onclick*="capture"]');
-                    if (captureBtn) captureBtn.remove();
-                }
+    const isHidden = !driverToggle.checked;
+    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
+    driverDetails.classList.toggle('hidden', isHidden);
 
-                function previewImage(input, id) {
-                    const file = input.files ? input.files[0] : null;
-                    const img = document.getElementById(id);
-                    console.log('Previewing image for', id, 'with file:', file);
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = e => {
-                            img.src = e.target.result;
-                            img.style.display = 'block';
-                            console.log('Image preview updated for', id, 'to', e.target.result);
-                        };
-                        reader.onerror = () => console.error('Error reading file for', id);
-                        reader.readAsDataURL(file);
-                    } else {
-                        img.style.display = 'none';
-                        console.log('No file selected for', id, 'hiding preview');
-                    }
-                }
+    driverDetails.style.display = isHidden ? 'none' : 'grid';
+    void driverDetails.offsetHeight;
 
-                function toggleDriverDetails() {
-                    const driverDetails = document.getElementById('driverDetails');
-                    const driverToggle = document.getElementById('edit-driverToggle');
-                    if (!driverDetails || !driverToggle) {
-                        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
-                        return;
-                    }
+    if (driverToggle.checked) {
+        console.log('Showing driver details');
+        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
+        if (visitor) {
+            document.getElementById('edit-drivername').value = visitor.drivername || '';
+            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
+            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
+            const driverPreview = document.getElementById('driverPreview');
+            if (visitor.driverphoto) {
+                const driverPhotoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                driverPreview.src = '';
+                driverPreview.src = driverPhotoUrl;
+                driverPreview.style.display = 'block';
+                console.log('Driver photo URL set to:', driverPhotoUrl);
+            } else {
+                driverPreview.src = '';
+                driverPreview.style.display = 'none';
+                console.log('No driver photo available for visitor');
+            }
+        }
+    } else {
+        console.log('Hiding driver details');
+        document.getElementById('edit-drivername').value = '';
+        document.getElementById('edit-drivermobile').value = '';
+        document.getElementById('edit-drivernationalid').value = '';
+        document.getElementById('driverPreview').style.display = 'none';
+    }
+    console.log('Driver details state after toggle:', {
+        className: driverDetails.className,
+        style: driverDetails.style.display,
+        offsetHeight: driverDetails.offsetHeight
+    });
+}
 
-                    const isHidden = !driverToggle.checked;
-                    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
-                    driverDetails.classList.toggle('hidden', isHidden);
+function setButtonVisibility(visitorId, state) {
+    const buttons = ['approveBtn', 'disapproveBtn', 'completeBtn', 'exitBtn'];
+    buttons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.style.display = 'none';
+        }
+    });
 
-                    driverDetails.style.display = isHidden ? 'none' : 'grid';
-                    void driverDetails.offsetHeight;
+    const updateBtn = document.getElementById('updateBtn');
+    if (updateBtn) {
+        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
+    }
 
-                    if (driverToggle.checked) {
-                        console.log('Showing driver details');
-                        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
-                        if (visitor) {
-                            document.getElementById('edit-drivername').value = visitor.drivername || '';
-                            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
-                            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
-                            const driverPreview = document.getElementById('driverPreview');
-                            if (visitor.driverphoto) {
-                                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-                                driverPreview.src = '';
-                                driverPreview.src = driverPhotoUrl;
-                                driverPreview.style.display = 'block';
-                                console.log('Driver photo URL set to:', driverPhotoUrl);
-                            } else {
-                                driverPreview.src = '';
-                                driverPreview.style.display = 'none';
-                                console.log('No driver photo available for visitor');
-                            }
-                        }
-                    } else {
-                        console.log('Hiding driver details');
-                        document.getElementById('edit-drivername').value = '';
-                        document.getElementById('edit-drivermobile').value = '';
-                        document.getElementById('edit-drivernationalid').value = '';
-                        document.getElementById('driverPreview').style.display = 'none';
-                    }
-                    console.log('Driver details state after toggle:', {
-                        className: driverDetails.className,
-                        style: driverDetails.style.display,
-                        offsetHeight: driverDetails.offsetHeight
-                    });
-                }
+    if (state === 'approve') {
+        document.getElementById('approveBtn').style.display = 'inline-block';
+        document.getElementById('disapproveBtn').style.display = 'inline-block';
+    } else if (state === 'complete') {
+        document.getElementById('completeBtn').style.display = 'inline-block';
+    } else if (state === 'exit') {
+        document.getElementById('exitBtn').style.display = 'inline-block';
+    }
 
-                function setButtonVisibility(visitorId, state) {
-                    const buttons = ['approveBtn', 'disapproveBtn', 'inProgressBtn', 'completeBtn', 'exitBtn'];
-                    buttons.forEach(btnId => {
-                        const btn = document.getElementById(btnId);
-                        if (btn) {
-                            btn.style.display = 'none';
-                        }
-                    });
+    sessionStorage.setItem(`buttonState_${visitorId}`, state);
+}
 
-                    const updateBtn = document.getElementById('updateBtn');
-                    if (updateBtn) {
-                        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
-                    }
+function populateTable() {
+    const tableBody = document.getElementById('visitorTableBody');
+    if (!tableBody) {
+        console.error('Table body not found');
+        return;
+    }
+    tableBody.innerHTML = '';
 
-                    if (state === 'approve') {
-                        document.getElementById('approveBtn').style.display = 'inline-block';
-                        document.getElementById('disapproveBtn').style.display = 'inline-block';
-                    } else if (state === 'inProgress') {
-                        document.getElementById('inProgressBtn').style.display = 'inline-block';
-                    } else if (state === 'complete') {
-                        document.getElementById('completeBtn').style.display = 'inline-block';
-                    } else if (state === 'exit') {
-                        document.getElementById('exitBtn').style.display = 'inline-block';
-                    }
+    const filteredVisitors = visitors.filter(
+        visitor =>
+            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            visitor.contactnumber?.includes(searchQuery) ||
+            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-                    sessionStorage.setItem(`buttonState_${visitorId}`, state);
-                }
+    const start = (currentPage - 1) * entriesPerPage;
+    const end = start + entriesPerPage;
+    const paginatedVisitors = filteredVisitors.slice(start, end);
 
-                function populateTable() {
-                    const tableBody = document.getElementById('visitorTableBody');
-                    if (!tableBody) {
-                        console.error('Table body not found');
-                        return;
-                    }
-                    tableBody.innerHTML = '';
-
-                    const filteredVisitors = visitors.filter(
-                        visitor =>
-                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            visitor.contactnumber?.includes(searchQuery) ||
-                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-                    );
-
-                    const start = (currentPage - 1) * entriesPerPage;
-                    const end = start + entriesPerPage;
-                    const paginatedVisitors = filteredVisitors.slice(start, end);
-
-                    if (paginatedVisitors.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
-                    } else {
-                        paginatedVisitors.forEach(visitor => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
+    if (paginatedVisitors.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
+    } else {
+        paginatedVisitors.forEach(visitor => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
                 <td>${visitor.id}</td>
                 <td>${visitor.firstname || ''}</td>
                 <td>${visitor.lastname || ''}</td>
@@ -3679,362 +3678,360 @@
                     </div>
                 </td>
             `;
-                            tableBody.appendChild(row);
-                        });
-                    }
+            tableBody.appendChild(row);
+        });
+    }
 
-                    const totalEntries = filteredVisitors.length;
-                    const totalPages = Math.ceil(totalEntries / entriesPerPage);
-                    const showingStart = totalEntries === 0 ? 0 : start + 1;
-                    const showingEnd = Math.min(end, totalEntries);
-                    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
+    const totalEntries = filteredVisitors.length;
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+    const showingStart = totalEntries === 0 ? 0 : start + 1;
+    const showingEnd = Math.min(end, totalEntries);
+    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
 
-                    const prevButton = document.getElementById('prevPage');
-                    const nextButton = document.getElementById('nextPage');
-                    const paginationDiv = document.querySelector('.pagination');
-                    if (totalEntries > entriesPerPage) {
-                        paginationDiv.style.display = 'flex';
-                        prevButton.disabled = currentPage === 1;
-                        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
-                    } else {
-                        paginationDiv.style.display = 'none';
-                    }
-                }
+    const prevButton = document.getElementById('prevPage');
+    const nextButton = document.getElementById('nextPage');
+    const paginationDiv = document.querySelector('.pagination');
+    if (totalEntries > entriesPerPage) {
+        paginationDiv.style.display = 'flex';
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
+    } else {
+        paginationDiv.style.display = 'none';
+    }
+}
 
-                function previousPage() {
-                    if (currentPage > 1) {
-                        currentPage--;
-                        populateTable();
-                    }
-                }
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        populateTable();
+    }
+}
 
-                function nextPage() {
-                    const filteredVisitors = visitors.filter(
-                        visitor =>
-                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            visitor.contactnumber?.includes(searchQuery) ||
-                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-                    );
-                    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        populateTable();
-                    }
-                }
+function nextPage() {
+    const filteredVisitors = visitors.filter(
+        visitor =>
+            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            visitor.contactnumber?.includes(searchQuery) ||
+            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        populateTable();
+    }
+}
 
-                function openEditModal(id) {
-                    const visitor = visitors.find(v => v.id == id);
-                    if (!visitor) {
-                        console.error('Visitor not found for id:', id);
-                        return;
-                    }
+function openEditModal(id) {
+    const visitor = visitors.find(v => v.id == id);
+    if (!visitor) {
+        console.error('Visitor not found for id:', id);
+        return;
+    }
 
-                    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
+    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
 
-                    const fields = [
-                        'edit-id', 'edit-firstname', 'edit-lastname', 'edit-contactnumber', 'edit-nationalid',
-                        'edit-gender', 'edit-email', 'edit-date', 'edit-time', 'edit-visit',
-                        'edit-personname', 'edit-department', 'edit-durationUnit', 'edit-durationtime',
-                        'edit-visitortype', 'edit-vehicletype', 'edit-vehiclenumber', 'edit-notes',
-                        'edit-drivername', 'edit-drivermobile', 'edit-drivernationalid'
-                    ];
-                    fields.forEach(fieldId => {
-                        const element = document.getElementById(fieldId);
-                        if (!element) {
-                            console.error(`Element not found for ID: ${fieldId}`);
-                            return;
-                        }
-                        const value = visitor[fieldId.replace('edit-', '')] || visitor[fieldId.replace('edit-', '').toLowerCase()] || '';
-                        if (element.type === 'checkbox') {
-                            element.checked = !!value;
-                        } else if (element.type === 'select-one') {
-                            element.value = value;
-                        } else {
-                            element.value = value;
-                        }
-                    });
+    const fields = [
+        'edit-id', 'edit-firstname', 'edit-lastname', 'edit-contactnumber', 'edit-nationalid',
+        'edit-gender', 'edit-email', 'edit-date', 'edit-time', 'edit-visit',
+        'edit-personname', 'edit-department', 'edit-durationUnit', 'edit-durationtime',
+        'edit-visitortype', 'edit-vehicletype', 'edit-vehiclenumber', 'edit-notes',
+        'edit-drivername', 'edit-drivermobile', 'edit-drivernationalid'
+    ];
+    fields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (!element) {
+            console.error(`Element not found for ID: ${fieldId}`);
+            return;
+        }
+        const value = visitor[fieldId.replace('edit-', '')] || visitor[fieldId.replace('edit-', '').toLowerCase()] || '';
+        if (element.type === 'checkbox') {
+            element.checked = !!value;
+        } else if (element.type === 'select-one') {
+            element.value = value;
+        } else {
+            element.value = value;
+        }
+    });
 
-                    const driverToggle = document.getElementById('edit-driverToggle');
-                    if (driverToggle) {
-                        driverToggle.checked = !!visitor.drivername;
-                        toggleDriverDetails();
-                    }
+    const driverToggle = document.getElementById('edit-driverToggle');
+    if (driverToggle) {
+        driverToggle.checked = !!visitor.drivername;
+        toggleDriverDetails();
+    }
 
-                    const editDateInput = document.getElementById('edit-date');
-                    if (editDateInput && editDateInput.tagName.toLowerCase() === 'input') {
-                        if (visitor.date && visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                            const [day, month, year] = visitor.date.split('-');
-                            editDateInput.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                        } else {
-                            editDateInput.value = '';
-                        }
-                    } else {
-                        console.error('Date input element not found or invalid');
-                    }
+    const editDateInput = document.getElementById('edit-date');
+    if (editDateInput && editDateInput.tagName.toLowerCase() === 'input') {
+        if (visitor.date && visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
+            const [day, month, year] = visitor.date.split('-');
+            editDateInput.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        } else {
+            editDateInput.value = '';
+        }
+    } else {
+        console.error('Date input element not found or invalid');
+    }
 
-                    const mainPreview = document.getElementById('mainPreview');
-                    if (visitor.photo) {
-                        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
-                        console.log('Setting mainPreview URL:', photoUrl);
-                        mainPreview.src = '';
-                        mainPreview.src = photoUrl;
-                        mainPreview.style.display = 'block';
-                        const imgTest = new Image();
-                        imgTest.src = photoUrl;
-                        imgTest.onload = () => {
-                            console.log('Main photo loaded successfully:', photoUrl);
-                            mainPreview.style.display = 'block';
-                        };
-                        imgTest.onerror = () => {
-                            console.error('Main photo failed to load at:', photoUrl);
-                            mainPreview.src = '';
-                            mainPreview.style.display = 'none';
-                        };
-                    } else {
-                        console.log('No main photo available for visitor:', visitor.id);
-                        mainPreview.src = '';
-                        mainPreview.style.display = 'none';
-                    }
+    const mainPreview = document.getElementById('mainPreview');
+    if (visitor.photo) {
+        const photoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+        console.log('Setting mainPreview URL:', photoUrl);
+        mainPreview.src = '';
+        mainPreview.src = photoUrl;
+        mainPreview.style.display = 'block';
+        const imgTest = new Image();
+        imgTest.src = photoUrl;
+        imgTest.onload = () => {
+            console.log('Main photo loaded successfully:', photoUrl);
+            mainPreview.style.display = 'block';
+        };
+        imgTest.onerror = () => {
+            console.error('Main photo failed to load at:', photoUrl);
+            mainPreview.src = '';
+            mainPreview.style.display = 'none';
+        };
+    } else {
+        console.log('No main photo available for visitor:', visitor.id);
+        mainPreview.src = '';
+        mainPreview.style.display = 'none';
+    }
 
-                    const driverPreview = document.getElementById('driverPreview');
-                    if (visitor.driverphoto) {
-                        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-                        console.log('Setting driverPreview URL:', driverPhotoUrl);
-                        driverPreview.src = '';
-                        driverPreview.src = driverPhotoUrl;
-                        driverPreview.style.display = 'block';
-                        const driverImgTest = new Image();
-                        driverImgTest.src = driverPhotoUrl;
-                        driverImgTest.onload = () => {
-                            console.log('Driver photo loaded successfully:', driverPhotoUrl);
-                            driverPreview.style.display = 'block';
-                        };
-                        driverImgTest.onerror = () => {
-                            console.error('Driver photo failed to load at:', driverPhotoUrl);
-                            driverPreview.src = '';
-                            driverPreview.style.display = 'none';
-                        };
-                    } else {
-                        console.log('No driver photo available for visitor:', visitor.id);
-                        driverPreview.src = '';
-                        driverPreview.style.display = 'none';
-                    }
+    const driverPreview = document.getElementById('driverPreview');
+    if (visitor.driverphoto) {
+        const driverPhotoUrl = `http://192.168.3.75:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+        console.log('Setting driverPreview URL:', driverPhotoUrl);
+        driverPreview.src = '';
+        driverPreview.src = driverPhotoUrl;
+        driverPreview.style.display = 'block';
+        const driverImgTest = new Image();
+        driverImgTest.src = driverPhotoUrl;
+        driverImgTest.onload = () => {
+            console.log('Driver photo loaded successfully:', driverPhotoUrl);
+            driverPreview.style.display = 'block';
+        };
+        driverImgTest.onerror = () => {
+            console.error('Driver photo failed to load at:', driverPhotoUrl);
+            driverPreview.src = '';
+            driverPreview.style.display = 'none';
+        };
+    } else {
+        console.log('No driver photo available for visitor:', visitor.id);
+        driverPreview.src = '';
+        driverPreview.style.display = 'none';
+    }
 
-                    // Display current status
-                    const statusDisplay = document.getElementById('statusDisplay');
-                    if (statusDisplay) {
-                        if (visitor.isApproved) {
-                            statusDisplay.textContent = 'Status: Approved';
-                        } else if (visitor.isApproved === false) {
-                            statusDisplay.textContent = 'Status: Disapproved';
-                        } else if (visitor.inprogress) {
-                            statusDisplay.textContent = 'Status: In Progress';
-                        } else if (visitor.complete) {
-                            statusDisplay.textContent = 'Status: Complete';
-                        } else if (visitor.exit) {
-                            statusDisplay.textContent = 'Status: Exited';
-                        } else {
-                            statusDisplay.textContent = 'Status: Pending';
-                        }
-                    }
+    // Display current status
+    const statusDisplay = document.getElementById('statusDisplay');
+    if (statusDisplay) {
+        if (visitor.isApproved) {
+            statusDisplay.textContent = 'Status: Approved';
+        } else if (visitor.isApproved === false) {
+            statusDisplay.textContent = 'Status: Disapproved';
+        } else if (visitor.complete) {
+            statusDisplay.textContent = 'Status: Complete';
+        } else if (visitor.exit) {
+            statusDisplay.textContent = 'Status: Exited';
+        } else {
+            statusDisplay.textContent = 'Status: Pending';
+        }
+    }
 
-                    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
-                    setButtonVisibility(id, buttonState);
+    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
+    setButtonVisibility(id, buttonState);
 
-                    document.getElementById('editModal').style.display = 'flex';
-                    console.log('Edit modal opened successfully');
-                }
+    document.getElementById('editModal').style.display = 'flex';
+    console.log('Edit modal opened successfully');
+}
 
-                function closeEditModal() {
-                    console.log('Closing edit modal');
-                    const editModal = document.getElementById('editModal');
-                    const editForm = document.getElementById('editForm');
-                    const mainPreview = document.getElementById('mainPreview');
-                    const driverPreview = document.getElementById('driverPreview');
+function closeEditModal() {
+    console.log('Closing edit modal');
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editForm');
+    const mainPreview = document.getElementById('mainPreview');
+    const driverPreview = document.getElementById('driverPreview');
 
-                    if (editModal) {
-                        editModal.style.display = 'none';
-                    }
-                    if (editForm) {
-                        editForm.reset();
-                    }
-                    if (mainPreview) {
-                        mainPreview.src = '';
-                        mainPreview.style.display = 'none';
-                        console.log('Main preview reset');
-                    }
-                    if (driverPreview) {
-                        driverPreview.src = '';
-                        driverPreview.style.display = 'none';
-                        console.log('Driver preview reset');
-                    }
-                    clearErrors();
-                    const driverToggle = document.getElementById('edit-driverToggle');
-                    if (driverToggle) {
-                        driverToggle.checked = false;
-                        toggleDriverDetails();
-                    }
-                }
+    if (editModal) {
+        editModal.style.display = 'none';
+    }
+    if (editForm) {
+        editForm.reset();
+    }
+    if (mainPreview) {
+        mainPreview.src = '';
+        mainPreview.style.display = 'none';
+        console.log('Main preview reset');
+    }
+    if (driverPreview) {
+        driverPreview.src = '';
+        driverPreview.style.display = 'none';
+        console.log('Driver preview reset');
+    }
+    clearErrors();
+    const driverToggle = document.getElementById('edit-driverToggle');
+    if (driverToggle) {
+        driverToggle.checked = false;
+        toggleDriverDetails();
+    }
+}
 
-                function clearErrors() {
-                    document.querySelectorAll('.error').forEach(error => error.textContent = '');
-                }
+function clearErrors() {
+    document.querySelectorAll('.error').forEach(error => error.textContent = '');
+}
 
-                function validateForm(visitor) {
-                    let isValid = true;
-                    clearErrors();
-                    console.log('Validating form:', visitor);
+function validateForm(visitor) {
+    let isValid = true;
+    clearErrors();
+    console.log('Validating form:', visitor);
 
-                    const requiredFields = [
-                        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
-                        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
-                        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
-                        { key: 'contactnumber', error: 'Contact number is required' },
-                        { key: 'nationalid', error: 'National ID is required' },
-                        { key: 'gender', error: 'Gender is required' },
-                        { key: 'date', error: 'Date is required' },
-                        { key: 'time', error: 'Time is required' },
-                        { key: 'visit', error: 'Purpose of visit is required' },
-                        { key: 'personname', error: 'Person name is required' },
-                        { key: 'department', error: 'Department is required' },
-                        { key: 'durationUnit', values: ['Hours', 'Minutes', 'Days'], error: 'Duration unit is required (Hours, Minutes, Days)' },
-                        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
-                        { key: 'visitortype', error: 'Visitor type is required' },
-                    ];
+    const requiredFields = [
+        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
+        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
+        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
+        { key: 'contactnumber', error: 'Contact number is required' },
+        { key: 'nationalid', error: 'National ID is required' },
+        { key: 'gender', error: 'Gender is required' },
+        { key: 'date', error: 'Date is required' },
+        { key: 'time', error: 'Time is required' },
+        { key: 'visit', error: 'Purpose of visit is required' },
+        { key: 'personname', error: 'Person name is required' },
+        { key: 'department', error: 'Department is required' },
+        { key: 'durationUnit', values: ['Hours', 'Minutes', 'Days'], error: 'Duration unit is required (Hours, Minutes, Days)' },
+        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
+        { key: 'visitortype', error: 'Visitor type is required' },
+    ];
 
-                    requiredFields.forEach(field => {
-                        const value = visitor[field.key];
-                        if (!value || value === '') {
-                            document.getElementById(`error-${field.key}`).textContent = field.error;
-                            isValid = false;
-                        } else if (field.regex && !field.regex.test(value)) {
-                            document.getElementById(`error-${field.key}`).textContent = field.error;
-                            isValid = false;
-                        } else if (field.values && !field.values.includes(value)) {
-                            document.getElementById(`error-${field.key}`).textContent = field.error;
-                            isValid = false;
-                        } else if (field.check && !field.check(value)) {
-                            document.getElementById(`error-${field.key}`).textContent = field.error;
-                            isValid = false;
-                        }
-                    });
+    requiredFields.forEach(field => {
+        const value = visitor[field.key];
+        if (!value || value === '') {
+            document.getElementById(`error-${field.key}`).textContent = field.error;
+            isValid = false;
+        } else if (field.regex && !field.regex.test(value)) {
+            document.getElementById(`error-${field.key}`).textContent = field.error;
+            isValid = false;
+        } else if (field.values && !field.values.includes(value)) {
+            document.getElementById(`error-${field.key}`).textContent = field.error;
+            isValid = false;
+        } else if (field.check && !field.check(value)) {
+            document.getElementById(`error-${field.key}`).textContent = field.error;
+            isValid = false;
+        }
+    });
 
-                    if (visitor.date) {
-                        let formattedDate = visitor.date;
-                        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                            const [day, month, year] = visitor.date.split('-');
-                            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                        }
-                        const today = new Date().toISOString().split('T')[0];
-                        if (formattedDate < today) {
-                            document.getElementById('error-date').textContent = 'Date cannot be in the past';
-                            isValid = false;
-                        }
-                    }
+    if (visitor.date) {
+        let formattedDate = visitor.date;
+        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
+            const [day, month, year] = visitor.date.split('-');
+            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+        const today = new Date().toISOString().split('T')[0];
+        if (formattedDate < today) {
+            document.getElementById('error-date').textContent = 'Date cannot be in the past';
+            isValid = false;
+        }
+    }
 
-                    if (visitor.driverToggle) {
-                        const driverFields = [
-                            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
-                            { key: 'drivermobile', error: 'Driver mobile is required' },
-                            { key: 'drivernationalid', error: 'Driver national ID is required' },
-                        ];
-                        driverFields.forEach(field => {
-                            const value = visitor[field.key];
-                            if (!value || value === '') {
-                                document.getElementById(`error-${field.key}`).textContent = field.error;
-                                isValid = false;
-                            } else if (field.regex && !field.regex.test(value)) {
-                                document.getElementById(`error-${field.key}`).textContent = field.error;
-                                isValid = false;
-                            }
-                        });
-                    }
+    if (visitor.driverToggle) {
+        const driverFields = [
+            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
+            { key: 'drivermobile', error: 'Driver mobile is required' },
+            { key: 'drivernationalid', error: 'Driver national ID is required' },
+        ];
+        driverFields.forEach(field => {
+            const value = visitor[field.key];
+            if (!value || value === '') {
+                document.getElementById(`error-${field.key}`).textContent = field.error;
+                isValid = false;
+            } else if (field.regex && !field.regex.test(value)) {
+                document.getElementById(`error-${field.key}`).textContent = field.error;
+                isValid = false;
+            }
+        });
+    }
 
-                    if (!isValid) {
-                        console.log('Validation failed for:', visitor);
-                        showMessage('Please fix the errors in the form', 'error');
-                    }
-                    return isValid;
-                }
+    if (!isValid) {
+        console.log('Validation failed for:', visitor);
+        showMessage('Please fix the errors in the form', 'error');
+    }
+    return isValid;
+}
 
-                async function updateVisitorStatus(visitorId, status) {
-                    if (!visitorId) {
-                        showMessage('No visitor ID provided', 'error');
-                        return;
-                    }
+async function updateVisitorStatus(visitorId, status) {
+    if (!visitorId) {
+        showMessage('No visitor ID provided', 'error');
+        return;
+    }
 
-                    try {
-                        const response = await fetch(`http://192.168.3.73:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
+    try {
+        const response = await fetch(`http://192.168.3.75:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
-                        }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
+        }
 
-                        const updatedVisitor = await response.json();
-                        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | inprogress: ${updatedVisitor.inprogress} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
+        const updatedVisitor = await response.json();
+        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
 
-                        // Update local visitors array
-                        const index = visitors.findIndex(v => v.id == visitorId);
-                        if (index !== -1) {
-                            visitors[index] = {
-                                ...visitors[index],
-                                ...updatedVisitor,
-                                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
-                            };
-                            localStorage.setItem('visitors', JSON.stringify(visitors));
-                        }
+        // Update local visitors array
+        const index = visitors.findIndex(v => v.id == visitorId);
+        if (index !== -1) {
+            visitors[index] = {
+                ...visitors[index],
+                ...updatedVisitor,
+                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
+            };
+            localStorage.setItem('visitors', JSON.stringify(visitors));
+        }
 
-                        showMessage(`Visitor status updated to ${status}`, 'success');
-                    } catch (error) {
-                        console.error('Error updating status:', error);
-                        showMessage(`Failed to update status: ${error.message}`, 'error');
-                    }
-                }
+        showMessage(`Visitor status updated to ${status}`, 'success');
+    } catch (error) {
+        console.error('Error updating status:', error);
+        showMessage(`Failed to update status: ${error.message}`, 'error');
+    }
+}
 
-                document.getElementById('editForm').addEventListener('submit', async function (e) {
-                    e.preventDefault();
-                    clearErrors();
-                    console.log('Edit form submitted');
+document.getElementById('editForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    clearErrors();
+    console.log('Edit form submitted');
 
-                    const formData = new FormData(this);
-                    const updatedVisitor = {
-                        id: formData.get('id'),
-                        firstname: formData.get('firstname')?.trim(),
-                        lastname: formData.get('lastname')?.trim(),
-                        contactnumber: formData.get('contactnumber')?.trim(),
-                        nationalid: formData.get('nationalid')?.trim(),
-                        gender: formData.get('gender'),
-                        email: formData.get('email')?.trim(),
-                        date: formData.get('date'),
-                        time: formData.get('time'),
-                        visit: formData.get('visit')?.trim(),
-                        personname: formData.get('personname')?.trim(),
-                        department: formData.get('department')?.trim(),
-                        durationUnit: formData.get('durationUnit'),
-                        durationtime: formData.get('durationtime'),
-                        visitortype: formData.get('visitortype'),
-                        vehicletype: formData.get('vehicletype')?.trim(),
-                        vehiclenumber: formData.get('vehiclenumber')?.trim(),
-                        drivername: formData.get('drivername')?.trim(),
-                        drivermobile: formData.get('drivermobile')?.trim(),
-                        drivernationalid: formData.get('drivernationalid')?.trim(),
-                        notes: formData.get('notes')?.trim(),
-                        driverToggle: document.getElementById('edit-driverToggle').checked,
-                        photo: formData.get('photo'),
-                        driverphoto: formData.get('driverphoto'),
-                    };
+    const formData = new FormData(this);
+    const updatedVisitor = {
+        id: formData.get('id'),
+        firstname: formData.get('firstname')?.trim(),
+        lastname: formData.get('lastname')?.trim(),
+        contactnumber: formData.get('contactnumber')?.trim(),
+        nationalid: formData.get('nationalid')?.trim(),
+        gender: formData.get('gender'),
+        email: formData.get('email')?.trim(),
+        date: formData.get('date'),
+        time: formData.get('time'),
+        visit: formData.get('visit')?.trim(),
+        personname: formData.get('personname')?.trim(),
+        department: formData.get('department')?.trim(),
+        durationUnit: formData.get('durationUnit'),
+        durationtime: formData.get('durationtime'),
+        visitortype: formData.get('visitortype'),
+        vehicletype: formData.get('vehicletype')?.trim(),
+        vehiclenumber: formData.get('vehiclenumber')?.trim(),
+        drivername: formData.get('drivername')?.trim(),
+        drivermobile: formData.get('drivermobile')?.trim(),
+        drivernationalid: formData.get('drivernationalid')?.trim(),
+        notes: formData.get('notes')?.trim(),
+        driverToggle: document.getElementById('edit-driverToggle').checked,
+        photo: formData.get('photo'),
+        driverphoto: formData.get('driverphoto'),
+    };
 
-                    if (validateForm(updatedVisitor)) {
-                        const submitBtn = document.getElementById('updateBtn');
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = `
+    if (validateForm(updatedVisitor)) {
+        const submitBtn = document.getElementById('updateBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
             <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
@@ -4042,201 +4039,194 @@
             Updating...
         `;
 
-                        // Prepare FormData for the API
-                        const apiFormData = new FormData();
-                        Object.keys(updatedVisitor).forEach(key => {
-                            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
-                                apiFormData.append(key, updatedVisitor[key]);
-                            }
-                        });
-                        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
+        // Prepare FormData for the API
+        const apiFormData = new FormData();
+        Object.keys(updatedVisitor).forEach(key => {
+            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
+                apiFormData.append(key, updatedVisitor[key]);
+            }
+        });
+        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
 
-                        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
-                        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
-                        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
+        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
+        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
+        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
 
-                        if (hasPhoto) {
-                            apiFormData.append('photoFile', updatedVisitor.photo);
-                        } else if (existingVisitor?.photo) {
-                            apiFormData.append('photo', existingVisitor.photo);
-                        }
+        if (hasPhoto) {
+            apiFormData.append('photoFile', updatedVisitor.photo);
+        } else if (existingVisitor?.photo) {
+            apiFormData.append('photo', existingVisitor.photo);
+        }
 
-                        if (hasDriverPhoto) {
-                            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
-                        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
-                            apiFormData.append('driverphoto', existingVisitor.driverphoto);
-                        }
+        if (hasDriverPhoto) {
+            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
+        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
+            apiFormData.append('driverphoto', existingVisitor.driverphoto);
+        }
 
-                        // Log FormData for debugging
-                        console.log('Sending PATCH with FormData for id:', updatedVisitor.id);
-                        for (const [key, value] of apiFormData.entries()) {
-                            console.log(`${key}:`, value instanceof File ? value.name : value);
-                        }
+        // Log FormData for debugging
+        console.log('Sending PATCH with FormData for id:', updatedVisitor.id);
+        for (const [key, value] of apiFormData.entries()) {
+            console.log(`${key}:`, value instanceof File ? value.name : value);
+        }
 
-                        // Initiate PATCH request and redirect immediately
-                        fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
-                            method: 'PATCH',
-                            body: apiFormData,
-                        })
-                            .then(async response => {
-                                const responseData = await response.json();
-                                console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
+        // Initiate PATCH request and redirect immediately
+        fetch(`http://192.168.3.75:3001/visitors/${updatedVisitor.id}`, {
+            method: 'PATCH',
+            body: apiFormData,
+        })
+            .then(async response => {
+                const responseData = await response.json();
+                console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
 
-                                if (!response.ok) {
-                                    throw new Error(responseData.message || `HTTP ${response.status}`);
-                                }
-
-                                // Update local visitors array
-                                const index = visitors.findIndex(v => v.id == updatedVisitor.id);
-                                if (index !== -1) {
-                                    visitors[index] = {
-                                        ...visitors[index],
-                                        ...responseData,
-                                        date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
-                                        photo: responseData.photo || visitors[index].photo || null,
-                                        driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
-                                    };
-                                    console.log('Updated visitor in array:', JSON.stringify(visitors[index], null, 2));
-                                    localStorage.setItem('visitors', JSON.stringify(visitors));
-                                } else {
-                                    console.warn('Visitor not found in array for id:', updatedVisitor.id);
-                                }
-
-                                // Update UI after successful update (optional, since user is redirected)
-                                await fetchVisitors();
-                                showMessage('Visitor updated successfully', 'success');
-                            })
-                            .catch(error => {
-                                console.error('Failed to update visitor:', error.message);
-                                showMessage(`Failed to update visitor: ${error.message}`, 'error');
-                            })
-                            .finally(() => {
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = 'Update';
-                            });
-
-                        // Redirect immediately after initiating the request
-                        closeEditModal();
-                    }
-                });
-
-                async function deleteVisitor(id) {
-                    const swalWithBootstrapButtons = window.Swal.mixin({
-                        customClass: {
-                            confirmButton: 'btn btn-secondary',
-                            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-                        },
-                        buttonsStyling: false,
-                    });
-
-                    swalWithBootstrapButtons
-                        .fire({
-                            title: 'Are you sure?',
-                            text: 'This action cannot be undone.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Yes, delete it!',
-                            cancelButtonText: 'No, cancel!',
-                            reverseButtons: true,
-                            padding: '2em',
-                        })
-                        .then(async (result) => {
-                            if (result.isConfirmed) {
-                                try {
-                                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
-                                        method: 'DELETE',
-                                    });
-
-                                    if (!response.ok) {
-                                        const errorData = await response.json();
-                                        throw new Error(errorData.message || `HTTP ${response.status}`);
-                                    }
-
-                                    visitors = visitors.filter(v => v.id != id);
-                                    localStorage.setItem('visitors', JSON.stringify(visitors));
-                                    populateTable();
-                                    showMessage('Visitor deleted successfully', 'success');
-                                } catch (error) {
-                                    console.error('Failed to delete visitor:', error.message);
-                                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
-                                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
-                                }
-                            }
-                        });
+                if (!response.ok) {
+                    throw new Error(responseData.message || `HTTP ${response.status}`);
                 }
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    const selector = document.querySelector('.dataTable-selector');
-                    if (selector) selector.id = 'entriesPerPage';
-                    const input = document.querySelector('.dataTable-input');
-                    if (input) input.id = 'searchInput';
+                // Update local visitors array
+                const index = visitors.findIndex(v => v.id == updatedVisitor.id);
+                if (index !== -1) {
+                    visitors[index] = {
+                        ...visitors[index],
+                        ...responseData,
+                        date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
+                        photo: responseData.photo || visitors[index].photo || null,
+                        driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
+                    };
+                    console.log('Updated visitor in array:', JSON.stringify(visitors[index], null, 2));
+                    localStorage.setItem('visitors', JSON.stringify(visitors));
+                } else {
+                    console.warn('Visitor not found in array for id:', updatedVisitor.id);
+                }
 
-                    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
-                        entriesPerPage = parseInt(this.value);
-                        currentPage = 1;
-                        populateTable();
+                // Update UI after successful update (optional, since user is redirected)
+                await fetchVisitors();
+                showMessage('Visitor updated successfully', 'success');
+            })
+            .catch(error => {
+                console.error('Failed to update visitor:', error.message);
+                showMessage(`Failed to update visitor: ${error.message}`, 'error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Update';
+            });
+
+        // Redirect immediately after initiating the request
+        closeEditModal();
+    }
+});
+
+async function deleteVisitor(id) {
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`http://192.168.3.75:3001/visitors/${id}`, {
+                        method: 'DELETE',
                     });
 
-                    document.getElementById('searchInput')?.addEventListener('input', function () {
-                        searchQuery = this.value;
-                        currentPage = 1;
-                        populateTable();
-                    });
-
-                    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
-                        previewImage(e.target, 'mainPreview');
-                    });
-                    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
-                        previewImage(e.target, 'driverPreview');
-                    });
-
-                    document.getElementById('approveBtn')?.addEventListener('click', async function () {
-                        const visitorId = document.getElementById('edit-id').value;
-                        await updateVisitorStatus(visitorId, 'approve');
-                        setButtonVisibility(visitorId, 'inProgress');
-                        closeEditModal();
-                        await fetchVisitors();
-                    });
-
-                    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
-                        const visitorId = document.getElementById('edit-id').value;
-                        await updateVisitorStatus(visitorId, 'disapprove');
-                        setButtonVisibility(visitorId, 'exit');
-                        closeEditModal();
-                        await fetchVisitors();
-                    });
-
-                    document.getElementById('inProgressBtn')?.addEventListener('click', async function () {
-                        const visitorId = document.getElementById('edit-id').value;
-                        await updateVisitorStatus(visitorId, 'inprogress');
-                        setButtonVisibility(visitorId, 'complete');
-                        closeEditModal();
-                        await fetchVisitors();
-                    });
-
-                    document.getElementById('completeBtn')?.addEventListener('click', async function () {
-                        const visitorId = document.getElementById('edit-id').value;
-                        await updateVisitorStatus(visitorId, 'complete');
-                        setButtonVisibility(visitorId, 'exit');
-                        closeEditModal();
-                        await fetchVisitors();
-                    });
-
-                    document.getElementById('exitBtn')?.addEventListener('click', async function () {
-                        const visitorId = document.getElementById('edit-id').value;
-                        await updateVisitorStatus(visitorId, 'exit');
-                        setButtonVisibility(visitorId, 'none');
-                        closeEditModal();
-                        await fetchVisitors();
-                    });
-
-                    fetchVisitors();
-
-                    if (sessionStorage.getItem('visitorCreated') === 'true') {
-                        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
-                        sessionStorage.removeItem('visitorCreated');
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || `HTTP ${response.status}`);
                     }
-                });</script>
+
+                    visitors = visitors.filter(v => v.id != id);
+                    localStorage.setItem('visitors', JSON.stringify(visitors));
+                    populateTable();
+                    showMessage('Visitor deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Failed to delete visitor:', error.message);
+                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
+                }
+            }
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.querySelector('.dataTable-selector');
+    if (selector) selector.id = 'entriesPerPage';
+    const input = document.querySelector('.dataTable-input');
+    if (input) input.id = 'searchInput';
+
+    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
+        entriesPerPage = parseInt(this.value);
+        currentPage = 1;
+        populateTable();
+    });
+
+    document.getElementById('searchInput')?.addEventListener('input', function () {
+        searchQuery = this.value;
+        currentPage = 1;
+        populateTable();
+    });
+
+    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
+        previewImage(e.target, 'mainPreview');
+    });
+    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
+        previewImage(e.target, 'driverPreview');
+    });
+
+    document.getElementById('approveBtn')?.addEventListener('click', async function () {
+        const visitorId = document.getElementById('edit-id').value;
+        await updateVisitorStatus(visitorId, 'approve');
+        setButtonVisibility(visitorId, 'complete');
+        closeEditModal();
+        await fetchVisitors();
+    });
+
+    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
+        const visitorId = document.getElementById('edit-id').value;
+        await updateVisitorStatus(visitorId, 'disapprove');
+        setButtonVisibility(visitorId, 'exit');
+        closeEditModal();
+        await fetchVisitors();
+    });
+
+    document.getElementById('completeBtn')?.addEventListener('click', async function () {
+        const visitorId = document.getElementById('edit-id').value;
+        await updateVisitorStatus(visitorId, 'complete');
+        setButtonVisibility(visitorId, 'exit');
+        closeEditModal();
+        await fetchVisitors();
+    });
+
+    document.getElementById('exitBtn')?.addEventListener('click', async function () {
+        const visitorId = document.getElementById('edit-id').value;
+        await updateVisitorStatus(visitorId, 'exit');
+        setButtonVisibility(visitorId, 'none');
+        closeEditModal();
+        await fetchVisitors();
+    });
+
+    fetchVisitors();
+
+    if (sessionStorage.getItem('visitorCreated') === 'true') {
+        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
+        sessionStorage.removeItem('visitorCreated');
+    }
+});
+            </script>
 
 
 
