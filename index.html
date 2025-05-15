@@ -2853,207 +2853,209 @@
 
                 <!-- Existing Tables -->
                 <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
-                    <!-- Upcoming Appointment Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Upcoming Appointment</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                        
-                                        </tr>
-                                    </thead>
-                                    <tbody x-data="appointments" x-init="fetchAppointments()">
-                                        <template x-for="appointment in appointmentsList" :key="appointment.id">
-                                          <tr>
-                                            <td x-text="appointment.firstname"></td>
-                                            <td x-text="appointment.lastname"></td>
-                                            <td x-text="appointment.date"></td>
-                                            <td x-text="appointment.time"></td>
-                                            <td x-text="appointment.personname"></td>
-                                            <td x-text="appointment.visit"></td>
-                                          </tr>
-                                        </template>
-                                      </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+  <!-- Upcoming Appointment Table -->
+  <div class="panel">
+    <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
+    <div class="overflow-x-auto">
+      <div class="table-container">
+        <table id="myTable" class="table-hover whitespace-nowrap w-full">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date</th>
+              <th>Allocated Time</th>
+              <th>Host</th>
+              <th>Purpose</th>
+              <th>National ID</th>
+              <th>Pending Approval</th>
+              <th>InCampus</th>
+              <th>Complete</th>
+              <th>Exit Approval</th>
+            </tr>
+          </thead>
+          <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
+            <template x-if="appointmentsList.length === 0">
+              <tr>
+                <td colspan="11" class="text-center">No visitors available</td>
+              </tr>
+            </template>
+            <template x-for="(appointment, index) in appointmentsList" :key="appointment.id">
+              <tr>
+                <td x-text="appointment.firstName"></td>
+                <td x-text="appointment.lastName"></td>
+                <td x-text="appointment.date"></td>
+                <td x-text="appointment.allocatedTime"></td>
+                <td x-text="appointment.host"></td>
+                <td x-text="appointment.purpose"></td>
+                <td x-text="appointment.nationalId"></td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="approval-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].pendingApproval"
+                    x-bind:checked="appointmentsList[index].pendingApproval"
+                    disabled
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="progress-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].inCampus"
+                    x-bind:checked="appointmentsList[index].inCampus"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="complete-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].complete"
+                    x-bind:checked="appointmentsList[index].complete"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="exit-checkbox"
+                    :data-id="appointment.id"
+                    x-model="appointmentsList[index].exitApproval"
+                    x-bind:checked="appointmentsList[index].exitApproval"
+                    @change="updateAppointment(appointmentsList[index])"
+                  >
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-                    <!-- Today's Visitor Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Today's Visitor</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody x-data="appointments" x-init="fetchAppointments()">
-                                        <template x-for="appointment in appointmentsList" :key="appointment.id">
-                                          <tr>
-                                            <td x-text="appointment.firstname"></td>
-                                            <td x-text="appointment.lastname"></td>
-                                            <td x-text="appointment.date"></td>
-                                            <td x-text="appointment.time"></td>
-                                            <td x-text="appointment.personname"></td>
-                                            <td x-text="appointment.visit"></td>
-                                          </tr>
-                                        </template>
-                                      </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Today's Visitor Table -->
+  <div class="panel">
+    <h3 class="mb-2 text-lg"><b>Today's Visitor</b></h3>
+    <div class="overflow-x-auto">
+      <div class="table-container">
+        <table id="myTable" class="table-hover whitespace-nowrap w-full">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date</th>
+              <th>Allocated Time</th>
+              <th>Host</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody x-data="appointments" x-init="fetchAppointments()">
+            <template x-for="appointment in appointmentsList" :key="appointment.id">
+              <tr>
+                <td x-text="appointment.firstname"></td>
+                <td x-text="appointment.lastname"></td>
+                <td x-text="appointment.date"></td>
+                <td x-text="appointment.time"></td>
+                <td x-text="appointment.personname"></td>
+                <td x-text="appointment.visit"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <div class="mb-5 grid grid-cols-1">
-                    <!-- Visitor Details Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                            <th>National ID</th>
-                                            <th>Pending Approval</th>
-                                            <th>InCampus</th>
-                                            <th>Complete</th>
-                                            <th>Exit Approval</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="visitorDetailTableBody">
-                                        <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>2025-05-13</td>
-                                            <td>10:00 AM</td>
-                                            <td>Jane Smith</td>
-                                            <td>Meeting</td>
-                                            <td>ID12345</td>
-                                            <td><input type="checkbox" class="approval-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="progress-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="complete-checkbox" data-id="1"></td>
-                                            <td><input type="checkbox" class="exit-checkbox" data-id="1"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="mb-5 grid grid-cols-1">
+  <!-- Visitor Details Table -->
+  <div class="panel">
+  <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
+  <div class="overflow-x-auto">
+    <div class="table-container">
+      <table id="myTable" class="table-hover whitespace-nowrap w-full">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date</th>
+            <th>Allocated Time</th>
+            <th>Host</th>
+            <th>Purpose</th>
+            <th>National ID</th>
+            <th>Pending Approval</th>
+            <th>InCampus</th>
+            <th>Complete</th>
+            <th>Exit Approval</th>
+          </tr>
+        </thead>
+        <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
+          <template x-if="appointmentsList.length === 0">
+            <tr>
+              <td colspan="11" class="text-center">No visitors available</td>
+            </tr>
+          </template>
+          <template x-for="(appointment, index) in appointmentsList" :key="appointment.id">
+            <tr>
+              <td x-text="appointment.firstName"></td>
+              <td x-text="appointment.lastName"></td>
+              <td x-text="appointment.date"></td>
+              <td x-text="appointment.allocatedTime"></td>
+              <td x-text="appointment.host"></td>
+              <td x-text="appointment.purpose"></td>
+              <td x-text="appointment.nationalId"></td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="approval-checkbox"
+                  :data-id="appointment.id"
+                  x-model="appointmentsList[index].pendingApproval"
+                  x-bind:checked="appointmentsList[index].pendingApproval"
+                  disabled
+                >
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="progress-checkbox"
+                  :data-id="appointment.id"
+                  x-model="appointmentsList[index].inCampus"
+                  x-bind:checked="appointmentsList[index].inCampus"
+                  @change="updateAppointment(appointmentsList[index])"
+                >
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="complete-checkbox"
+                  :data-id="appointment.id"
+                  x-model="appointmentsList[index].complete"
+                  x-bind:checked="appointmentsList[index].complete"
+                  @change="updateAppointment(appointmentsList[index])"
+                >
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="exit-checkbox"
+                  :data-id="appointment.id"
+                  x-model="appointmentsList[index].exitApproval"
+                  x-bind:checked="appointmentsList[index].exitApproval"
+                  @change="updateAppointment(appointmentsList[index])"
+                >
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
             </div>
             <!-- end main content section -->
 
@@ -3077,506 +3079,361 @@
     <script src="assets/js/custom.js"></script>
 
     <!-- Backend sript -->
-   <script>
+    <script>
     document.addEventListener('alpine:init', () => {
-  // Main section
-  Alpine.data('scrollToTop', () => ({
-    showTopButton: false,
-    init() {
-      window.onscroll = () => {
-        this.scrollFunction();
-      };
-    },
+      // Main section
+      Alpine.data('scrollToTop', () => ({
+        showTopButton: false,
+        init() {
+          window.onscroll = () => {
+            this.scrollFunction();
+          };
+        },
 
-    scrollFunction() {
-      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        this.showTopButton = true;
-      } else {
-        this.showTopButton = false;
-      }
-    },
-
-    goToTop() {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    },
-  }));
-
-  // Theme customization
-  Alpine.data('customizer', () => ({
-    showCustomizer: false,
-  }));
-
-  // Sidebar section
-  Alpine.data('sidebar', () => ({
-    init() {
-      const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
-      if (selector) {
-        selector.classList.add('active');
-        const ul = selector.closest('ul.sub-menu');
-        if (ul) {
-          let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
-          if (ele) {
-            ele = ele[0];
-            setTimeout(() => {
-              ele.click();
-            });
+        scrollFunction() {
+          if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            this.showTopButton = true;
+          } else {
+            this.showTopButton = false;
           }
-        }
-      }
-    },
-  }));
+        },
 
-  // Header section
-  Alpine.data('header', () => ({
-    init() {
-      const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location.pathname + '"]');
-      if (selector) {
-        selector.classList.add('active');
-        const ul = selector.closest('ul.sub-menu');
-        if (ul) {
-          let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
-          if (ele) {
-            ele = ele[0];
-            setTimeout(() => {
-              ele.classList.add('active');
-            });
+        goToTop() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        },
+      }));
+
+      // Theme customization
+      Alpine.data('customizer', () => ({
+        showCustomizer: false,
+      }));
+
+      // Sidebar section
+      Alpine.data('sidebar', () => ({
+        init() {
+          const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+          if (selector) {
+            selector.classList.add('active');
+            const ul = selector.closest('ul.sub-menu');
+            if (ul) {
+              let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
+              if (ele) {
+                ele = ele[0];
+                setTimeout(() => {
+                  ele.click();
+                });
+              }
+            }
           }
-        }
-      }
-    },
+        },
+      }));
 
-    notifications: [
-      {
-        id: 1,
-        profile: 'user-profile.jpeg',
-        message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
-        time: '45 min ago',
-      },
-      {
-        id: 2,
-        profile: 'profile-34.jpeg',
-        message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
-        time: '9h Ago',
-      },
-      {
-        id: 3,
-        profile: 'profile-16.jpeg',
-        message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
-        time: '9h Ago',
-      },
-    ],
+      // Appointments
+      Alpine.data('appointments', () => ({
+        appointmentsList: [],
+        languages: [
+          { id: 1, key: 'Chinese', value: 'zh' },
+          { id: 2, key: 'Danish', value: 'da' },
+          { id: 3, key: 'English', value: 'en' },
+          { id: 4, key: 'French', value: 'fr' },
+          { id: 5, key: 'German', value: 'de' },
+          { id: 6, key: 'Greek', value: 'el' },
+          { id: 7, key: 'Hungarian', value: 'hu' },
+          { id: 8, key: 'Italian', value: 'it' },
+          { id: 9, key: 'Japanese', value: 'ja' },
+          { id: 10, key: 'Polish', value: 'pl' },
+          { id: 11, key: 'Portuguese', value: 'pt' },
+          { id: 12, key: 'Russian', value: 'ru' },
+          { id: 13, key: 'Spanish', value: 'es' },
+          { id: 14, key: 'Swedish', value: 'sv' },
+          { id: 15, key: 'Turkish', value: 'tr' },
+          { id: 16, key: 'Arabic', value: 'ae' },
+        ],
+        removeNotification(value) {
+          this.notifications = this.notifications.filter((d) => d.id !== value);
+        },
+        removeMessage(value) {
+          this.messages = this.messages.filter((d) => d.id !== value);
+        },
+        async fetchAppointments() {
+          try {
+            const response = await fetch('http://192.168.3.75:3001/visitors');
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            const apiData = Array.isArray(data)
+              ? data.map(item => ({
+                  id: item.id,
+                  firstName: item.firstname || 'Unknown',
+                  lastName: item.lastname || 'Unknown',
+                  date: item.date || 'N/A',
+                  allocatedTime: item.time || 'N/A',
+                  host: item.personname || 'Unknown',
+                  purpose: item.visit || 'N/A',
+                  nationalId: item.nationalid || 'N/A',
+                  pendingApproval: item.isApproved ?? true,
+                  inCampus: item.inprogress ?? false,
+                  complete: item.complete ?? false,
+                  exitApproval: item.exit ?? false,
+                  firstname: item.firstname || 'Unknown',
+                  lastname: item.lastname || 'Unknown',
+                  time: item.time || 'N/A',
+                  personname: item.personname || 'Unknown',
+                  visit: item.visit || 'N/A',
+                }))
+              : (data.data || []).map(item => ({
+                  id: item.id,
+                  firstName: item.firstname || 'Unknown',
+                  lastName: item.lastname || 'Unknown',
+                  date: item.date || 'N/A',
+                  allocatedTime: item.time || 'N/A',
+                  host: item.personname || 'Unknown',
+                  purpose: item.visit || 'N/A',
+                  nationalId: item.nationalid || 'N/A',
+                  pendingApproval: item.isApproved ?? true,
+                  inCampus: item.inprogress ?? false,
+                  complete: item.complete ?? false,
+                  exitApproval: item.exit ?? false,
+                  firstname: item.firstname || 'Unknown',
+                  lastname: item.lastname || 'Unknown',
+                  time: item.time || 'N/A',
+                  personname: item.personname || 'Unknown',
+                  visit: item.visit || 'N/A',
+                }));
+            this.appointmentsList = apiData;
+            if (this.appointmentsList.length === 0) {
+              this.showMessage('No visitors found.', 'info');
+            }
+          } catch (error) {
+            console.error('Error fetching visitors:', error);
+            this.showMessage('Failed to load visitors.', 'error');
+          }
+        },
+        async updateAppointment(appointment) {
+          try {
+            let status;
+            if (appointment.pendingApproval !== undefined) {
+              status = appointment.pendingApproval ? 'approve' : 'disapprove';
+            } else if (appointment.inCampus !== undefined) {
+              status = 'inprogress';
+            } else if (appointment.complete !== undefined) {
+              status = 'complete';
+            } else if (appointment.exitApproval !== undefined) {
+              status = 'exit';
+            }
 
-    messages: [
-      {
-        id: 1,
-        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-success-light dark:bg-success text-success dark:text-success-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>',
-        title: 'Congratulations!',
-        message: 'Your OS has been updated.',
-        time: '1hr',
-      },
-      {
-        id: 2,
-        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-info-light dark:bg-info text-info dark:text-info-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></span>',
-        title: 'Did you know?',
-        message: 'You can switch between artboards.',
-        time: '2hr',
-      },
-      {
-        id: 3,
-        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-danger-light dark:bg-danger text-danger dark:text-danger-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>',
-        title: 'Something went wrong!',
-        message: 'Send Report',
-        time: '2days',
-      },
-      {
-        id: 4,
-        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-warning-light dark:bg-warning text-warning dark:text-warning-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">    <circle cx="12" cy="12" r="10"></circle>    <line x1="12" y1="8" x2="12" y2="12"></line>    <line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>',
-        title: 'Warning',
-        message: 'Your password strength is low.',
-        time: '5days',
-      },
-    ],
+            if (status) {
+              const response = await fetch(`http://192.168.3.75:3001/visitors/${appointment.id}/status/${status}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+              });
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              this.showMessage('Visitor status updated successfully.');
+            } else {
+              throw new Error('No status change detected.');
+            }
+          } catch (error) {
+            console.error('Error updating visitor status:', error);
+            this.showMessage('Failed to update visitor status.', 'error');
+          }
+        },
+        showMessage(msg = '', type = 'success') {
+          const toast = window.Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+          });
+        },
+      }));
 
-    languages: [
-      { id: 1, key: 'Chinese', value: 'zh' },
-      { id: 2, key: 'Danish', value: 'da' },
-      { id: 3, key: 'English', value: 'en' },
-      { id: 4, key: 'French', value: 'fr' },
-      { id: 5, key: 'German', value: 'de' },
-      { id: 6, key: 'Greek', value: 'el' },
-      { id: 7, key: 'Hungarian', value: 'hu' },
-      { id: 8, key: 'Italian', value: 'it' },
-      { id: 9, key: 'Japanese', value: 'ja' },
-      { id: 10, key: 'Polish', value: 'pl' },
-      { id: 11, key: 'Portuguese', value: 'pt' },
-      { id: 12, key: 'Russian', value: 'ru' },
-      { id: 13, key: 'Spanish', value: 'es' },
-      { id: 14, key: 'Swedish', value: 'sv' },
-      { id: 15, key: 'Turkish', value: 'tr' },
-      { id: 16, key: 'Arabic', value: 'ae' },
-    ],
+      // Notes
+      Alpine.data('notes', () => ({
+        defaultParams: {
+          id: null,
+          title: '',
+          description: '',
+          tag: '',
+          user: '',
+          thumb: '',
+        },
+        isAddNoteModal: false,
+        isDeleteNoteModal: false,
+        isViewNoteModal: false,
+        params: {
+          id: null,
+          title: '',
+          description: '',
+          tag: '',
+          user: '',
+          thumb: '',
+        },
+        isShowNoteMenu: false,
+        notesList: [
+          {
+            id: 1,
+            user: 'Max Smith',
+            thumb: 'profile-16.jpeg',
+            title: 'Meeting with Kelly',
+            description: 'Curabitur facilisis vel elit sed dapibus sodales purus rhoncus.',
+            date: '11/01/2020',
+            isFav: false,
+            tag: 'personal',
+          },
+        ],
+        filterdNotesList: '',
+        selectedTab: 'all',
+        deletedNote: null,
+        selectedNote: {
+          id: null,
+          title: '',
+          description: '',
+          tag: '',
+          user: '',
+          thumb: '',
+        },
 
-    removeNotification(value) {
-      this.notifications = this.notifications.filter((d) => d.id !== value);
-    },
+        init() {
+          this.searchNotes();
+        },
 
-    removeMessage(value) {
-      this.messages = this.messages.filter((d) => d.id !== value);
-    },
-  }));
+        searchNotes() {
+          if (this.selectedTab != 'fav') {
+            if (this.selectedTab != 'all' || this.selectedTab === 'delete') {
+              this.filterdNotesList = this.notesList.filter((d) => d.tag === this.selectedTab);
+            } else {
+              this.filterdNotesList = this.notesList;
+            }
+          } else {
+            this.filterdNotesList = this.notesList.filter((d) => d.isFav);
+          }
+        },
 
-  // Notes
-  Alpine.data('notes', () => ({
-    defaultParams: {
-      id: null,
-      title: '',
-      description: '',
-      tag: '',
-      user: '',
-      thumb: '',
-    },
-    isAddNoteModal: false,
-    isDeleteNoteModal: false,
-    isViewNoteModal: false,
-    params: {
-      id: null,
-      title: '',
-      description: '',
-      tag: '',
-      user: '',
-      thumb: '',
-    },
-    isShowNoteMenu: false,
-    notesList: [
-      {
-        id: 1,
-        user: 'Max Smith',
-        thumb: 'profile-16.jpeg',
-        title: 'Meeting with Kelly',
-        description: 'Curabitur facilisis vel elit sed dapibus sodales purus rhoncus.',
-        date: '11/01/2020',
-        isFav: false,
-        tag: 'personal',
-      },
-      // ... other notes remain unchanged
-    ],
-    filterdNotesList: '',
-    selectedTab: 'all',
-    deletedNote: null,
-    selectedNote: {
-      id: null,
-      title: '',
-      description: '',
-      tag: '',
-      user: '',
-      thumb: '',
-    },
+        saveNote() {
+          if (!this.params.title) {
+            this.showMessage('Title is required.', 'error');
+            return false;
+          }
+          if (this.params.id) {
+            let note = this.notesList.find((d) => d.id === this.params.id);
+            note.title = this.params.title;
+            note.user = this.params.user;
+            note.description = this.params.description;
+            note.tag = this.params.tag;
+          } else {
+            let maxNoteId = this.notesList.length
+              ? this.notesList.reduce((max, character) => (character.id > max ? character.id : max), this.notesList[0].id)
+              : 0;
+            if (!maxNoteId) {
+              maxNoteId = 0;
+            }
+            let dt = new Date();
+            let note = {
+              id: maxNoteId + 1,
+              title: this.params.title,
+              user: this.params.user,
+              thumb: 'profile-21.jpeg',
+              description: this.params.description,
+              date: dt.getDate() + '/' + Number(dt.getMonth() + 1) + '/' + dt.getFullYear(),
+              isFav: false,
+              tag: this.params.tag,
+            };
+            this.notesList.splice(0, 0, note);
+            this.searchNotes();
+          }
 
-    init() {
-      this.searchNotes();
-    },
+          this.showMessage('Note has been saved successfully.');
+          this.isAddNoteModal = false;
+          this.searchNotes();
+        },
 
-    searchNotes() {
-      if (this.selectedTab != 'fav') {
-        if (this.selectedTab != 'all' || this.selectedTab === 'delete') {
-          this.filterdNotesList = this.notesList.filter((d) => d.tag === this.selectedTab);
-        } else {
-          this.filterdNotesList = this.notesList;
-        }
-      } else {
-        this.filterdNotesList = this.notesList.filter((d) => d.isFav);
-      }
-    },
+        tabChanged(type) {
+          this.selectedTab = type;
+          this.searchNotes();
+          this.isShowNoteMenu = false;
+        },
 
-    saveNote() {
-      if (!this.params.title) {
-        this.showMessage('Title is required.', 'error');
-        return false;
-      }
-      if (this.params.id) {
-        let note = this.notesList.find((d) => d.id === this.params.id);
-        note.title = this.params.title;
-        note.user = this.params.user;
-        note.description = this.params.description;
-        note.tag = this.params.tag;
-      } else {
-        let maxNoteId = this.notesList.length
-          ? this.notesList.reduce((max, character) => (character.id > max ? character.id : max), this.notesList[0].id)
-          : 0;
-        if (!maxNoteId) {
-          maxNoteId = 0;
-        }
-        let dt = new Date();
-        let note = {
-          id: maxNoteId + 1,
-          title: this.params.title,
-          user: this.params.user,
-          thumb: 'profile-21.jpeg',
-          description: this.params.description,
-          date: dt.getDate() + '/' + Number(dt.getMonth() + 1) + '/' + dt.getFullYear(),
-          isFav: false,
-          tag: this.params.tag,
-        };
-        this.notesList.splice(0, 0, note);
-        this.searchNotes();
-      }
+        setFav(note) {
+          let item = this.filterdNotesList.find((d) => d.id === note.id);
+          item.isFav = !item.isFav;
+          this.searchNotes();
+        },
 
-      this.showMessage('Note has been saved successfully.');
-      this.isAddNoteModal = false;
-      this.searchNotes();
-    },
+        setTag(note, name) {
+          let item = this.filterdNotesList.find((d) => d.id === note.id);
+          item.tag = name;
+          this.searchNotes();
+        },
 
-    tabChanged(type) {
-      this.selectedTab = type;
-      this.searchNotes();
-      this.isShowNoteMenu = false;
-    },
+        deleteNoteConfirm(note) {
+          setTimeout(() => {
+            this.deletedNote = note;
+            this.isDeleteNoteModal = true;
+          });
+        },
 
-    setFav(note) {
-      let item = this.filterdNotesList.find((d) => d.id === note.id);
-      item.isFav = !item.isFav;
-      this.searchNotes();
-    },
+        viewNote(note) {
+          setTimeout(() => {
+            this.selectedNote = note;
+            this.isViewNoteModal = true;
+          });
+        },
 
-    setTag(note, name) {
-      let item = this.filterdNotesList.find((d) => d.id === note.id);
-      item.tag = name;
-      this.searchNotes();
-    },
+        editNote(note) {
+          this.isShowNoteMenu = false;
+          setTimeout(() => {
+            this.params = JSON.parse(JSON.stringify(this.defaultParams));
+            if (note) {
+              this.params = JSON.parse(JSON.stringify(note));
+            }
+            this.isAddNoteModal = true;
+          });
+        },
 
-    deleteNoteConfirm(note) {
-      setTimeout(() => {
-        this.deletedNote = note;
-        this.isDeleteNoteModal = true;
+        deleteNote() {
+          this.notesList = this.notesList.filter((d) => d.id != this.deletedNote.id);
+          this.searchNotes();
+          this.showMessage('Note has been deleted successfully.');
+          this.isDeleteNoteModal = false;
+        },
+
+        showMessage(msg = '', type = 'success') {
+          const toast = window.Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+          });
+        },
+      }));
+    });
+
+    // New script to disable and check all Pending Approval checkboxes
+    document.addEventListener('DOMContentLoaded', () => {
+      // Select all checkboxes with class 'approval-checkbox'
+      const approvalCheckboxes = document.querySelectorAll('.approval-checkbox');
+      
+      // Loop through each checkbox and set it to checked and disabled
+      approvalCheckboxes.forEach(checkbox => {
+        checkbox.checked = true; // Set checkbox to checked
+        checkbox.disabled = true; // Ensure checkbox is disabled
       });
-    },
-
-    viewNote(note) {
-      setTimeout(() => {
-        this.selectedNote = note;
-        this.isViewNoteModal = true;
-      });
-    },
-
-    editNote(note) {
-      this.isShowNoteMenu = false;
-      setTimeout(() => {
-        this.params = JSON.parse(JSON.stringify(this.defaultParams));
-        if (note) {
-          this.params = JSON.parse(JSON.stringify(note));
-        }
-        this.isAddNoteModal = true;
-      });
-    },
-
-    deleteNote() {
-      this.notesList = this.notesList.filter((d) => d.id != this.deletedNote.id);
-      this.searchNotes();
-      this.showMessage('Note has been deleted successfully.');
-      this.isDeleteNoteModal = false;
-    },
-
-    showMessage(msg = '', type = 'success') {
-      const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      toast.fire({
-        icon: type,
-        title: msg,
-        padding: '10px 20px',
-      });
-    },
-  }));
-
-  // Appointments
-  Alpine.data('appointments', () => ({
-    appointmentsList: [
-      {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 2,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 3,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 4,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 5,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 6,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 7,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-      {
-        id: 8,
-        firstName: 'John',
-        lastName: 'Doe',
-        date: '2025-05-13',
-        allocatedTime: '10:00 AM',
-        host: 'Jane Smith',
-        purpose: 'Meeting',
-        nationalId: 'ID12345',
-        pendingApproval: true,
-        inCampus: false,
-        complete: false,
-        exitApproval: false,
-      },
-    ],
-    async fetchAppointments() {
-      try {
-        const response = await fetch('http://192.168.3.74:3001/appointment');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        const apiData = Array.isArray(data)
-          ? data.map(item => ({
-              ...item,
-              pendingApproval: item.pendingApproval ?? true,
-              inCampus: item.inCampus ?? false,
-              complete: item.complete ?? false,
-              exitApproval: item.exitApproval ?? false,
-            }))
-          : (data.data || []).map(item => ({
-              ...item,
-              pendingApproval: item.pendingApproval ?? true,
-              inCampus: item.inCampus ?? false,
-              complete: item.complete ?? false,
-              exitApproval: item.exitApproval ?? false,
-            }));
-        this.appointmentsList = apiData.length > 0 ? apiData : this.appointmentsList;
-        if (this.appointmentsList.length === 0) {
-          this.showMessage('No appointments found.', 'info');
-        }
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
-        this.showMessage('Failed to load appointments, using static data.', 'warning');
-      }
-    },
-    async updateAppointment(appointment) {
-      try {
-        const response = await fetch(`http://192.168.3.74:3001/appointment/${appointment.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            pendingApproval: appointment.pendingApproval,
-            inCampus: appointment.inCampus,
-            complete: appointment.complete,
-            exitApproval: appointment.exitApproval,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        this.showMessage('Appointment updated successfully.');
-      } catch (error) {
-        console.error('Error updating appointment:', error);
-        this.showMessage('Failed to update appointment.', 'error');
-      }
-    },
-    showMessage(msg = '', type = 'success') {
-      const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      toast.fire({
-        icon: type,
-        title: msg,
-        padding: '10px 20px',
-      });
-    },
-  }));
-});
-   </script>
-
+    });
+  </script>
 
 
     <!-- login-logout frontend script -->
@@ -3593,7 +3450,7 @@
             window.location.href = 'signin.html';
         }
     </script>
-    
+
 <!-- Theme script -->
     <script>
         document.addEventListener('alpine:init', () => {
