@@ -3001,7 +3001,7 @@
                                             </select>
                                             <span class="error-message" id="error-userRoleId"></span>
                                             <script>
-                                                fetch('http://192.168.3.73:3001/userroles/active')
+                                                fetch('http://192.168.3.74:3001/userroles/active')
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         const select = document.getElementById('UserRoleId');
@@ -3096,7 +3096,7 @@
                                             </select>
                                             <span class="error-message" id="error-edituserRoleId"></span>
                                             <script>
-                                                fetch('http://192.168.3.73:3001/userroles/active')
+                                                fetch('http://192.168.3.74:3001/userroles/active')
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         const select = document.getElementById('editUserRoleId');
@@ -3146,7 +3146,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
     <script>
         // Configurable backend URL
-        const BASE_URL = 'http://192.168.3.73:3001'; // Change to 3002 if port updated
+        const BASE_URL = 'http://192.168.3.74:3001'; // Change to 3002 if port updated
 
         let currentPage = 1;
         let entriesPerPage = 10;
