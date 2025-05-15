@@ -10,6 +10,30 @@
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+
+.choose-photo-btn {
+  height: 38px;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+
+.photo-preview {
+  height: 38px;
+  width: auto;
+  object-fit: cover;
+  display: none;
+  transition: transform 0.3s ease;
+}
+
+.photo-preview[src]:not([src=""]) {
+  display: inline-block;
+}
+
+.photo-preview:hover {
+  transform: scale(4.5);
+  z-index: 10;
+}
+
         body {
             font-family: 'Poppins', sans-serif;
         }
@@ -61,7 +85,8 @@
 
         .form-group input,
         .form-group select,
-        .form-group textarea {
+        .form-group textarea
+         {
             width: 100%;
         }
 
@@ -238,7 +263,7 @@
                         </div>
 
                         <div class="flex sm:flex-row flex-col items-center">
-                            <label for="date" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Date</label>
+                            <label for="date" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Meeting Date</label>
                             <div class="form-group">
                                 <input type="date" id="date" name="date"
                                     class="w-full text-xs px-3 py-2 border rounded" />
@@ -247,7 +272,7 @@
                         </div>
 
                         <div class="flex sm:flex-row flex-col items-center">
-                            <label for="time" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Time</label>
+                            <label for="time" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">MetinTime</label>
                             <div class="form-group">
                                 <input type="time" id="time" name="time"
                                     class="w-full text-xs px-3 py-2 border rounded" />
@@ -264,28 +289,60 @@
                             </div>
                         </div>
 
-                        <div class="flex sm:flex-row flex-col items-center">
-                            <label for="photo" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Visitor Photo</label>
-                            <div class="form-group">
-                                <input type="file" id="photo" name="photo" accept="image/*"
-                                    onchange="previewImage(this, 'mainPreview')" />
-                                <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                    onclick="showModal('photo')">Choose Photo</button>
-                                <span class="error text-xs text-red-500" id="error-photo"></span>
-                                <div class="sm:col-span-2">
-                                    <img id="mainPreview" class="w-24 h-16 rounded border hidden" />
-                                </div>
-                            </div>
-                        </div>
+<div class="flex sm:flex-row flex-col items-start mb-3">
+  <label for="photo" class="w-40 text-sm font-medium pt-2">Visitor Photo</label>
 
-                        <div class="flex sm:flex-row flex-col items-center">
-                            <label for="visit" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Purpose of Visit</label>
-                            <div class="form-group">
-                                <input type="text" id="visit" name="visit" placeholder="Enter visit purpose"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-xs text-red-500" id="error-visit"></span>
-                            </div>
-                        </div>
+  <div class="w-full">
+    <input type="file" id="photo" name="photo" accept="image/*"
+           onchange="previewImage(this, 'mainPreview')" class="hidden" />
+
+    <div class="flex items-center gap-2">
+      <button type="button"
+              class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+              onclick="showModal('photo')">Choose Photo</button>
+
+      <img id="mainPreview" class="photo-preview rounded border" alt="Preview" />
+    </div>
+
+    <span class="error text-xs text-red-500 block mt-1" id="error-photo"></span>
+  </div>
+</div>
+
+
+
+
+
+                            <div class="flex sm:flex-row flex-col items-center">
+                                    <label for="visit"
+                                        class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Purpose of
+                                        Visit</label>
+                                <div class="form-group">
+                                    <select id="visit" name="visit"
+                                        class="tw-full text-xs px-3 py-2 border rounded">
+                                        <option value="">Select purpose</option>
+                                        <option value="Business Meeting">Business Meeting</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Delivery">Delivery</option>
+                                        <option value="Maintenance/Service">Maintenance/Service</option>
+                                        <option value="Training/Workshop">Training/Workshop</option>
+                                        <option value="Official Visit">Official Visit</option>
+                                        <option value="Personal Visit">Personal Visit</option>
+                                        <option value="Client Meeting">Client Meeting</option>
+                                        <option value="Vendor Meeting">Vendor Meeting</option>
+                                        <option value="Site Inspection">Site Inspection</option>
+                                        <option value="Audit">Audit</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Medical Appointment">Medical Appointment</option>
+                                        <option value="Student Admission">Student Admission</option>
+                                        <option value="Others">Others (please specify)</option>
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
+                                    <span class="error text-xs text-red-500" id="error-visit"></span>
+                                    </div>
+                                </div>
 
                         <div class="flex sm:flex-row flex-col items-center">
                             <label for="personname" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Person Name</label>
@@ -404,20 +461,25 @@
                                     <span class="error text-xs text-red-500" id="error-drivernationalid"></span>
                                 </div>
                             </div>
-                            <div class="flex sm:flex-row flex-col items-center">
-                                <label for="driverphoto" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Driver
-                                    Photo</label>
-                                <div class="form-group">
-                                    <input type="file" id="driverphoto" name="driverphoto" accept="image/*"
-                                        onchange="previewImage(this, 'driverPreview')" />
-                                    <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                        onclick="showModal('driverphoto')">Choose Photo</button>
-                                    <span class="error text-xs text-red-500" id="error-driverphoto"></span>
-                                    <div class="sm:col-span-2">
-                                        <img id="driverPreview" class="w-24 h-16 rounded border hidden" />
-                                    </div>
-                                </div>
-                            </div>
+<div class="flex sm:flex-row flex-col items-start mb-3">
+  <label for="driverphoto" class="w-40 text-sm font-medium pt-2">Driver Photo</label>
+
+  <div class="w-full">
+    <input type="file" id="driverphoto" name="driverphoto" accept="image/*"
+           onchange="previewImage(this, 'driverPreview')" class="hidden" />
+
+    <div class="flex items-center gap-2">
+      <button type="button"
+              class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+              onclick="showModal('driverphoto')">Choose Photo</button>
+
+      <img id="driverPreview" class="photo-preview rounded border" alt="Preview" />
+    </div>
+
+    <span class="error text-xs text-red-500 block mt-1" id="error-driverphoto"></span>
+  </div>
+</div>
+
                         </div>
                     </div>
 
