@@ -1534,7 +1534,7 @@
                                 </ul>
                             </li> -->
 
-                        <!-- <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <svg
                                     class="hidden h-5 w-4 flex-none"
                                     viewBox="0 0 24 24"
@@ -1546,11 +1546,11 @@
                                 >
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                 </svg>
-                                <span>SUPPORTS</span>
-                            </h2> -->
+                                <span>SETTINGS</span>
+                            </h2> 
 
-                        <!-- <li class="menu nav-item">
-                                <a href="https://vristo.sbthemes.com" target="_blank" class="nav-link group">
+                         <li class="menu nav-item">
+                                <a href="Spotdropdownsettings.html" target="_blank" class="nav-link group">
                                     <div class="flex items-center">
                                         <svg
                                             class="shrink-0 group-hover:!text-primary"
@@ -1572,10 +1572,10 @@
                                                 fill="currentColor"
                                             />
                                         </svg>
-                                        <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Documentation</span>
+                                        <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Spot Dropdown Settings</span>
                                     </div>
                                 </a>
-                            </li> -->
+                            </li>
                     </ul>
                 </div>
             </nav>
@@ -3510,7 +3510,7 @@
     ],
     async fetchAppointments() {
       try {
-        const response = await fetch('http://192.168.3.75:3001/appointment');
+        const response = await fetch('http://192.168.3.74:3001/appointment');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -3541,7 +3541,7 @@
     },
     async updateAppointment(appointment) {
       try {
-        const response = await fetch(`http://192.168.3.75:3001/appointment/${appointment.id}`, {
+        const response = await fetch(`http://192.168.3.74:3001/appointment/${appointment.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
