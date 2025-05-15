@@ -3229,13 +3229,33 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center">
-                                    <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of Visit</label>
-                                    <div class="flex-1">
-                                        <input type="text" id="edit-visit" name="visit"
-                                            placeholder="Enter visit purpose"
-                                            class="w-full text-xs px-3 py-2 border rounded" />
-                                        <span class="error text-red-500 text-xs" id="error-visit"></span>
-                                    </div>
+                                    <label for="edit-visit"
+                                        class="w-40 text-sm font-medium">Purpose of
+                                        Visit</label>
+                                    <select id="edit-visit" name="visit"
+                                        class="w-full text-xs px-3 py-2 border rounded">
+                                        <option value="">Select purpose</option>
+                                        <option value="Business Meeting">Business Meeting</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Delivery">Delivery</option>
+                                        <option value="Maintenance/Service">Maintenance/Service</option>
+                                        <option value="Training/Workshop">Training/Workshop</option>
+                                        <option value="Official Visit">Official Visit</option>
+                                        <option value="Personal Visit">Personal Visit</option>
+                                        <option value="Client Meeting">Client Meeting</option>
+                                        <option value="Vendor Meeting">Vendor Meeting</option>
+                                        <option value="Site Inspection">Site Inspection</option>
+                                        <option value="Audit">Audit</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Medical Appointment">Medical Appointment</option>
+                                        <option value="Student Admission">Student Admission</option>
+                                        <option value="Others">Others (please specify)</option>
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
+                                    <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
                                 <div class="flex items-center">
                                     <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>

@@ -22,6 +22,58 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
+
+        /* Style the "Choose Photo" button */
+        .choose-photo-btn {
+            height: 34px;
+            /* Set a fixed height for consistency */
+            line-height: 1.5;
+            /* Adjust line height for text alignment */
+            box-sizing: border-box;
+            margin-right: 8PX;
+            padding: 8px 31px !important;
+            font-size: 0.8rem;
+        }
+
+        .choose-photo-btn1 {
+            height: 34px;
+            /* Set a fixed height for consistency */
+            line-height: 1.5;
+            /* Adjust line height for text alignment */
+            box-sizing: border-box;
+            margin-right: 8PX;
+            padding: 8px 28px !important;
+            font-size: 0.8rem;
+        }
+
+        /* Style the image preview */
+        .photo-preview {
+            height: 34px;
+            /* Match the button height */
+            width: auto;
+            /* Maintain aspect ratio */
+            object-fit: cover;
+            /* Ensure the image fits nicely */
+            display: none;
+            /* Hidden by default */
+            transition: transform 0.3s ease;
+            /* Smooth transition for zoom effect */
+        }
+
+        /* Show the image preview when a file is selected */
+        .photo-preview[src]:not([src=""]) {
+            display: inline-block;
+            /* Show the image when it has a valid src */
+        }
+
+        /* Zoom-out effect on hover */
+        .photo-preview:hover {
+            transform: scale(4.5);
+            /* Enlarge the image by 1.5x */
+            z-index: 10;
+            /* Ensure the image appears above other elements */
+        }
+
         body {
             font-family: 'Nunito', sans-serif;
             background-color: #f4f4f9;
@@ -2444,7 +2496,7 @@
 
                                 <!-- Date -->
                                 <div class="form-group">
-                                    <label for="edit-date" class="w-40 text-sm font-medium">Date</label>
+                                    <label for="edit-date" class="w-40 text-sm font-medium">Meeting Date</label>
                                     <div class="flex-1">
                                         <input type="date" id="edit-date" name="date"
                                             class="w-full text-xs px-3 py-2 border rounded" />
@@ -2454,7 +2506,7 @@
 
                                 <!-- Time -->
                                 <div class="form-group">
-                                    <label for="edit-time" class="w-40 text-sm font-medium">Time</label>
+                                    <label for="edit-time" class="w-40 text-sm font-medium">Meeting Time</label>
                                     <div class="flex-1">
                                         <input type="time" id="edit-time" name="time"
                                             class="w-full text-xs px-3 py-2 border rounded" />
@@ -2474,27 +2526,56 @@
                                 </div>
 
                                 <!-- Photo Upload -->
-                                <div class="form-group">
-                                    <label for="edit-photo" class="w-40 text-sm font-medium">Visitor Photo</label>
-                                    <div class="flex-1">
-                                        <input type="file" id="edit-photo" name="photo" accept="image/*"
-                                            onchange="previewImage(this, 'mainPreview')" class="hidden" />
-                                        <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                            onclick="showModal('edit-photo')">Choose Photo</button>
-                                        <span class="error text-red-500 text-xs block mt-1" id="error-photo"></span>
-                                        <img id="mainPreview" class="w-24 h-16 rounded border hidden mt-2" />
-                                    </div>
-                                </div>
+<div class="form-group">
+    <label for="edit-photo" class="w-40 text-sm font-medium pt-2">Visitor Photo</label>
+    <div class="flex-1">
+        <div class="flex items-center">
+            <input type="file" id="edit-photo" name="photo"
+                accept="image/jpeg,image/png,image/jpg"
+                class="hidden"
+                onchange="previewImage(this, 'mainPreview')" />
+            <button type="button"
+                class="text-xs px-3 py-2 border rounded choose-photo-btn"
+                onclick="showModal('edit-photo')">Choose Photo</button>
+            <img id="mainPreview"
+                class="w-24 h-16 rounded border hidden photo-preview"
+                alt="Photo Preview" />
+        </div>
+        <span class="error text-red-500 text-xs block mt-1" id="error-photo"></span>
+    </div>
+</div>
+
 
                                 <!-- Visit Purpose -->
+
+
                                 <div class="form-group">
-                                    <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of Visit</label>
-                                    <div class="flex-1">
-                                        <input type="text" id="edit-visit" name="visit"
-                                            placeholder="Enter visit purpose"
-                                            class="w-full text-xs px-3 py-2 border rounded" />
-                                        <span class="error text-red-500 text-xs" id="error-visit"></span>
-                                    </div>
+                                    <label for="edit-visit"
+                                        class="w-40 text-sm font-medium">Purpose of Visit</label>
+                                    <select id="edit-visit" name="visit"
+                                        class="w-full text-xs px-3 py-2 border rounded">
+                                        <option value="">Select purpose</option>
+                                        <option value="Business Meeting">Business Meeting</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Delivery">Delivery</option>
+                                        <option value="Maintenance/Service">Maintenance/Service</option>
+                                        <option value="Training/Workshop">Training/Workshop</option>
+                                        <option value="Official Visit">Official Visit</option>
+                                        <option value="Personal Visit">Personal Visit</option>
+                                        <option value="Client Meeting">Client Meeting</option>
+                                        <option value="Vendor Meeting">Vendor Meeting</option>
+                                        <option value="Site Inspection">Site Inspection</option>
+                                        <option value="Audit">Audit</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Medical Appointment">Medical Appointment</option>
+                                        <option value="Student Admission">Student Admission</option>
+                                        <option value="Others">Others (please specify)</option>
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
+                                    <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
 
                                 <!-- Person Name -->
@@ -2626,20 +2707,24 @@
                                         </div>
                                     </div>
 
-                                    <!-- Driver Photo -->
-                                    <div class="form-group">
-                                        <label for="edit-driverphoto" class="w-40 text-sm font-medium">Driver
-                                            Photo</label>
-                                        <div class="flex-1">
-                                            <input type="file" id="edit-driverphoto" name="driverphoto" accept="image/*"
-                                                onchange="previewImage(this, 'driverPreview')" class="hidden" />
-                                            <button type="button" class="w-full text-xs px-3 py-2 border rounded"
-                                                onclick="showModal('edit-driverphoto')">Choose Photo</button>
-                                            <span class="error text-red-500 text-xs block mt-1"
-                                                id="error-driverphoto"></span>
-                                            <img id="driverPreview" class="w-24 h-16 rounded border hidden mt-2" />
-                                        </div>
-                                    </div>
+<!-- Driver Photo -->
+<div class="form-group">
+    <label for="edit-driverphoto" class="w-40 text-sm font-medium pt-2">Driver Photo</label>
+    <div class="flex-1">
+        <div class="flex items-center">
+            <input type="file" id="edit-driverphoto" name="driverphoto" accept="image/*"
+                onchange="previewImage(this, 'driverPreview')" class="hidden" />
+            <button type="button"
+                class="text-xs px-3 py-2 border rounded choose-photo-btn1"
+                onclick="showModal('edit-driverphoto')">Choose Photo</button>
+            <img id="driverPreview"
+                class="w-24 h-16 rounded border hidden photo-preview ml-4"
+                alt="Driver Photo Preview" />
+        </div>
+        <span class="error text-red-500 text-xs block mt-1" id="error-driverphoto"></span>
+    </div>
+</div>
+
                                 </div>
                             </div>
 
