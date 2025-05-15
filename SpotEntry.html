@@ -23,13 +23,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
-
-        /* Ensure the button and image are aligned in the same row */
-        .flex.items-center {
-            display: flex;
-            align-items: center;
-        }
-
         /* Style the "Choose Photo" button */
         .choose-photo-btn {
             height: 34px;
@@ -37,6 +30,7 @@
             line-height: 1.5;
             /* Adjust line height for text alignment */
             box-sizing: border-box;
+            margin-right: 8PX;
         }
 
         /* Style the image preview */
@@ -84,7 +78,6 @@
             max-height: 80px !important;
             object-fit: contain !important;
             display: block !important;
-            margin-top: 5px !important;
         }
 
         .cancel-icon {
@@ -1937,7 +1930,12 @@
                 <div class="shadow-sm">
                     <div class="relative flex w-full items-center bg-white px-5 py-2.5 dark:bg-[#0e1726]">
                         <div class="horizontal-logo flex items-center justify-between ltr:mr-2 rtl:ml-2 lg:hidden">
-                            <a href="index.html" class="main-logo flex shrink-0 items-center"></a>
+                            <a href="index.html" class="main-logo flex shrink-0 items-center">
+                                <img class="inline w-8 ltr:-ml-1 rtl:-mr-1" src="assets/images/icon.png" alt="image" />
+                                <span
+                                    class="hidden align-middle text-2xl font-semibold transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ENDEL
+                                    DIGITAL</span>
+                            </a>
 
                             <a href="javascript:;"
                                 class="collapse-icon flex flex-none rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary ltr:ml-2 rtl:mr-2 dark:bg-dark/40 dark:text-[#d0d2d6] dark:hover:bg-dark/60 dark:hover:text-primary lg:hidden"
@@ -3218,7 +3216,7 @@
                                 </div>
                                 <div class="flex items-center">
                                     <label for="edit-photo" class="w-40 text-sm font-medium">Visitor Photo</label>
-                                    <div class="flex-1 flex items-center space-x-2">
+                                    <div class="flex-1 flex items-center">
                                         <input type="file" id="edit-photo" name="photo"
                                             accept="image/jpeg,image/png,image/jpg" class="hidden"
                                             onchange="previewImage(this, 'mainPreview')" />
@@ -3230,15 +3228,36 @@
                                         <span class="error text-red-500 text-xs block mt-1" id="error-photo"></span>
                                     </div>
                                 </div>
-                                <div class="flex items-center">
-                                    <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of Visit</label>
-                                    <div class="flex-1">
-                                        <input type="text" id="edit-visit" name="visit"
-                                            placeholder="Enter visit purpose"
-                                            class="w-full text-xs px-3 py-2 border rounded" />
-                                        <span class="error text-red-500 text-xs" id="error-visit"></span>
-                                    </div>
+                                                                <div class="flex items-center">
+                                    <label for="edit-visit"
+                                        class="w-40 text-sm font-medium">Purpose of
+                                        Visit</label>
+                                    <select id="edit-visit" name="visit"
+                                        class="w-full text-xs px-3 py-2 border rounded">
+                                        <option value="">Select purpose</option>
+                                        <option value="Business Meeting">Business Meeting</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Delivery">Delivery</option>
+                                        <option value="Maintenance/Service">Maintenance/Service</option>
+                                        <option value="Training/Workshop">Training/Workshop</option>
+                                        <option value="Official Visit">Official Visit</option>
+                                        <option value="Personal Visit">Personal Visit</option>
+                                        <option value="Client Meeting">Client Meeting</option>
+                                        <option value="Vendor Meeting">Vendor Meeting</option>
+                                        <option value="Site Inspection">Site Inspection</option>
+                                        <option value="Audit">Audit</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Medical Appointment">Medical Appointment</option>
+                                        <option value="Student Admission">Student Admission</option>
+                                        <option value="Others">Others (please specify)</option>
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
+                                    <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
+ 
                                 <div class="flex items-center">
                                     <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
                                     <div class="flex-1">
@@ -3348,7 +3367,7 @@
                                     <div class="flex items-center">
                                         <label for="edit-driverphoto" class="w-40 text-sm font-medium">Driver
                                             Photo</label>
-                                        <div class="flex-1 flex items-center space-x-2">
+                                        <div class="flex-1 flex items-center">
                                             <input type="file" id="edit-driverphoto" name="driverphoto"
                                                 accept="image/jpeg,image/png,image/jpg" class="hidden"
                                                 onchange="previewImage(this, 'driverPreview')" />
