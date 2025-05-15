@@ -2845,7 +2845,7 @@
                 <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
   <!-- Upcoming Appointment Table -->
   <div class="panel">
-    <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
+    <h3 class="mb-2 text-lg"><b>Upcoming Appointment</b></h3>
     <div class="overflow-x-auto">
       <div class="table-container">
         <table id="myTable" class="table-hover whitespace-nowrap w-full">
@@ -2858,10 +2858,10 @@
               <th>Host</th>
               <th>Purpose</th>
               <th>National ID</th>
-              <th>Pending Approval</th>
+              <!-- <th>Pending Approval</th>
               <th>InCampus</th>
               <th>Complete</th>
-              <th>Exit Approval</th>
+              <th>Exit Approval</th> -->
             </tr>
           </thead>
           <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
@@ -2879,7 +2879,7 @@
                 <td x-text="appointment.host"></td>
                 <td x-text="appointment.purpose"></td>
                 <td x-text="appointment.nationalId"></td>
-                <td>
+                <!-- <td>
                   <input
                     type="checkbox"
                     class="approval-checkbox"
@@ -2918,7 +2918,7 @@
                     x-bind:checked="appointmentsList[index].exitApproval"
                     @change="updateAppointment(appointmentsList[index])"
                   >
-                </td>
+                </td> -->
               </tr>
             </template>
           </tbody>
@@ -2929,7 +2929,7 @@
 
   <!-- Today's Visitor Table -->
   <div class="panel">
-    <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
+    <h3 class="mb-2 text-lg"><b>Today's Visitor</b></h3>
     <div class="overflow-x-auto">
       <div class="table-container">
         <table id="myTable" class="table-hover whitespace-nowrap w-full">
@@ -2942,11 +2942,11 @@
               <th>Host</th>
               <th>Purpose</th>
               <th>National ID</th>
-              <th>Pending Approval</th>
+              <!-- <th>Pending Approval</th>
               <th>InCampus</th>
               <th>Complete</th>
               <th>Exit Approval</th>
-              <th>Action</th> <!-- New column for toggle button -->
+              <th>Action</th>  -->
             </tr>
           </thead>
           <tbody id="visitorDetailTableBody" x-data="appointments" x-init="fetchAppointments()">
@@ -2964,7 +2964,7 @@
                 <td x-text="appointment.host"></td>
                 <td x-text="appointment.purpose"></td>
                 <td x-text="appointment.nationalId"></td>
-                <td>
+                <!-- <td>
                   <input
                     type="checkbox"
                     class="approval-checkbox"
@@ -3004,7 +3004,7 @@
                     @change="updateAppointment(appointmentsList[index])"
                   >
                 </td>
-                <td>
+                <td> -->
                   <button
                     class="toggle-button"
                     @click="toggleApproval(appointment.id, appointmentsList[index].pendingApproval)"
