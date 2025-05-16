@@ -3739,9 +3739,9 @@ case 'confirmPassword': // Changed to camelCase for consistency
     }
     break;
         case 'contactNo':
-            if (value && !/^\d{10}$/.test(value)) {
-                error = 'Contact number must be exactly 10 digits';
-            }
+            if (!value) {
+        error = 'Contact Number is required';
+    }
             break;
         case 'emailId':
             if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
@@ -3752,9 +3752,7 @@ case 'confirmPassword': // Changed to camelCase for consistency
             if (!value) {
         error = 'Employee No is required';
     }
-            else if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                error = 'Employee Number must be at least 2 characters (letters and numbers allowed)';
-            }
+            
             break;
         case 'address':
             if (value && value.length < 5) {
