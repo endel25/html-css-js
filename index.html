@@ -3100,7 +3100,7 @@
       appointmentsList: [],
       async fetchUpcomingAppointments() {
         try {
-          const response = await fetch('http://192.168.3.75:3001/appointment');
+          const response = await fetch('http://192.168.3.77:3001/appointment');
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -3155,7 +3155,7 @@
       visitorsList: [],
       async fetchTodaysVisitors() {
         try {
-          const response = await fetch('http://192.168.3.75:3001/visitors');
+          const response = await fetch('http://192.168.3.77:3001/visitors');
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -3200,7 +3200,7 @@
       async toggleApproval(id, currentStatus) {
         try {
           const status = currentStatus ? 'disapprove' : 'approve';
-          const response = await fetch(`http://192.168.3.75:3001/appointment/${id}/status/${status}`, {
+          const response = await fetch(`http://192.168.3.77:3001/appointment/${id}/status/${status}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -3234,7 +3234,7 @@
       visitorsList: [],
       async fetchVisitorDetails() {
         try {
-          const response = await fetch('http://192.168.3.75:3001/visitors');
+          const response = await fetch('http://192.168.3.77:3001/visitors');
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -3288,7 +3288,7 @@
             status = 'exit';
           }
           if (status) {
-            const response = await fetch(`http://192.168.3.75:3001/visitors/${visitor.id}/status/${status}`, {
+            const response = await fetch(`http://192.168.3.77:3001/visitors/${visitor.id}/status/${status}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
             });
