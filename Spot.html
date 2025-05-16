@@ -4081,14 +4081,6 @@ const validateField = (name, value, formData = {}) => {
                 error = `${name === 'firstname' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
             }
             break;
-        case 'personname':
-            if (value && !/^[a-zA-Z\s]{2,100}$/.test(value)) {
-                error =
-                    'Person name must be at least 2 characters, up to 100, and contain only letters and spaces';
-            } else if (value && !isPersonNameValid) {
-                error = 'Person name must be selected from the database suggestions';
-            }
-            break;
         case 'drivername':
             if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
                 error =

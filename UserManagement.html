@@ -3728,7 +3728,7 @@ const validateField = (name, value, formData = {}) => {
     if (!value) {
         error = 'Password is required';
     } else if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-        error = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)';
+        error = 'Password must be at least 4 characters (letters and numbers allowed)';
     }
     break;
 case 'confirmPassword': // Changed to camelCase for consistency
