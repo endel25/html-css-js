@@ -19,97 +19,106 @@
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
     <script defer src="assets/js/sweetalert.min.js"></script>
     <style>
+        /* Hide the native checkbox */
+        .approval-checkbox,
+        .progress-checkbox,
+        .complete-checkbox,
+        .exit-checkbox {
+            position: relative;
+            appearance: none;
+            /* Remove default browser styling */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 14px;
+            height: 14px;
+            outline: none;
+            cursor: not-allowed;
+            /* Since the checkbox is disabled */
+        }
 
-/* Hide the native checkbox */
-.approval-checkbox,
-.progress-checkbox,
-.complete-checkbox,
-.exit-checkbox {
-    position: relative;
-    appearance: none; /* Remove default browser styling */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 14px;
-    height: 14px;
-    outline: none;
-    cursor: not-allowed; /* Since the checkbox is disabled */
-}
+        /* Create a custom checkbox using ::before */
+        .approval-checkbox::before,
+        .progress-checkbox::before,
+        .complete-checkbox::before,
+        .exit-checkbox::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #d1d5db;
+            /* Tailwind gray-300 */
+            border-radius: 3px;
+            background-color: #fff;
+        }
 
-/* Create a custom checkbox using ::before */
-.approval-checkbox::before,
-.progress-checkbox::before,
-.complete-checkbox::before,
-.exit-checkbox::before {
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border: 2px solid #d1d5db; /* Tailwind gray-300 */
-    border-radius: 3px;
-    background-color: #fff;
-}
+        /* Style for checked state */
+        .approval-checkbox:checked::before,
+        .progress-checkbox:checked::before,
+        .complete-checkbox:checked::before,
+        .exit-checkbox:checked::before {
+            background-color: #22c55e;
+            /* Green for checked state */
+            border-color: #22c55e;
+        }
 
-/* Style for checked state */
-.approval-checkbox:checked::before,
-.progress-checkbox:checked::before,
-.complete-checkbox:checked::before,
-.exit-checkbox:checked::before {
-    background-color: #22c55e; /* Green for checked state */
-    border-color: #22c55e;
-}
+        /* Add a checkmark for checked state using ::after */
+        .approval-checkbox:checked::after,
+        .progress-checkbox:checked::after,
+        .complete-checkbox:checked::after,
+        .exit-checkbox:checked::after {
+            content: '\2713';
+            /* Unicode for checkmark */
+            position: absolute;
+            top: 0;
+            left: 3px;
+            color: white;
+            font-size: 12px;
+            line-height: 14px;
+        }
 
-/* Add a checkmark for checked state using ::after */
-.approval-checkbox:checked::after,
-.progress-checkbox:checked::after,
-.complete-checkbox:checked::after,
-.exit-checkbox:checked::after {
-    content: '\2713'; /* Unicode for checkmark */
-    position: absolute;
-    top: 0;
-    left: 3px;
-    color: white;
-    font-size: 12px;
-    line-height: 14px;
-}
+        /* Style for disabled state */
+        .approval-checkbox:disabled::before,
+        .progress-checkbox:disabled::before,
+        .complete-checkbox:disabled::before,
+        .exit-checkbox:disabled::before {
+            opacity: 0.7;
+            /* Slightly faded for disabled */
+        }
 
-/* Style for disabled state */
-.approval-checkbox:disabled::before,
-.progress-checkbox:disabled::before,
-.complete-checkbox:disabled::before,
-.exit-checkbox:disabled::before {
-    opacity: 0.7; /* Slightly faded for disabled */
-}
+        /* Dark mode styling */
+        .dark .approval-checkbox::before,
+        .dark .progress-checkbox::before,
+        .dark .complete-checkbox::before,
+        .dark .exit-checkbox::before {
+            background-color: #374151;
+            /* Tailwind gray-700 */
+            border-color: #6b7280;
+            /* Tailwind gray-500 */
+        }
 
-/* Dark mode styling */
-.dark .approval-checkbox::before,
-.dark .progress-checkbox::before,
-.dark .complete-checkbox::before,
-.dark .exit-checkbox::before {
-    background-color: #374151; /* Tailwind gray-700 */
-    border-color: #6b7280; /* Tailwind gray-500 */
-}
+        .dark .approval-checkbox:checked::before,
+        .dark .progress-checkbox:checked::before,
+        .dark .complete-checkbox:checked::before,
+        .dark .exit-checkbox:checked::before {
+            background-color: #4ade80;
+            /* Brighter green for dark mode */
+            border-color: #4ade80;
+        }
 
-.dark .approval-checkbox:checked::before,
-.dark .progress-checkbox:checked::before,
-.dark .complete-checkbox:checked::before,
-.dark .exit-checkbox:checked::before {
-    background-color: #4ade80; /* Brighter green for dark mode */
-    border-color: #4ade80;
-}
+        .dark .approval-checkbox:checked::after,
+        .dark .progress-checkbox:checked::after,
+        .dark .complete-checkbox:checked::after,
+        .dark .exit-checkbox:checked::after {
+            color: white;
+        }
 
-.dark .approval-checkbox:checked::after,
-.dark .progress-checkbox:checked::after,
-.dark .complete-checkbox:checked::after,
-.dark .exit-checkbox:checked::after {
-    color: white;
-}
+        .dark .approval-checkbox:disabled::before,
+        .dark .progress-checkbox:disabled::before,
+        .dark .complete-checkbox:disabled::before,
+        .dark .exit-checkbox:disabled::before {
+            opacity: 0.7;
+        }
 
-.dark .approval-checkbox:disabled::before,
-.dark .progress-checkbox:disabled::before,
-.dark .complete-checkbox:disabled::before,
-.dark .exit-checkbox:disabled::before {
-    opacity: 0.7;
-}
         table tbody tr td:where([dir=ltr], [dir=ltr] *),
         table tfoot tr th:where([dir=ltr], [dir=ltr] *),
         table thead tr th:where([dir=ltr], [dir=ltr] *) {
