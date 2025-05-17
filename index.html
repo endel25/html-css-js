@@ -19,6 +19,35 @@
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
     <script defer src="assets/js/sweetalert.min.js"></script>
     <style>
+
+        .dataTable-dropdown .dataTable-selector,
+.dataTable-search .dataTable-input {
+    width: auto;
+    background-color: #fff;
+    color: #0e1726;
+    border-color: #e0e6ed;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    border-width: 1px;
+    outline: none !important;
+}
+.dataTable-dropdown .dataTable-selector:focus,
+.dataTable-search .dataTable-input:focus {
+    border-color: #4361ee;
+}
+.dataTable-search .dataTable-input {
+    box-shadow: none !important;
+}
+.ltr .dataTable-search {
+    margin-left: auto;
+}
+.rtl .dataTable-search {
+    margin-right: auto;
+}
+
         /* Hide the native checkbox */
         .approval-checkbox,
         .progress-checkbox,
@@ -3018,166 +3047,187 @@
 
                 <!-- Existing Tables -->
                 <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
-                    <!-- Upcoming Appointment Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Upcoming Appointment</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                            <th>National ID</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="upcomingAppointmentTableBody" x-data="upcomingAppointments"
-                                        x-init="fetchUpcomingAppointments()">
-                                        <template x-if="appointmentsList.length === 0">
-                                            <tr>
-                                                <td colspan="7" class="text-center">No appointments available</td>
-                                            </tr>
-                                        </template>
-                                        <template x-for="(appointment, index) in appointmentsList"
-                                            :key="appointment.id">
-                                            <tr>
-                                                <td x-text="appointment.firstName"></td>
-                                                <td x-text="appointment.lastName"></td>
-                                                <td x-text="appointment.date"></td>
-                                                <td x-text="appointment.allocatedTime"></td>
-                                                <td x-text="appointment.host"></td>
-                                                <td x-text="appointment.purpose"></td>
-                                                <td x-text="appointment.nationalId"></td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+<!-- ✅ Upcoming Appointments Panel with Working Search -->
+<div class="panel" x-data="upcomingAppointments" x-init="fetchUpcomingAppointments()">
+<div class="mb-3 flex items-center justify-between">
+    <h3 class="text-lg font-bold"><b>Upcoming Appointment</b></h3>
+    <div class="dataTable-search">
+        <input class="dataTable-input" placeholder="Search..." type="text" x-model="searchQuery">
+    </div>
+</div>
 
-                    <!-- Today's Visitor Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Today's Visitor</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                            <th>National ID</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="todaysVisitorTableBody" x-data="todaysVisitors"
-                                        x-init="fetchTodaysVisitors()">
-                                        <template x-if="visitorsList.length === 0">
-                                            <tr>
-                                                <td colspan="7" class="text-center">No visitors available</td>
-                                            </tr>
-                                        </template>
-                                        <template x-for="(visitor, index) in visitorsList" :key="visitor.id">
-                                            <tr>
-                                                <td x-text="visitor.firstName"></td>
-                                                <td x-text="visitor.lastName"></td>
-                                                <td x-text="visitor.date"></td>
-                                                <td x-text="visitor.allocatedTime"></td>
-                                                <td x-text="visitor.host"></td>
-                                                <td x-text="visitor.purpose"></td>
-                                                <td x-text="visitor.nationalId"></td>
-                                                <td>
-                                                    <button class="toggle-button"
-                                                        @click="toggleApproval(visitor.id, visitorsList[index].pendingApproval)">
-                                                        <span
-                                                            x-text="visitorsList[index].pendingApproval ? 'Disapprove' : 'Approve'"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+    <div class="overflow-x-auto">
+        <div class="table-container">
+            <table class="table-hover whitespace-nowrap w-full">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date</th>
+                        <th>Allocated Time</th>
+                        <th>Host</th>
+                        <th>Purpose</th>
+                        <th>National ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- If no matches -->
+                    <template x-if="filteredAppointments.length === 0">
+                        <tr>
+                            <td colspan="7" class="text-center">No appointments available</td>
+                        </tr>
+                    </template>
+
+                    <!-- Render filtered list -->
+                    <template x-for="appointment in filteredAppointments" :key="appointment.id">
+                        <tr>
+                            <td x-text="appointment.firstName"></td>
+                            <td x-text="appointment.lastName"></td>
+                            <td x-text="appointment.date"></td>
+                            <td x-text="appointment.allocatedTime"></td>
+                            <td x-text="appointment.host"></td>
+                            <td x-text="appointment.purpose"></td>
+                            <td x-text="appointment.nationalId"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Today's Visitor Table Panel with Search -->
+<div class="panel" x-data="todaysVisitors" x-init="fetchTodaysVisitors()">
+<div class="mb-3 flex items-center justify-between">
+    <h3 class="text-lg font-bold"><b>Today's Visitor</b></h3>
+    <div class="dataTable-search">
+        <input class="dataTable-input" placeholder="Search..." type="text" x-model="searchQuery">
+    </div>
+</div>
+
+    <div class="overflow-x-auto">
+        <div class="table-container">
+            <table class="table-hover whitespace-nowrap w-full">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date</th>
+                        <th>Allocated Time</th>
+                        <th>Host</th>
+                        <th>Purpose</th>
+                        <th>National ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Show if no results -->
+                    <template x-if="filteredVisitors.length === 0">
+                        <tr>
+                            <td colspan="8" class="text-center">No visitors available</td>
+                        </tr>
+                    </template>
+
+                    <!-- Loop through filtered list -->
+                    <template x-for="(visitor, index) in filteredVisitors" :key="visitor.id">
+                        <tr>
+                            <td x-text="visitor.firstName"></td>
+                            <td x-text="visitor.lastName"></td>
+                            <td x-text="visitor.date"></td>
+                            <td x-text="visitor.allocatedTime"></td>
+                            <td x-text="visitor.host"></td>
+                            <td x-text="visitor.purpose"></td>
+                            <td x-text="visitor.nationalId"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
                 </div>
 
                 <div class="mb-5 grid grid-cols-1">
-                    <!-- Visitor Details Table -->
-                    <div class="panel">
-                        <h3 class="mb-2 text-lg"><b>Visitor Details</b></h3>
-                        <div class="overflow-x-auto">
-                            <div class="table-container">
-                                <table id="myTable" class="table-hover whitespace-nowrap w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Date</th>
-                                            <th>Allocated Time</th>
-                                            <th>Host</th>
-                                            <th>Purpose</th>
-                                            <th>National ID</th>
-                                            <th>Pending Approval</th>
-                                            <th>InCampus</th>
-                                            <th>Complete</th>
-                                            <th>Exit Approval</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="visitorDetailTableBody" x-data="visitorDetails"
-                                        x-init="fetchVisitorDetails()">
-                                        <template x-if="visitorsList.length === 0">
-                                            <tr>
-                                                <td colspan="11" class="text-center">No visitors available</td>
-                                            </tr>
-                                        </template>
-                                        <template x-for="(visitor, index) in visitorsList" :key="visitor.id">
-                                            <tr>
-                                                <td x-text="visitor.firstName"></td>
-                                                <td x-text="visitor.lastName"></td>
-                                                <td x-text="visitor.date"></td>
-                                                <td x-text="visitor.allocatedTime"></td>
-                                                <td x-text="visitor.host"></td>
-                                                <td x-text="visitor.purpose"></td>
-                                                <td x-text="visitor.nationalId"></td>
-                                                <td>
-                                                    <input type="checkbox" class="approval-checkbox"
-                                                        :data-id="visitor.id"
-                                                        x-model="visitorsList[index].pendingApproval"
-                                                        x-bind:checked="visitorsList[index].pendingApproval" disabled>
-                                                </td>
-                                                <td>
-                                                    <input type="checkbox" class="progress-checkbox"
-                                                        :data-id="visitor.id" x-model="visitorsList[index].inCampus"
-                                                        x-bind:checked="visitorsList[index].inCampus"
-                                                        @change="updateVisitor(visitorsList[index])" disabled>
-                                                </td>
-                                                <td>
-                                                    <input type="checkbox" class="complete-checkbox"
-                                                        :data-id="visitor.id" x-model="visitorsList[index].complete"
-                                                        x-bind:checked="visitorsList[index].complete"
-                                                        @change="updateVisitor(visitorsList[index])" disabled>
-                                                </td>
-                                                <td>
-                                                    <input type="checkbox" class="exit-checkbox" :data-id="visitor.id"
-                                                        x-model="visitorsList[index].exitApproval"
-                                                        x-bind:checked="visitorsList[index].exitApproval"
-                                                        @change="updateVisitor(visitorsList[index])" disabled>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+<!-- ✅ Visitor Details Table Panel with Search -->
+<div class="panel" x-data="visitorDetails" x-init="fetchVisitorDetails()">
+<div class="mb-3 flex items-center justify-between">
+    <h3 class="text-lg font-bold"><b>Visitor Details</b></h3>
+    <div class="dataTable-search">
+        <input class="dataTable-input" placeholder="Search..." type="text" x-model="searchQuery">
+    </div>
+</div>
+
+    <div class="overflow-x-auto">
+        <div class="table-container">
+            <table class="table-hover whitespace-nowrap w-full">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date</th>
+                        <th>Allocated Time</th>
+                        <th>Host</th>
+                        <th>Purpose</th>
+                        <th>National ID</th>
+                        <th>Pending Approval</th>
+                        <th>InCampus</th>
+                        <th>Complete</th>
+                        <th>Exit Approval</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- If no matches -->
+                    <template x-if="filteredVisitors.length === 0">
+                        <tr>
+                            <td colspan="11" class="text-center">No visitors available</td>
+                        </tr>
+                    </template>
+
+                    <!-- Filtered Rows -->
+                    <template x-for="(visitor, index) in filteredVisitors" :key="visitor.id">
+                        <tr>
+                            <td x-text="visitor.firstName"></td>
+                            <td x-text="visitor.lastName"></td>
+                            <td x-text="visitor.date"></td>
+                            <td x-text="visitor.allocatedTime"></td>
+                            <td x-text="visitor.host"></td>
+                            <td x-text="visitor.purpose"></td>
+                            <td x-text="visitor.nationalId"></td>
+                            <td>
+                                <input type="checkbox" class="approval-checkbox"
+                                    :data-id="visitor.id"
+                                    x-model="visitor.pendingApproval"
+                                    :checked="visitor.pendingApproval" disabled>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="progress-checkbox"
+                                    :data-id="visitor.id"
+                                    x-model="visitor.inCampus"
+                                    :checked="visitor.inCampus"
+                                    @change="updateVisitor(visitor)" disabled>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="complete-checkbox"
+                                    :data-id="visitor.id"
+                                    x-model="visitor.complete"
+                                    :checked="visitor.complete"
+                                    @change="updateVisitor(visitor)" disabled>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="exit-checkbox"
+                                    :data-id="visitor.id"
+                                    x-model="visitor.exitApproval"
+                                    :checked="visitor.exitApproval"
+                                    @change="updateVisitor(visitor)" disabled>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
                 </div>
             </div>
             <!-- end main content section -->
@@ -3251,226 +3301,248 @@
             }));
 
             // Upcoming Appointments
-            Alpine.data('upcomingAppointments', () => ({
-                appointmentsList: [],
-                async fetchUpcomingAppointments() {
-                    try {
-                        const response = await fetch('http://192.168.3.73:3001/appointment');
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        const data = await response.json();
-                        const apiData = Array.isArray(data)
-                            ? data.map(item => ({
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                            }))
-                            : (data.data || []).map(item => ({
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                            }));
-                        this.appointmentsList = apiData;
-                        if (this.appointmentsList.length === 0) {
-                            this.showMessage('No upcoming appointments found.', 'info');
-                        }
-                    } catch (error) {
-                        console.error('Error fetching upcoming appointments:', error);
-                        this.showMessage('Failed to load upcoming appointments.', 'error');
-                    }
-                },
-                showMessage(msg = '', type = 'success') {
-                    const toast = window.Swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
-                    toast.fire({
-                        icon: type,
-                        title: msg,
-                        padding: '10px 20px',
-                    });
-                },
-            }));
+   Alpine.data('upcomingAppointments', () => ({
+        appointmentsList: [],
+        searchQuery: '',
 
+        get filteredAppointments() {
+            if (!this.searchQuery) return this.appointmentsList;
+            const query = this.searchQuery.toLowerCase();
+            return this.appointmentsList.filter(item =>
+                Object.values(item).some(val =>
+                    val?.toString().toLowerCase().includes(query)
+                )
+            );
+        },
+
+        async fetchUpcomingAppointments() {
+            try {
+                const response = await fetch('http://192.168.3.73:3001/appointment');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const apiData = Array.isArray(data)
+                    ? data.map(item => ({
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: item.personname || 'Unknown',
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                    }))
+                    : (data.data || []).map(item => ({
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: item.personname || 'Unknown',
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                    }));
+
+                this.appointmentsList = apiData;
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+            }
+        }
+    }));
             // Today's Visitors
-            Alpine.data('todaysVisitors', () => ({
-                visitorsList: [],
-                async fetchTodaysVisitors() {
-                    try {
-                        const response = await fetch('http://192.168.3.73:3001/visitors');
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        const data = await response.json();
-                        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-                        const apiData = Array.isArray(data)
-                            ? data
-                                .filter(item => item.date === today)
-                                .map(item => ({
-                                    id: item.id,
-                                    firstName: item.firstname || 'Unknown',
-                                    lastName: item.lastname || 'Unknown',
-                                    date: item.date || 'N/A',
-                                    allocatedTime: item.time || 'N/A',
-                                    host: item.personname || 'Unknown',
-                                    purpose: item.visit || 'N/A',
-                                    nationalId: item.nationalid || 'N/A',
-                                    pendingApproval: item.isApproved ?? true,
-                                }))
-                            : (data.data || [])
-                                .filter(item => item.date === today)
-                                .map(item => ({
-                                    id: item.id,
-                                    firstName: item.firstname || 'Unknown',
-                                    lastName: item.lastname || 'Unknown',
-                                    date: item.date || 'N/A',
-                                    allocatedTime: item.time || 'N/A',
-                                    host: item.personname || 'Unknown',
-                                    purpose: item.visit || 'N/A',
-                                    nationalId: item.nationalid || 'N/A',
-                                    pendingApproval: item.isApproved ?? true,
-                                }));
-                        this.visitorsList = apiData;
-                    } catch (error) {
-                        console.error('Error fetching today\'s visitors:', error);
-                        this.showMessage('Failed to load today\'s visitors.', 'error');
-                    }
-                },
-                async toggleApproval(id, currentStatus) {
-                    try {
-                        const status = currentStatus ? 'disapprove' : 'approve';
-                        const response = await fetch(`http://192.168.3.73:3001/appointment/${id}/status/${status}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                        });
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        this.showMessage(`Visitor ${status}d successfully.`);
-                        await this.fetchTodaysVisitors();
-                    } catch (error) {
-                        console.error('Error toggling approval status:', error);
-                        this.showMessage('Failed to toggle approval status.', 'error');
-                    }
-                },
-                showMessage(msg = '', type = 'success') {
-                    const toast = window.Swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
-                    toast.fire({
-                        icon: type,
-                        title: msg,
-                        padding: '10px 20px',
-                    });
-                },
-            }));
+ Alpine.data('todaysVisitors', () => ({
+    visitorsList: [],
+    searchQuery: '',
+
+    get filteredVisitors() {
+        if (!this.searchQuery) return this.visitorsList;
+        const query = this.searchQuery.toLowerCase();
+        return this.visitorsList.filter(item =>
+            Object.values(item).some(val =>
+                val?.toString().toLowerCase().includes(query)
+            )
+        );
+    },
+
+    async fetchTodaysVisitors() {
+        try {
+            const response = await fetch('http://192.168.3.73:3001/visitors');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const today = new Date().toISOString().split('T')[0];
+            const apiData = Array.isArray(data)
+                ? data
+                    .filter(item => item.date === today)
+                    .map(item => ({
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: item.personname || 'Unknown',
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                        pendingApproval: item.isApproved ?? true,
+                    }))
+                : (data.data || [])
+                    .filter(item => item.date === today)
+                    .map(item => ({
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: item.personname || 'Unknown',
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                        pendingApproval: item.isApproved ?? true,
+                    }));
+            this.visitorsList = apiData;
+        } catch (error) {
+            console.error("Error fetching today's visitors:", error);
+            this.showMessage("Failed to load today's visitors.", 'error');
+        }
+    },
+
+    async toggleApproval(id, currentStatus) {
+        try {
+            const status = currentStatus ? 'disapprove' : 'approve';
+            const response = await fetch(`http://192.168.3.73:3001/appointment/${id}/status/${status}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            this.showMessage(`Visitor ${status}d successfully.`);
+            await this.fetchTodaysVisitors();
+        } catch (error) {
+            console.error('Error toggling approval status:', error);
+            this.showMessage('Failed to toggle approval status.', 'error');
+        }
+    },
+
+    showMessage(msg = '', type = 'success') {
+        const toast = window.Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    },
+}));
 
             // Visitor Details
-            Alpine.data('visitorDetails', () => ({
-                visitorsList: [],
-                async fetchVisitorDetails() {
-                    try {
-                        const response = await fetch('http://192.168.3.73:3001/visitors');
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        const data = await response.json();
-                        const apiData = Array.isArray(data)
-                            ? data.map(item => ({
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                                pendingApproval: true,
-                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                                complete: item.complete ?? false,
-                                exitApproval: item.exit ?? false,
-                            }))
-                            : (data.data || []).map(item => ({
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                                pendingApproval: item.isApproved ?? true,
-                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                                complete: item.complete ?? false,
-                                exitApproval: item.exit ?? false,
-                            }));
-                        this.visitorsList = apiData;
-                        if (this.visitorsList.length === 0) {
-                            this.showMessage('No visitors found.', 'info');
-                        }
-                    } catch (error) {
-                        console.error('Error fetching visitor details:', error);
-                        this.showMessage('Failed to load visitor details.', 'error');
-                    }
-                },
-                async updateVisitor(visitor) {
-                    try {
-                        let status;
-                        if (visitor.inCampus !== undefined) {
-                            status = 'inprogress';
-                        } else if (visitor.complete !== undefined) {
-                            status = 'complete';
-                        } else if (visitor.exitApproval !== undefined) {
-                            status = 'exit';
-                        }
-                        if (status) {
-                            const response = await fetch(`http://192.168.3.73:3001/visitors/${visitor.id}/status/${status}`, {
-                                method: 'PATCH',
-                                headers: { 'Content-Type': 'application/json' },
-                            });
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            this.showMessage('Visitor status updated successfully.');
-                            await this.fetchVisitorDetails();
-                        } else {
-                            throw new Error('No status change detected.');
-                        }
-                    } catch (error) {
-                        console.error('Error updating visitor status:', error);
-                        this.showMessage('Failed to update visitor status.', 'error');
-                    }
-                },
-                showMessage(msg = '', type = 'success') {
-                    const toast = window.Swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
-                    toast.fire({
-                        icon: type,
-                        title: msg,
-                        padding: '10px 20px',
-                    });
-                },
-            }));
+ Alpine.data('visitorDetails', () => ({
+    visitorsList: [],
+    searchQuery: '',
+
+    get filteredVisitors() {
+        if (!this.searchQuery) return this.visitorsList;
+        const query = this.searchQuery.toLowerCase();
+        return this.visitorsList.filter(item =>
+            Object.values(item).some(val =>
+                val?.toString().toLowerCase().includes(query)
+            )
+        );
+    },
+
+    async fetchVisitorDetails() {
+        try {
+            const response = await fetch('http://192.168.3.73:3001/visitors');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            const apiData = Array.isArray(data)
+                ? data.map(item => ({
+                    id: item.id,
+                    firstName: item.firstname || 'Unknown',
+                    lastName: item.lastname || 'Unknown',
+                    date: item.date || 'N/A',
+                    allocatedTime: item.time || 'N/A',
+                    host: item.personname || 'Unknown',
+                    purpose: item.visit || 'N/A',
+                    nationalId: item.nationalid || 'N/A',
+                    pendingApproval: item.isApproved ?? true,
+                    inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
+                    complete: item.complete ?? false,
+                    exitApproval: item.exit ?? false,
+                }))
+                : (data.data || []).map(item => ({
+                    id: item.id,
+                    firstName: item.firstname || 'Unknown',
+                    lastName: item.lastname || 'Unknown',
+                    date: item.date || 'N/A',
+                    allocatedTime: item.time || 'N/A',
+                    host: item.personname || 'Unknown',
+                    purpose: item.visit || 'N/A',
+                    nationalId: item.nationalid || 'N/A',
+                    pendingApproval: item.isApproved ?? true,
+                    inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
+                    complete: item.complete ?? false,
+                    exitApproval: item.exit ?? false,
+                }));
+            this.visitorsList = apiData;
+            if (this.visitorsList.length === 0) {
+                this.showMessage('No visitors found.', 'info');
+            }
+        } catch (error) {
+            console.error('Error fetching visitor details:', error);
+            this.showMessage('Failed to load visitor details.', 'error');
+        }
+    },
+
+    async updateVisitor(visitor) {
+        try {
+            let status = '';
+            if (visitor.inCampus) status = 'inprogress';
+            else if (visitor.complete) status = 'complete';
+            else if (visitor.exitApproval) status = 'exit';
+
+            if (status) {
+                const response = await fetch(`http://192.168.3.73:3001/visitors/${visitor.id}/status/${status}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                this.showMessage('Visitor status updated successfully.');
+                await this.fetchVisitorDetails();
+            } else {
+                throw new Error('No status change detected.');
+            }
+        } catch (error) {
+            console.error('Error updating visitor status:', error);
+            this.showMessage('Failed to update visitor status.', 'error');
+        }
+    },
+
+    showMessage(msg = '', type = 'success') {
+        const toast = window.Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    },
+}));
 
             // Notes
             Alpine.data('notes', () => ({

@@ -3117,17 +3117,93 @@
                                             <span class="error-message" id="error-employeeNo"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="Department">Department</label>
-                                            <select id="Department" name="department">
-                                                <option value="" disabled selected>Select Department</option>
-                                                <option value="HR">HR</option>
-                                                <option value="IT">IT</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Security">Security</option>
-                                                <option value="Admin">Admin</option>
-                                            </select>
-                                            <span class="error-message" id="error-department"></span>
-                                        </div>
+    <label for="Department">Department</label>
+    <select id="Department" name="department" class="form-select">
+        <option value="" disabled selected>Select Department</option>
+    </select>
+    <span class="error-message" id="error-department"></span>
+    <script>
+        (async () => {
+            const API_URL = 'http://192.168.3.73:3001/department';
+            try {
+                console.log('Attempting to fetch departments from ' + API_URL);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    signal: controller.signal,
+                    headers: { 'Accept': 'application/json' },
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+                }
+
+                const text = await response.text();
+                console.log('Raw API response (departments):', text);
+
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    throw new Error(`Invalid JSON response: ${text}`);
+                }
+
+                const departments = Array.isArray(data) ? data : data.data || data.departments || [];
+                if (!Array.isArray(departments) || departments.length === 0) {
+                    throw new Error('No departments found in response');
+                }
+
+                console.log('Parsed departments:', departments);
+
+                const select = document.getElementById('Department');
+                select.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name || department.departmentName || 'Unknown';
+                    select.appendChild(option);
+                });
+
+                if (jQuery.fn.niceSelect) {
+                    $("#Department").niceSelect('update');
+                } else {
+                    console.warn('NiceSelect library not loaded');
+                }
+            } catch (error) {
+                console.error('Error fetching departments:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name
+                });
+                showMessage('Failed to load departments from API. Using default options.', 'error');
+
+                const select = document.getElementById('Department');
+                select.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                const defaultOptions = [
+                    { id: '1', name: 'HR' },
+                    { id: '2', name: 'IT' },
+                    { id: '3', name: 'Finance' },
+                    { id: '4', name: 'Security' },
+                    { id: '5', name: 'Admin' }
+                ];
+                defaultOptions.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name;
+                    select.appendChild(option);
+                });
+
+                if (jQuery.fn.niceSelect) {
+                    $("#Department").niceSelect('update');
+                }
+            }
+        })();
+    </script>
+</div>
                                         <div class="form-group">
                                             <label for="Designation">Designation</label>
                                             <select id="Designation" name="designation">
@@ -3149,6 +3225,10 @@
                                 <button type="submit" class="btn btn-outline-primary btn-sm rounded-full"
                                     style="padding: 10px 20px;">Create</button>
                             </form>
+<style>
+    .error-message { color: red; font-size: 12px; }
+    .form-control.error { border-color: red; }
+</style>
                         </div>
                     </div>
                 </div>
@@ -3242,17 +3322,93 @@
                                             <span class="error-message" id="error-editemployeeNo"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="editDepartment">Department</label>
-                                            <select id="editDepartment" name="department">
-                                                <option value="" disabled selected>Select Department</option>
-                                                <option value="HR">HR</option>
-                                                <option value="IT">IT</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Security">Security</option>
-                                                <option value="Admin">Admin</option>
-                                            </select>
-                                            <span class="error-message" id="error-editdepartment"></span>
-                                        </div>
+    <label for="editDepartment">Department</label>
+    <select id="editDepartment" name="department" class="form-select">
+        <option value="" disabled selected>Select Department</option>
+    </select>
+    <span class="error-message" id="error-editdepartment"></span>
+    <script>
+        (async () => {
+            const API_URL = 'http://192.168.3.73:3001/department';
+            try {
+                console.log('Attempting to fetch departments from ' + API_URL);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    signal: controller.signal,
+                    headers: { 'Accept': 'application/json' },
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+                }
+
+                const text = await response.text();
+                console.log('Raw API response (departments):', text);
+
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    throw new Error(`Invalid JSON response: ${text}`);
+                }
+
+                const departments = Array.isArray(data) ? data : data.data || data.departments || [];
+                if (!Array.isArray(departments) || departments.length === 0) {
+                    throw new Error('No departments found in response');
+                }
+
+                console.log('Parsed departments:', departments);
+
+                const select = document.getElementById('editDepartment');
+                select.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name || department.departmentName || 'Unknown';
+                    select.appendChild(option);
+                });
+
+                if (jQuery.fn.niceSelect) {
+                    $("#editDepartment").niceSelect('update');
+                } else {
+                    console.warn('NiceSelect library not loaded');
+                }
+            } catch (error) {
+                console.error('Error fetching departments:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name
+                });
+                showMessage('Failed to load departments from API. Using default options.', 'error');
+
+                const select = document.getElementById('editDepartment');
+                select.innerHTML = '<option value="" disabled selected>Select Department</option>';
+                const defaultOptions = [
+                    { id: '1', name: 'HR' },
+                    { id: '2', name: 'IT' },
+                    { id: '3', name: 'Finance' },
+                    { id: '4', name: 'Security' },
+                    { id: '5', name: 'Admin' }
+                ];
+                defaultOptions.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name;
+                    select.appendChild(option);
+                });
+
+                if (jQuery.fn.niceSelect) {
+                    $("#editDepartment").niceSelect('update');
+                }
+            }
+        })();
+    </script>
+</div>
                                         <div class="form-group">
                                             <label for="editDesignation">Designation</label>
                                             <select id="editDesignation" name="designation">
@@ -3300,6 +3456,7 @@
 
 
 
+    <!-- Backend Script -->
     <script>
         // Configurable backend URL
         const BASE_URL = 'http://192.168.3.73:3001'; // Change to 3002 if port updated
@@ -3852,101 +4009,111 @@
             };
 
             const validateForm = (formData, formPrefix = '') => {
-                const errors = {};
-                Object.keys(formData).forEach(key => {
-                    if (formPrefix === 'edit' && (key === 'password' || key === 'ConfirmPassword') && !formData[key]) {
-                        return;
-                    }
-                    const error = validateField(key, formData[key]);
-                    if (error) errors[key] = error;
-                });
-                Object.keys(errors).forEach(key => {
-                    document.getElementById(`error-${formPrefix}${key}`).textContent = errors[key];
-                    document.getElementById(`${formPrefix}${key}`).classList.add('error');
-                });
-                return Object.keys(errors).length === 0;
-            };
+    const errors = {};
+    Object.keys(formData).forEach(key => {
+        if (formPrefix === 'edit' && (key === 'password' || key === 'ConfirmPassword') && !formData[key]) {
+            return;
+        }
+        const error = validateField(key, formData[key]);
+        if (error) errors[key] = error;
+    });
+    Object.keys(errors).forEach(key => {
+        const errorElement = document.getElementById(`error-${formPrefix}${key}`);
+        const inputElement = document.getElementById(`${formPrefix}${key}`);
+        if (errorElement) {
+            errorElement.textContent = errors[key];
+        } else {
+            console.warn(`Error element not found: error-${formPrefix}${key}`);
+        }
+        if (inputElement) {
+            inputElement.classList.add('error');
+        } else {
+            console.warn(`Input element not found: ${formPrefix}${key}`);
+        }
+    });
+    return Object.keys(errors).length === 0;
+};
 
             $("#addUserForm").submit(async function (event) {
-                event.preventDefault();
+    event.preventDefault();
 
-                const formData = {
-                    firstName: $("#FirstName").val(),
-                    lastName: $("#LastName").val(),
-                    userName: $("#email").val(),
-                    password: $("#password").val(),
-                    ConfirmPassword: $("#ConfirmPassword").val(),
-                    contactNo: $("#ContactNo").val() || null,
-                    emailId: $("#EmailId").val() || null,
-                    address: $("#Address").val() || null,
-                    userRoleId: $("#UserRoleId").val(),
-                    employeeNo: $("#EmployeeNo").val() || null,
-                    department: $("#Department").val() || null,
-                    designation: $("#Designation").val() || null,
-                    notes: $("textarea[name='notes']").val() || null,
-                };
+    const formData = {
+        firstName: $("#FirstName").val(),
+        lastName: $("#LastName").val(),
+        userName: $("#email").val(), // Note: This might be confusing as it's labeled 'email' but used as 'userName'
+        password: $("#password").val(),
+        ConfirmPassword: $("#ConfirmPassword").val(),
+        contactNo: $("#ContactNo").val() || null,
+        emailId: $("#EmailId").val() || null,
+        address: $("#Address").val() || null,
+        userRoleId: $("#UserRoleId").val(),
+        employeeNo: $("#EmployeeNo").val() || null,
+        department: $("#Department").val() || null,
+        designation: $("#Designation").val() || null,
+        notes: $("textarea[name='notes']").val() || null,
+    };
 
-                if (!validateForm(formData, '')) {
-                    showMessage('Please fix the errors in the form', 'error');
-                    return;
-                }
+    if (!validateForm(formData, '')) {
+        showMessage('Please fix the errors in the form', 'error');
+        return;
+    }
 
-                if (formData.password !== formData.ConfirmPassword) {
-                    document.getElementById('error-ConfirmPassword').textContent = 'Passwords do not match';
-                    document.getElementById('ConfirmPassword').classList.add('error');
-                    showMessage('Passwords do not match', 'error');
-                    return;
-                }
+    if (formData.password !== formData.ConfirmPassword) {
+        document.getElementById('error-ConfirmPassword').textContent = 'Passwords do not match';
+        document.getElementById('ConfirmPassword').classList.add('error');
+        showMessage('Passwords do not match', 'error');
+        return;
+    }
 
-                const payload = {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                    userName: formData.userName,
-                    password: formData.password,
-                    contactNo: formData.contactNo,
-                    emailId: formData.emailId,
-                    address: formData.address,
-                    userRoleId: parseInt(formData.userRoleId),
-                    employeeNo: formData.employeeNo,
-                    department: formData.department,
-                    designation: formData.designation,
-                    notes: formData.notes,
-                };
+    const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        userName: formData.userName,
+        password: formData.password,
+        contactNo: formData.contactNo,
+        emailId: formData.emailId,
+        address: formData.address,
+        userRoleId: parseInt(formData.userRoleId),
+        employeeNo: formData.employeeNo,
+        department: formData.department,
+        designation: formData.designation,
+        notes: formData.notes,
+    };
 
-                console.log('Add User Payload:', payload);
+    console.log('Add User Payload:', payload);
 
-                try {
-                    const response = await fetch(`${BASE_URL}/users`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
-                        timeout: 5000,
-                    });
+    try {
+        const response = await fetch(`${BASE_URL}/users`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            timeout: 5000,
+        });
 
-                    console.log('Response Status:', response.status);
-                    const text = await response.text();
-                    console.log('Raw Response:', text);
+        console.log('Response Status:', response.status);
+        const text = await response.text();
+        console.log('Raw Response:', text);
 
-                    if (!response.ok) {
-                        let errorData;
-                        try {
-                            errorData = JSON.parse(text);
-                        } catch (e) {
-                            throw new Error(`Server error: ${response.status} - ${text}`);
-                        }
-                        throw new Error(errorData.message || `Failed to create user: ${response.status}`);
-                    }
+        if (!response.ok) {
+            let errorData;
+            try {
+                errorData = JSON.parse(text);
+            } catch (e) {
+                throw new Error(`Server error: ${response.status} - ${text}`);
+            }
+            throw new Error(errorData.message || `Failed to create user: ${response.status}`);
+        }
 
-                    const data = JSON.parse(text);
-                    showMessage(data.message || 'User created successfully', 'success');
-                    closeAddUserModal();
-                    if (isPaginatedView) fetchUsers();
-                    else fetchAllUsers();
-                } catch (error) {
-                    console.error('Error creating user:', error);
-                    showMessage(`Error creating user: ${error.message}`, 'error');
-                }
-            });
+        const data = JSON.parse(text);
+        showMessage(data.message || 'User created successfully', 'success');
+        closeAddUserModal();
+        if (isPaginatedView) fetchUsers();
+        else fetchAllUsers();
+    } catch (error) {
+        console.error('Error creating user:', error);
+        showMessage(`Error creating user: ${error.message}`, 'error');
+    }
+});
 
             $("#editUserForm").submit(async function (event) {
                 event.preventDefault();
@@ -4081,7 +4248,7 @@
 
 
 
-
+<!-- FrontEnd Script -->
     <script>
         document.addEventListener('alpine:init', () => {
             // main section
