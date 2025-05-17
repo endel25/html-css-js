@@ -3244,9 +3244,6 @@
                                     pendingApproval: item.isApproved ?? true,
                                 }));
                         this.visitorsList = apiData;
-                        if (this.visitorsList.length === 0) {
-                            this.showMessage('No visitors found for today.', 'info');
-                        }
                     } catch (error) {
                         console.error('Error fetching today\'s visitors:', error);
                         this.showMessage('Failed to load today\'s visitors.', 'error');
