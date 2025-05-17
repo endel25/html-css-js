@@ -22,22 +22,25 @@
     <script src="assets/js/auth.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
-.suggestions-container {
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 100;
-    width: 20;
-}
-.suggestion-item {
-    padding: 8px;
-    cursor: pointer;
-}
-.suggestion-item:hover {
-    background-color: #f0f0f0;
-}
+
+        .suggestions-container {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 20;
+        }
+
+        .suggestion-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
 
         /* Style the "Choose Photo" button */
         .choose-photo-btn {
@@ -1716,109 +1719,97 @@
                             </ul>
                         </li>
 
-                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <svg
-                                    class="hidden h-5 w-4 flex-none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                <span>SETTINGS</span>
-                            </h2> 
+                        <h2
+                            class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                            <svg class="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>SETTINGS</span>
+                        </h2>
 
-                         <li class="nav-item">
-                                    <a href="Dictionarysettings.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Dictionary Setting</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <!-- passes -->
-
-                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <svg
-                                    class="hidden h-5 w-4 flex-none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                <span>ALL PASSES</span>
-                            </h2> 
-
-                         <li class="nav-item">
-                                    <a href="Approvedpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Approved Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
 
                         <li class="nav-item">
-                                    <a href="Disapprovedpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Disapproved Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <a href="Dictionarysettings.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5"
+                                            d="M21 15.9983V9.99826C21 7.16983 21 5.75562 20.1213 4.87694C19.3529 4.10856 18.175 4.01211 16 4H8C5.82497 4.01211 4.64706 4.10856 3.87868 4.87694C3 5.75562 3 7.16983 3 9.99826V15.9983C3 18.8267 3 20.2409 3.87868 21.1196C4.75736 21.9983 6.17157 21.9983 9 21.9983H15C17.8284 21.9983 19.2426 21.9983 20.1213 21.1196C21 20.2409 21 18.8267 21 15.9983Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z"
+                                            fill="currentColor" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M12 9.25C12.4142 9.25 12.75 9.58579 12.75 10V12.25L15 12.25C15.4142 12.25 15.75 12.5858 15.75 13C15.75 13.4142 15.4142 13.75 15 13.75L12.75 13.75L12.75 16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16L11.25 13.75H9C8.58579 13.75 8.25 13.4142 8.25 13C8.25 12.5858 8.58579 12.25 9 12.25L11.25 12.25L11.25 10C11.25 9.58579 11.5858 9.25 12 9.25Z"
+                                            fill="currentColor" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">
+                                        Dictionary Setting
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                        <!-- passes -->
+
+                        <h2
+                            class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                            <svg class="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>ALL PASSES</span>
+                        </h2>
 
                         <li class="nav-item">
-                                    <a href="Totalexitpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Total Exit Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <a href="Approvedpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Approved
+                                        Passes</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Disapprovedpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M8 8l8 8M8 16l8-8" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Disapproved
+                                        Passes</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="Totalexitpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M10 8l4 4-4 4M14 12H8" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Total
+                                        Exit Passes</span>
+                                </div>
+                            </a>
+                        </li>
                         <!-- <li class="menu nav-item">
                                 <button
                                     type="button"
@@ -3347,8 +3338,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center">
-                                    <label for="edit-visit"
-                                        class="w-40 text-sm font-medium">Purpose of
+                                    <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of
                                         Visit</label>
                                     <div class="flex-1">
                                         <select id="edit-visit" name="visit"
@@ -3363,16 +3353,17 @@
                                         <span class="error text-xs text-red-500" id="error-visit"></span>
                                     </div>
                                 </div>
-                           <div class="flex items-center">
-    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
-    <div class="flex-1">
-        <input type="text" id="edit-personname" name="personname"
-            placeholder="Enter person to meet"
-            class="w-full text-xs px-3 py-2 border rounded" />
-        <div id="edit-personname-suggestions" class="suggestions-container hidden"></div>
-        <span class="error text-red-500 text-xs" id="error-personname"></span>
-    </div>
-</div>
+                                <div class="flex items-center">
+                                    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-personname" name="personname"
+                                            placeholder="Enter person to meet"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <div id="edit-personname-suggestions" class="suggestions-container hidden">
+                                        </div>
+                                        <span class="error text-red-500 text-xs" id="error-personname"></span>
+                                    </div>
+                                </div>
                                 <div class="flex items-center">
                                     <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
                                     <div class="flex-1">
@@ -3532,496 +3523,496 @@
             <!-- end footer section -->
 
 
- 
- <script>
-    let visitors = [];
-let currentFileInputId = '';
-let currentPage = 1;
-let entriesPerPage = 10;
-let searchQuery = '';
-let isPersonNameValid = false;
 
-// Base URL for the backend API
-const API_BASE_URL = 'http://192.168.3.73:3001';
+            <script>
+                let visitors = [];
+                let currentFileInputId = '';
+                let currentPage = 1;
+                let entriesPerPage = 10;
+                let searchQuery = '';
+                let isPersonNameValid = false;
 
-// Toast message function
-const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: position,
-        showConfirmButton: false,
-        timer: duration,
-        showCloseButton: showCloseButton,
-        padding: '10px 20px',
-    });
+                // Base URL for the backend API
+                const API_BASE_URL = 'http://192.168.3.73:3001';
 
-    toast.fire({
-        icon: type,
-        title: msg,
-    });
-};
+                // Toast message function
+                const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
+                    const toast = window.Swal.mixin({
+                        toast: true,
+                        position: position,
+                        showConfirmButton: false,
+                        timer: duration,
+                        showCloseButton: showCloseButton,
+                        padding: '10px 20px',
+                    });
 
-// Helper function to handle API requests
-async function apiRequest(endpoint, method = 'GET', body = null) {
-    const options = {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    if (body) {
-        options.body = JSON.stringify(body);
-    }
-    try {
-        const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
-        if (response.status === 204) {
-            return { message: 'Success' };
-        }
-        const contentType = response.headers.get('content-type');
-        if (!response.ok) {
-            if (contentType && contentType.includes('application/json')) {
-                const error = await response.json();
-                throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
-            } else {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-        }
-        if (contentType && contentType.includes('application/json')) {
-            return response.json();
-        } else {
-            return { message: 'Success' };
-        }
-    } catch (error) {
-        console.error(`API request failed (${endpoint}):`, error);
-        throw error;
-    }
-}
+                    toast.fire({
+                        icon: type,
+                        title: msg,
+                    });
+                };
 
-// Function to populate dropdown
-function populateDropdown(selectId, data, valueKey = 'name', selectedValue = '') {
-    const select = document.getElementById(selectId);
-    if (!select) {
-        console.error(`Select element with ID '${selectId}' not found`);
-        return;
-    }
-    select.innerHTML = '<option value="">Select ' + selectId.replace('edit-', '') + '</option>';
-    data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item[valueKey];
-        option.textContent = item[valueKey];
-        if (item[valueKey] === selectedValue) {
-            option.selected = true;
-        }
-        select.appendChild(option);
-    });
-}
-
-// Fetch and populate dropdowns
-async function fetchAndPopulateDropdowns(visitor) {
-    try {
-        // Fetch Genders
-        const genders = await apiRequest('gender');
-        populateDropdown('edit-gender', genders, 'name', visitor.gender || '');
-
-        // Fetch Purpose of Visits
-        const purposes = await apiRequest('purpose-of-visit');
-        populateDropdown('edit-visit', purposes, 'name', visitor.visit || '');
-        // Add 'Others' option for Purpose of Visit
-        const visitSelect = document.getElementById('edit-visit');
-        const othersOption = document.createElement('option');
-        othersOption.value = 'Others';
-        othersOption.textContent = 'Others (please specify)';
-        if (visitor.visit === 'Others') {
-            othersOption.selected = true;
-        }
-        visitSelect.appendChild(othersOption);
-
-        // Fetch Visitor Types
-        const visitorTypes = await apiRequest('visitor-type');
-        populateDropdown('edit-visitortype', visitorTypes, 'name', visitor.visitortype || '');
-
-        // Fetch Time Units
-        const timeUnits = await apiRequest('time-duration-unit');
-        populateDropdown('edit-durationUnit', timeUnits, 'name', visitor.durationunit || visitor.durationUnit || '');
-    } catch (error) {
-        console.error('Error fetching dropdown data:', error);
-        showMessage('Failed to load dropdown data: ' + error.message, 'error');
-    }
-}
-
-// Handle Purpose of Visit 'Others' option
-const visitSelect = document.getElementById('edit-visit');
-const customPurposeInput = document.getElementById('custom-purpose');
-visitSelect.addEventListener('change', function () {
-    if (this.value === 'Others') {
-        customPurposeInput.classList.remove('hidden');
-    } else {
-        customPurposeInput.classList.add('hidden');
-        customPurposeInput.value = '';
-    }
-});
-
-// Debounce function to limit API calls
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Fetch person name suggestions
-async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
-    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
-    const personnameInput = document.getElementById('edit-personname');
-    const errorElement = document.getElementById('error-personname');
-
-    if (!personnameInput || !suggestionsContainer || !errorElement) {
-        console.error('Required elements not found:', { personnameInput, suggestionsContainer, errorElement });
-        return false;
-    }
-
-    if (!query || query.trim() === '') {
-        suggestionsContainer.classList.add('hidden');
-        isPersonNameValid = false;
-        errorElement.textContent = 'Person name must be selected from suggestions';
-        return false;
-    }
-
-    try {
-        const response = await fetch(
-            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
-            {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-            }
-        );
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Suggestions response:', data);
-            const users = data.users || [];
-            
-            if (isValidationCheck) {
-                // For validation check, we only care if the person exists
-                const matched = users.some(user => {
-                    const displayName = user.userName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
-                    return displayName.toLowerCase() === query.toLowerCase();
-                });
-                if (!matched) {
-                    isPersonNameValid = false;
-                    errorElement.textContent = 'Selected person is not available in the database';
-                    return false;
+                // Helper function to handle API requests
+                async function apiRequest(endpoint, method = 'GET', body = null) {
+                    const options = {
+                        method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    };
+                    if (body) {
+                        options.body = JSON.stringify(body);
+                    }
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
+                        if (response.status === 204) {
+                            return { message: 'Success' };
+                        }
+                        const contentType = response.headers.get('content-type');
+                        if (!response.ok) {
+                            if (contentType && contentType.includes('application/json')) {
+                                const error = await response.json();
+                                throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
+                            } else {
+                                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                            }
+                        }
+                        if (contentType && contentType.includes('application/json')) {
+                            return response.json();
+                        } else {
+                            return { message: 'Success' };
+                        }
+                    } catch (error) {
+                        console.error(`API request failed (${endpoint}):`, error);
+                        throw error;
+                    }
                 }
-                isPersonNameValid = true;
-                errorElement.textContent = '';
-                return true;
-            }
 
-            // For suggestion display
-            suggestionsContainer.innerHTML = '';
-            if (users.length === 0) {
-                suggestionsContainer.classList.add('hidden');
-                isPersonNameValid = false;
-                errorElement.textContent = 'Person name not found in database';
-                return false;
-            }
+                // Function to populate dropdown
+                function populateDropdown(selectId, data, valueKey = 'name', selectedValue = '') {
+                    const select = document.getElementById(selectId);
+                    if (!select) {
+                        console.error(`Select element with ID '${selectId}' not found`);
+                        return;
+                    }
+                    select.innerHTML = '<option value="">Select ' + selectId.replace('edit-', '') + '</option>';
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item[valueKey];
+                        option.textContent = item[valueKey];
+                        if (item[valueKey] === selectedValue) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                }
 
-            users.forEach(user => {
-                const div = document.createElement('div');
-                div.className = 'suggestion-item';
-                const nameLine = document.createElement('div');
-                const displayName = user.userName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
-                nameLine.textContent = displayName;
-                const deptDesigLine = document.createElement('div');
-                deptDesigLine.textContent = `${user.department || 'N/A'} & ${user.designation || 'N/A'}`;
-                deptDesigLine.style.fontSize = '0.85em';
-                deptDesigLine.style.color = '#666';
-                div.appendChild(nameLine);
-                div.appendChild(deptDesigLine);
-                div.addEventListener('click', () => {
-                    personnameInput.value = `${displayName} (${user.department || 'N/A'} & ${user.designation || 'N/A'})`;
-                    suggestionsContainer.classList.add('hidden');
-                    document.getElementById('edit-department').value = user.department || '';
-                    isPersonNameValid = true;
-                    errorElement.textContent = '';
+                // Fetch and populate dropdowns
+                async function fetchAndPopulateDropdowns(visitor) {
+                    try {
+                        // Fetch Genders
+                        const genders = await apiRequest('gender');
+                        populateDropdown('edit-gender', genders, 'name', visitor.gender || '');
+
+                        // Fetch Purpose of Visits
+                        const purposes = await apiRequest('purpose-of-visit');
+                        populateDropdown('edit-visit', purposes, 'name', visitor.visit || '');
+                        // Add 'Others' option for Purpose of Visit
+                        const visitSelect = document.getElementById('edit-visit');
+                        const othersOption = document.createElement('option');
+                        othersOption.value = 'Others';
+                        othersOption.textContent = 'Others (please specify)';
+                        if (visitor.visit === 'Others') {
+                            othersOption.selected = true;
+                        }
+                        visitSelect.appendChild(othersOption);
+
+                        // Fetch Visitor Types
+                        const visitorTypes = await apiRequest('visitor-type');
+                        populateDropdown('edit-visitortype', visitorTypes, 'name', visitor.visitortype || '');
+
+                        // Fetch Time Units
+                        const timeUnits = await apiRequest('time-duration-unit');
+                        populateDropdown('edit-durationUnit', timeUnits, 'name', visitor.durationunit || visitor.durationUnit || '');
+                    } catch (error) {
+                        console.error('Error fetching dropdown data:', error);
+                        showMessage('Failed to load dropdown data: ' + error.message, 'error');
+                    }
+                }
+
+                // Handle Purpose of Visit 'Others' option
+                const visitSelect = document.getElementById('edit-visit');
+                const customPurposeInput = document.getElementById('custom-purpose');
+                visitSelect.addEventListener('change', function () {
+                    if (this.value === 'Others') {
+                        customPurposeInput.classList.remove('hidden');
+                    } else {
+                        customPurposeInput.classList.add('hidden');
+                        customPurposeInput.value = '';
+                    }
                 });
-                suggestionsContainer.appendChild(div);
-            });
 
-            suggestionsContainer.classList.remove('hidden');
-            return true;
-        } else {
-            console.error('Failed to fetch suggestions:', response.status, response.statusText);
-            suggestionsContainer.classList.add('hidden');
-            isPersonNameValid = false;
-            errorElement.textContent = 'Person name not found in database';
-            return false;
-        }
-    } catch (error) {
-        console.error('Error fetching suggestions:', error);
-        suggestionsContainer.classList.add('hidden');
-        isPersonNameValid = false;
-        errorElement.textContent = 'Error fetching person name';
-        return false;
-    }
-}
+                // Debounce function to limit API calls
+                function debounce(func, wait) {
+                    let timeout;
+                    return function executedFunction(...args) {
+                        const later = () => {
+                            clearTimeout(timeout);
+                            func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                    };
+                }
 
-// Attach person name listeners
-function attachPersonNameListeners() {
-    const personnameInput = document.getElementById('edit-personname');
-    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
+                // Fetch person name suggestions
+                async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
+                    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
+                    const personnameInput = document.getElementById('edit-personname');
+                    const errorElement = document.getElementById('error-personname');
 
-    if (personnameInput && suggestionsContainer) {
-        const debouncedFetchSuggestions = debounce((e) => {
-            fetchPersonNameSuggestions(e.target.value);
-        }, 300);
+                    if (!personnameInput || !suggestionsContainer || !errorElement) {
+                        console.error('Required elements not found:', { personnameInput, suggestionsContainer, errorElement });
+                        return false;
+                    }
 
-        personnameInput.addEventListener('input', debouncedFetchSuggestions);
+                    if (!query || query.trim() === '') {
+                        suggestionsContainer.classList.add('hidden');
+                        isPersonNameValid = false;
+                        errorElement.textContent = 'Person name must be selected from suggestions';
+                        return false;
+                    }
 
-        document.addEventListener('click', e => {
-            if (
-                !personnameInput.contains(e.target) &&
-                !suggestionsContainer.contains(e.target)
-            ) {
-                suggestionsContainer.classList.add('hidden');
-            }
-        });
+                    try {
+                        const response = await fetch(
+                            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
+                            {
+                                method: 'GET',
+                                headers: { 'Content-Type': 'application/json' },
+                            }
+                        );
 
-        personnameInput.addEventListener('blur', () => {
-            if (!isPersonNameValid) {
-                document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
-            }
-        });
-    } else {
-        console.error('Personname input or suggestions container not found');
-    }
-}
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('Suggestions response:', data);
+                            const users = data.users || [];
 
-async function fetchVisitors() {
-    try {
-        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
-        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
+                            if (isValidationCheck) {
+                                // For validation check, we only care if the person exists
+                                const matched = users.some(user => {
+                                    const displayName = user.userName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
+                                    return displayName.toLowerCase() === query.toLowerCase();
+                                });
+                                if (!matched) {
+                                    isPersonNameValid = false;
+                                    errorElement.textContent = 'Selected person is not available in the database';
+                                    return false;
+                                }
+                                isPersonNameValid = true;
+                                errorElement.textContent = '';
+                                return true;
+                            }
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+                            // For suggestion display
+                            suggestionsContainer.innerHTML = '';
+                            if (users.length === 0) {
+                                suggestionsContainer.classList.add('hidden');
+                                isPersonNameValid = false;
+                                errorElement.textContent = 'Person name not found in database';
+                                return false;
+                            }
 
-        const data = await response.json();
-        console.log('Fetched visitors:', data);
-        visitors = data.map(visitor => ({
-            ...visitor,
-            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-            durationunit: visitor.durationunit || visitor.durationUnit || '',
-        }));
+                            users.forEach(user => {
+                                const div = document.createElement('div');
+                                div.className = 'suggestion-item';
+                                const nameLine = document.createElement('div');
+                                const displayName = user.userName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
+                                nameLine.textContent = displayName;
+                                const deptDesigLine = document.createElement('div');
+                                deptDesigLine.textContent = `${user.department || 'N/A'} & ${user.designation || 'N/A'}`;
+                                deptDesigLine.style.fontSize = '0.85em';
+                                deptDesigLine.style.color = '#666';
+                                div.appendChild(nameLine);
+                                div.appendChild(deptDesigLine);
+                                div.addEventListener('click', () => {
+                                    personnameInput.value = `${displayName} (${user.department || 'N/A'} & ${user.designation || 'N/A'})`;
+                                    suggestionsContainer.classList.add('hidden');
+                                    document.getElementById('edit-department').value = user.department || '';
+                                    isPersonNameValid = true;
+                                    errorElement.textContent = '';
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
 
-        if (visitors.length === 0) {
-            console.warn('No visitors fetched from the server');
-        }
+                            suggestionsContainer.classList.remove('hidden');
+                            return true;
+                        } else {
+                            console.error('Failed to fetch suggestions:', response.status, response.statusText);
+                            suggestionsContainer.classList.add('hidden');
+                            isPersonNameValid = false;
+                            errorElement.textContent = 'Person name not found in database';
+                            return false;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching suggestions:', error);
+                        suggestionsContainer.classList.add('hidden');
+                        isPersonNameValid = false;
+                        errorElement.textContent = 'Error fetching person name';
+                        return false;
+                    }
+                }
 
-        localStorage.setItem('visitors', JSON.stringify(visitors));
-        populateTable();
-    } catch (error) {
-        console.error('Failed to fetch visitors:', error.message);
-        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
-        if (visitors.length === 0) {
-            console.warn('No cached visitors available either');
-        }
-        populateTable();
-    }
-}
+                // Attach person name listeners
+                function attachPersonNameListeners() {
+                    const personnameInput = document.getElementById('edit-personname');
+                    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
 
-function showModal(fileInputId) {
-    currentFileInputId = fileInputId;
-    document.getElementById('photoModal').style.display = 'flex';
-}
+                    if (personnameInput && suggestionsContainer) {
+                        const debouncedFetchSuggestions = debounce((e) => {
+                            fetchPersonNameSuggestions(e.target.value);
+                        }, 300);
 
-function closeModal() {
-    document.getElementById('photoModal').style.display = 'none';
-    stopCamera();
-}
+                        personnameInput.addEventListener('input', debouncedFetchSuggestions);
 
-function openGallery() {
-    const fileInput = document.getElementById(currentFileInputId);
-    fileInput.removeAttribute('capture');
-    fileInput.click();
-    closeModal();
-}
+                        document.addEventListener('click', e => {
+                            if (
+                                !personnameInput.contains(e.target) &&
+                                !suggestionsContainer.contains(e.target)
+                            ) {
+                                suggestionsContainer.classList.add('hidden');
+                            }
+                        });
 
-function openCamera() {
-    startCamera(document.getElementById(currentFileInputId));
-    closeModal();
-}
+                        personnameInput.addEventListener('blur', () => {
+                            if (!isPersonNameValid) {
+                                document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
+                            }
+                        });
+                    } else {
+                        console.error('Personname input or suggestions container not found');
+                    }
+                }
 
-function startCamera(fileInput) {
-    const video = document.getElementById('cameraPreview');
-    const canvas = document.getElementById('cameraCanvas');
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(stream => {
-            video.srcObject = stream;
-            video.style.display = 'block';
-            video.play();
-            const captureBtn = document.createElement('button');
-            captureBtn.textContent = 'Capture Photo';
-            captureBtn.className = 'btn-outline-primary';
-            captureBtn.onclick = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                canvas.toBlob(blob => {
-                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
-                    fileInput.dispatchEvent(new Event('change'));
+                async function fetchVisitors() {
+                    try {
+                        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
+                        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        console.log('Fetched visitors:', data);
+                        visitors = data.map(visitor => ({
+                            ...visitor,
+                            date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
+                            durationunit: visitor.durationunit || visitor.durationUnit || '',
+                        }));
+
+                        if (visitors.length === 0) {
+                            console.warn('No visitors fetched from the server');
+                        }
+
+                        localStorage.setItem('visitors', JSON.stringify(visitors));
+                        populateTable();
+                    } catch (error) {
+                        console.error('Failed to fetch visitors:', error.message);
+                        visitors = JSON.parse(localStorage.getItem('visitors')) || [];
+                        if (visitors.length === 0) {
+                            console.warn('No cached visitors available either');
+                        }
+                        populateTable();
+                    }
+                }
+
+                function showModal(fileInputId) {
+                    currentFileInputId = fileInputId;
+                    document.getElementById('photoModal').style.display = 'flex';
+                }
+
+                function closeModal() {
+                    document.getElementById('photoModal').style.display = 'none';
                     stopCamera();
-                }, 'image/jpeg');
-            };
-            document.body.appendChild(captureBtn);
-        })
-        .catch(err => {
-            console.error('Camera access denied:', err);
-        });
-}
+                }
 
-function stopCamera() {
-    const video = document.getElementById('cameraPreview');
-    const stream = video.srcObject;
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
-    video.style.display = 'none';
-    const captureBtn = document.querySelector('button[onclick*="capture"]');
-    if (captureBtn) captureBtn.remove();
-}
+                function openGallery() {
+                    const fileInput = document.getElementById(currentFileInputId);
+                    fileInput.removeAttribute('capture');
+                    fileInput.click();
+                    closeModal();
+                }
 
-function previewImage(input, id) {
-    const file = input.files ? input.files[0] : null;
-    const img = document.getElementById(id);
-    console.log('Previewing image for', id, 'with file:', file);
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            img.src = e.target.result;
-            img.style.display = 'block';
-            console.log('Image preview updated for', id, 'to', e.target.result);
-        };
-        reader.onerror = () => console.error('Error reading file for', id);
-        reader.readAsDataURL(file);
-    } else {
-        img.style.display = 'none';
-        console.log('No file selected for', id, 'hiding preview');
-    }
-}
+                function openCamera() {
+                    startCamera(document.getElementById(currentFileInputId));
+                    closeModal();
+                }
 
-function toggleDriverDetails() {
-    const driverDetails = document.getElementById('driverDetails');
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (!driverDetails || !driverToggle) {
-        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
-        return;
-    }
+                function startCamera(fileInput) {
+                    const video = document.getElementById('cameraPreview');
+                    const canvas = document.getElementById('cameraCanvas');
+                    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                        .then(stream => {
+                            video.srcObject = stream;
+                            video.style.display = 'block';
+                            video.play();
+                            const captureBtn = document.createElement('button');
+                            captureBtn.textContent = 'Capture Photo';
+                            captureBtn.className = 'btn-outline-primary';
+                            captureBtn.onclick = () => {
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                canvas.getContext('2d').drawImage(video, 0, 0);
+                                canvas.toBlob(blob => {
+                                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(file);
+                                    fileInput.files = dataTransfer.files;
+                                    fileInput.dispatchEvent(new Event('change'));
+                                    stopCamera();
+                                }, 'image/jpeg');
+                            };
+                            document.body.appendChild(captureBtn);
+                        })
+                        .catch(err => {
+                            console.error('Camera access denied:', err);
+                        });
+                }
 
-    const isHidden = !driverToggle.checked;
-    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
-    driverDetails.classList.toggle('hidden', isHidden);
+                function stopCamera() {
+                    const video = document.getElementById('cameraPreview');
+                    const stream = video.srcObject;
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                    video.style.display = 'none';
+                    const captureBtn = document.querySelector('button[onclick*="capture"]');
+                    if (captureBtn) captureBtn.remove();
+                }
 
-    driverDetails.style.display = isHidden ? 'none' : 'grid';
-    void driverDetails.offsetHeight;
+                function previewImage(input, id) {
+                    const file = input.files ? input.files[0] : null;
+                    const img = document.getElementById(id);
+                    console.log('Previewing image for', id, 'with file:', file);
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            img.src = e.target.result;
+                            img.style.display = 'block';
+                            console.log('Image preview updated for', id, 'to', e.target.result);
+                        };
+                        reader.onerror = () => console.error('Error reading file for', id);
+                        reader.readAsDataURL(file);
+                    } else {
+                        img.style.display = 'none';
+                        console.log('No file selected for', id, 'hiding preview');
+                    }
+                }
 
-    if (driverToggle.checked) {
-        console.log('Showing driver details');
-        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
-        if (visitor) {
-            document.getElementById('edit-drivername').value = visitor.drivername || '';
-            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
-            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
-            const driverPreview = document.getElementById('driverPreview');
-            if (visitor.driverphoto) {
-                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-                driverPreview.src = '';
-                driverPreview.src = driverPhotoUrl;
-                driverPreview.style.display = 'block';
-                console.log('Driver photo URL set to:', driverPhotoUrl);
-            } else {
-                driverPreview.src = '';
-                driverPreview.style.display = 'none';
-                console.log('No driver photo available for visitor');
-            }
-        }
-    } else {
-        console.log('Hiding driver details');
-        document.getElementById('edit-drivername').value = '';
-        document.getElementById('edit-drivermobile').value = '';
-        document.getElementById('edit-drivernationalid').value = '';
-        document.getElementById('driverPreview').style.display = 'none';
-    }
-    console.log('Driver details state after toggle:', {
-        className: driverDetails.className,
-        style: driverDetails.style.display,
-        offsetHeight: driverDetails.offsetHeight
-    });
-}
+                function toggleDriverDetails() {
+                    const driverDetails = document.getElementById('driverDetails');
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (!driverDetails || !driverToggle) {
+                        console.error('Driver details or toggle element not found:', { driverDetails, driverToggle });
+                        return;
+                    }
 
-function setButtonVisibility(visitorId, state) {
-    const buttons = ['approveBtn', 'disapproveBtn', 'completeBtn', 'exitBtn'];
-    buttons.forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            btn.style.display = 'none';
-        }
-    });
+                    const isHidden = !driverToggle.checked;
+                    console.log('Toggling driver details, isHidden:', isHidden, 'Current classes:', driverDetails.className);
+                    driverDetails.classList.toggle('hidden', isHidden);
 
-    const updateBtn = document.getElementById('updateBtn');
-    if (updateBtn) {
-        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
-    }
+                    driverDetails.style.display = isHidden ? 'none' : 'grid';
+                    void driverDetails.offsetHeight;
 
-    if (state === 'approve') {
-        document.getElementById('approveBtn').style.display = 'inline-block';
-        document.getElementById('disapproveBtn').style.display = 'inline-block';
-    } else if (state === 'complete') {
-        document.getElementById('completeBtn').style.display = 'inline-block';
-    } else if (state === 'exit') {
-        document.getElementById('exitBtn').style.display = 'inline-block';
-    }
+                    if (driverToggle.checked) {
+                        console.log('Showing driver details');
+                        const visitor = visitors.find(v => v.id == document.getElementById('edit-id').value);
+                        if (visitor) {
+                            document.getElementById('edit-drivername').value = visitor.drivername || '';
+                            document.getElementById('edit-drivermobile').value = visitor.drivermobile || '';
+                            document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
+                            const driverPreview = document.getElementById('driverPreview');
+                            if (visitor.driverphoto) {
+                                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                                driverPreview.src = '';
+                                driverPreview.src = driverPhotoUrl;
+                                driverPreview.style.display = 'block';
+                                console.log('Driver photo URL set to:', driverPhotoUrl);
+                            } else {
+                                driverPreview.src = '';
+                                driverPreview.style.display = 'none';
+                                console.log('No driver photo available for visitor');
+                            }
+                        }
+                    } else {
+                        console.log('Hiding driver details');
+                        document.getElementById('edit-drivername').value = '';
+                        document.getElementById('edit-drivermobile').value = '';
+                        document.getElementById('edit-drivernationalid').value = '';
+                        document.getElementById('driverPreview').style.display = 'none';
+                    }
+                    console.log('Driver details state after toggle:', {
+                        className: driverDetails.className,
+                        style: driverDetails.style.display,
+                        offsetHeight: driverDetails.offsetHeight
+                    });
+                }
 
-    sessionStorage.setItem(`buttonState_${visitorId}`, state);
-}
+                function setButtonVisibility(visitorId, state) {
+                    const buttons = ['approveBtn', 'disapproveBtn', 'completeBtn', 'exitBtn'];
+                    buttons.forEach(btnId => {
+                        const btn = document.getElementById(btnId);
+                        if (btn) {
+                            btn.style.display = 'none';
+                        }
+                    });
 
-function populateTable() {
-    const tableBody = document.getElementById('visitorTableBody');
-    if (!tableBody) {
-        console.error('Table body not found');
-        return;
-    }
-    tableBody.innerHTML = '';
+                    const updateBtn = document.getElementById('updateBtn');
+                    if (updateBtn) {
+                        updateBtn.style.display = state === 'none' ? 'none' : 'inline-block';
+                    }
 
-    const filteredVisitors = visitors.filter(
-        visitor =>
-            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.contactnumber?.includes(searchQuery) ||
-            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+                    if (state === 'approve') {
+                        document.getElementById('approveBtn').style.display = 'inline-block';
+                        document.getElementById('disapproveBtn').style.display = 'inline-block';
+                    } else if (state === 'complete') {
+                        document.getElementById('completeBtn').style.display = 'inline-block';
+                    } else if (state === 'exit') {
+                        document.getElementById('exitBtn').style.display = 'inline-block';
+                    }
 
-    const start = (currentPage - 1) * entriesPerPage;
-    const end = start + entriesPerPage;
-    const paginatedVisitors = filteredVisitors.slice(start, end);
+                    sessionStorage.setItem(`buttonState_${visitorId}`, state);
+                }
 
-    if (paginatedVisitors.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
-    } else {
-        paginatedVisitors.forEach(visitor => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+                function populateTable() {
+                    const tableBody = document.getElementById('visitorTableBody');
+                    if (!tableBody) {
+                        console.error('Table body not found');
+                        return;
+                    }
+                    tableBody.innerHTML = '';
+
+                    const filteredVisitors = visitors.filter(
+                        visitor =>
+                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.contactnumber?.includes(searchQuery) ||
+                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+
+                    const start = (currentPage - 1) * entriesPerPage;
+                    const end = start + entriesPerPage;
+                    const paginatedVisitors = filteredVisitors.slice(start, end);
+
+                    if (paginatedVisitors.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="8">No visitors found</td></tr>';
+                    } else {
+                        paginatedVisitors.forEach(visitor => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
                 <td>${visitor.id}</td>
                 <td>${visitor.firstname || ''}</td>
                 <td>${visitor.lastname || ''}</td>
@@ -4044,457 +4035,457 @@ function populateTable() {
                     </div>
                 </td>
             `;
-            tableBody.appendChild(row);
-        });
-    }
+                            tableBody.appendChild(row);
+                        });
+                    }
 
-    const totalEntries = filteredVisitors.length;
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
-    const showingStart = totalEntries === 0 ? 0 : start + 1;
-    const showingEnd = Math.min(end, totalEntries);
-    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
+                    const totalEntries = filteredVisitors.length;
+                    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+                    const showingStart = totalEntries === 0 ? 0 : start + 1;
+                    const showingEnd = Math.min(end, totalEntries);
+                    document.getElementById('paginationInfo').textContent = `Showing ${showingStart} to ${showingEnd} of ${totalEntries} entries`;
 
-    const prevButton = document.getElementById('prevPage');
-    const nextButton = document.getElementById('nextPage');
-    const paginationDiv = document.querySelector('.pagination');
-    if (totalEntries > entriesPerPage) {
-        paginationDiv.style.display = 'flex';
-        prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
-    } else {
-        paginationDiv.style.display = 'none';
-    }
-}
+                    const prevButton = document.getElementById('prevPage');
+                    const nextButton = document.getElementById('nextPage');
+                    const paginationDiv = document.querySelector('.pagination');
+                    if (totalEntries > entriesPerPage) {
+                        paginationDiv.style.display = 'flex';
+                        prevButton.disabled = currentPage === 1;
+                        nextButton.disabled = currentPage === totalPages || totalEntries === 0;
+                    } else {
+                        paginationDiv.style.display = 'none';
+                    }
+                }
 
-function previousPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        populateTable();
-    }
-}
+                function previousPage() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        populateTable();
+                    }
+                }
 
-function nextPage() {
-    const filteredVisitors = visitors.filter(
-        visitor =>
-            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            visitor.contactnumber?.includes(searchQuery) ||
-            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
-    if (currentPage < totalPages) {
-        currentPage++;
-        populateTable();
-    }
-}
+                function nextPage() {
+                    const filteredVisitors = visitors.filter(
+                        visitor =>
+                            visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            visitor.contactnumber?.includes(searchQuery) ||
+                            visitor.nationalid?.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                    const totalPages = Math.ceil(filteredVisitors.length / entriesPerPage);
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        populateTable();
+                    }
+                }
 
-async function openEditModal(id) {
-    const visitor = visitors.find(v => v.id == id);
-    if (!visitor) {
-        console.error('Visitor not found for id:', id);
-        return;
-    }
+                async function openEditModal(id) {
+                    const visitor = visitors.find(v => v.id == id);
+                    if (!visitor) {
+                        console.error('Visitor not found for id:', id);
+                        return;
+                    }
 
-    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
+                    console.log('Opening edit modal for visitor:', JSON.stringify(visitor, null, 2));
 
-    // Wait for dropdowns to be populated before setting values
-    await fetchAndPopulateDropdowns(visitor);
+                    // Wait for dropdowns to be populated before setting values
+                    await fetchAndPopulateDropdowns(visitor);
 
-    // Define field mappings to handle discrepancies between visitor object and form field names
-    const fieldMappings = {
-        'edit-id': 'id',
-        'edit-firstname': 'firstname',
-        'edit-lastname': 'lastname',
-        'edit-contactnumber': 'contactnumber',
-        'edit-nationalid': 'nationalid',
-        'edit-email': 'email',
-        'edit-date': 'date',
-        'edit-time': 'time',
-        'edit-personname': 'personname',
-        'edit-department': 'department',
-        'edit-durationtime': 'durationtime',
-        'edit-vehicletype': 'vehicletype',
-        'edit-vehiclenumber': 'vehiclenumber',
-        'edit-notes': 'notes',
-        'edit-drivername': 'drivername',
-        'edit-drivermobile': 'drivermobile',
-        'edit-drivernationalid': 'drivernationalid',
-        'edit-gender': 'gender',
-        'edit-visit': 'visit',
-        'edit-visitortype': 'visitortype',
-        'edit-durationUnit': 'durationunit',
-    };
+                    // Define field mappings to handle discrepancies between visitor object and form field names
+                    const fieldMappings = {
+                        'edit-id': 'id',
+                        'edit-firstname': 'firstname',
+                        'edit-lastname': 'lastname',
+                        'edit-contactnumber': 'contactnumber',
+                        'edit-nationalid': 'nationalid',
+                        'edit-email': 'email',
+                        'edit-date': 'date',
+                        'edit-time': 'time',
+                        'edit-personname': 'personname',
+                        'edit-department': 'department',
+                        'edit-durationtime': 'durationtime',
+                        'edit-vehicletype': 'vehicletype',
+                        'edit-vehiclenumber': 'vehiclenumber',
+                        'edit-notes': 'notes',
+                        'edit-drivername': 'drivername',
+                        'edit-drivermobile': 'drivermobile',
+                        'edit-drivernationalid': 'drivernationalid',
+                        'edit-gender': 'gender',
+                        'edit-visit': 'visit',
+                        'edit-visitortype': 'visitortype',
+                        'edit-durationUnit': 'durationunit',
+                    };
 
-    // Populate form fields
-    Object.entries(fieldMappings).forEach(([fieldId, visitorKey]) => {
-        const element = document.getElementById(fieldId);
-        if (!element) {
-            console.error(`Element not found for ID: ${fieldId}`);
-            return;
-        }
+                    // Populate form fields
+                    Object.entries(fieldMappings).forEach(([fieldId, visitorKey]) => {
+                        const element = document.getElementById(fieldId);
+                        if (!element) {
+                            console.error(`Element not found for ID: ${fieldId}`);
+                            return;
+                        }
 
-        let value = visitor[visitorKey] || visitor[visitorKey.toLowerCase()] || '';
-        if (element.type === 'checkbox') {
-            element.checked = !!value;
-        } else if (fieldId === 'edit-date' && value) {
-            // Handle date format
-            if (value.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                const [day, month, year] = value.split('-');
-                element.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            } else if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                element.value = value;
-            } else {
-                element.value = '';
-            }
-        } else if (element.tagName.toLowerCase() === 'select') {
-            // Skip select elements as they are handled by fetchAndPopulateDropdowns
-            return;
-        } else {
-            element.value = value;
-        }
-    });
+                        let value = visitor[visitorKey] || visitor[visitorKey.toLowerCase()] || '';
+                        if (element.type === 'checkbox') {
+                            element.checked = !!value;
+                        } else if (fieldId === 'edit-date' && value) {
+                            // Handle date format
+                            if (value.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                                const [day, month, year] = value.split('-');
+                                element.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                            } else if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                                element.value = value;
+                            } else {
+                                element.value = '';
+                            }
+                        } else if (element.tagName.toLowerCase() === 'select') {
+                            // Skip select elements as they are handled by fetchAndPopulateDropdowns
+                            return;
+                        } else {
+                            element.value = value;
+                        }
+                    });
 
-    // Validate personname on modal open without showing suggestions
-    if (visitor.personname) {
-        const nameMatch = visitor.personname.match(/^(.+?)\s*\(/);
-        const queryName = nameMatch ? nameMatch[1].trim() : visitor.personname;
-        await fetchPersonNameSuggestions(queryName, true); // Validation check only
-    } else {
-        isPersonNameValid = false;
-        document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
-    }
+                    // Validate personname on modal open without showing suggestions
+                    if (visitor.personname) {
+                        const nameMatch = visitor.personname.match(/^(.+?)\s*\(/);
+                        const queryName = nameMatch ? nameMatch[1].trim() : visitor.personname;
+                        await fetchPersonNameSuggestions(queryName, true); // Validation check only
+                    } else {
+                        isPersonNameValid = false;
+                        document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
+                    }
 
-    // Handle custom purpose for 'Others'
-    if (visitor.visit === 'Others' && visitor.customPurpose) {
-        customPurposeInput.value = visitor.customPurpose || '';
-        customPurposeInput.classList.remove('hidden');
-    } else {
-        customPurposeInput.value = '';
-        customPurposeInput.classList.add('hidden');
-    }
+                    // Handle custom purpose for 'Others'
+                    if (visitor.visit === 'Others' && visitor.customPurpose) {
+                        customPurposeInput.value = visitor.customPurpose || '';
+                        customPurposeInput.classList.remove('hidden');
+                    } else {
+                        customPurposeInput.value = '';
+                        customPurposeInput.classList.add('hidden');
+                    }
 
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (driverToggle) {
-        driverToggle.checked = !!visitor.drivername;
-        toggleDriverDetails();
-    }
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (driverToggle) {
+                        driverToggle.checked = !!visitor.drivername;
+                        toggleDriverDetails();
+                    }
 
-    const mainPreview = document.getElementById('mainPreview');
-    if (visitor.photo) {
-        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
-        console.log('Setting mainPreview URL:', photoUrl);
-        mainPreview.src = '';
-        mainPreview.src = photoUrl;
-        mainPreview.style.display = 'block';
-        const imgTest = new Image();
-        imgTest.src = photoUrl;
-        imgTest.onload = () => {
-            console.log('Main photo loaded successfully:', photoUrl);
-            mainPreview.style.display = 'block';
-        };
-        imgTest.onerror = () => {
-            console.error('Main photo failed to load at:', photoUrl);
-            mainPreview.src = '';
-            mainPreview.style.display = 'none';
-        };
-    } else {
-        console.log('No main photo available for visitor:', visitor.id);
-        mainPreview.src = '';
-        mainPreview.style.display = 'none';
-    }
+                    const mainPreview = document.getElementById('mainPreview');
+                    if (visitor.photo) {
+                        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+                        console.log('Setting mainPreview URL:', photoUrl);
+                        mainPreview.src = '';
+                        mainPreview.src = photoUrl;
+                        mainPreview.style.display = 'block';
+                        const imgTest = new Image();
+                        imgTest.src = photoUrl;
+                        imgTest.onload = () => {
+                            console.log('Main photo loaded successfully:', photoUrl);
+                            mainPreview.style.display = 'block';
+                        };
+                        imgTest.onerror = () => {
+                            console.error('Main photo failed to load at:', photoUrl);
+                            mainPreview.src = '';
+                            mainPreview.style.display = 'none';
+                        };
+                    } else {
+                        console.log('No main photo available for visitor:', visitor.id);
+                        mainPreview.src = '';
+                        mainPreview.style.display = 'none';
+                    }
 
-    const driverPreview = document.getElementById('driverPreview');
-    if (visitor.driverphoto) {
-        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
-        console.log('Setting driverPreview URL:', driverPhotoUrl);
-        driverPreview.src = '';
-        driverPreview.src = driverPhotoUrl;
-        driverPreview.style.display = 'block';
-        const driverImgTest = new Image();
-        driverImgTest.src = driverPhotoUrl;
-        driverImgTest.onload = () => {
-            console.log('Driver photo loaded successfully:', driverPhotoUrl);
-            driverPreview.style.display = 'block';
-        };
-        driverImgTest.onerror = () => {
-            console.error('Driver photo failed to load at:', driverPhotoUrl);
-            driverPreview.src = '';
-            driverPreview.style.display = 'none';
-        };
-    } else {
-        console.log('No driver photo available for visitor:', visitor.id);
-        driverPreview.src = '';
-        driverPreview.style.display = 'none';
-    }
+                    const driverPreview = document.getElementById('driverPreview');
+                    if (visitor.driverphoto) {
+                        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                        console.log('Setting driverPreview URL:', driverPhotoUrl);
+                        driverPreview.src = '';
+                        driverPreview.src = driverPhotoUrl;
+                        driverPreview.style.display = 'block';
+                        const driverImgTest = new Image();
+                        driverImgTest.src = driverPhotoUrl;
+                        driverImgTest.onload = () => {
+                            console.log('Driver photo loaded successfully:', driverPhotoUrl);
+                            driverPreview.style.display = 'block';
+                        };
+                        driverImgTest.onerror = () => {
+                            console.error('Driver photo failed to load at:', driverPhotoUrl);
+                            driverPreview.src = '';
+                            driverPreview.style.display = 'none';
+                        };
+                    } else {
+                        console.log('No driver photo available for visitor:', visitor.id);
+                        driverPreview.src = '';
+                        driverPreview.style.display = 'none';
+                    }
 
-    // Display current status
-    const statusDisplay = document.getElementById('statusDisplay');
-    if (statusDisplay) {
-        if (visitor.isApproved) {
-            statusDisplay.textContent = 'Status: Approved';
-        } else if (visitor.isApproved === false) {
-            statusDisplay.textContent = 'Status: Disapproved';
-        } else if (visitor.complete) {
-            statusDisplay.textContent = 'Status: Complete';
-        } else if (visitor.exit) {
-            statusDisplay.textContent = 'Status: Exited';
-        } else {
-            statusDisplay.textContent = 'Status: Pending';
-        }
-    }
+                    // Display current status
+                    const statusDisplay = document.getElementById('statusDisplay');
+                    if (statusDisplay) {
+                        if (visitor.isApproved) {
+                            statusDisplay.textContent = 'Status: Approved';
+                        } else if (visitor.isApproved === false) {
+                            statusDisplay.textContent = 'Status: Disapproved';
+                        } else if (visitor.complete) {
+                            statusDisplay.textContent = 'Status: Complete';
+                        } else if (visitor.exit) {
+                            statusDisplay.textContent = 'Status: Exited';
+                        } else {
+                            statusDisplay.textContent = 'Status: Pending';
+                        }
+                    }
 
-    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
-    setButtonVisibility(id, buttonState);
+                    const buttonState = sessionStorage.getItem(`buttonState_${id}`) || 'approve';
+                    setButtonVisibility(id, buttonState);
 
-    document.getElementById('editModal').style.display = 'flex';
-    console.log('Edit modal opened successfully');
-}
+                    document.getElementById('editModal').style.display = 'flex';
+                    console.log('Edit modal opened successfully');
+                }
 
-function closeEditModal() {
-    console.log('Closing edit modal');
-    const editModal = document.getElementById('editModal');
-    const editForm = document.getElementById('editForm');
-    const mainPreview = document.getElementById('mainPreview');
-    const driverPreview = document.getElementById('driverPreview');
-    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
+                function closeEditModal() {
+                    console.log('Closing edit modal');
+                    const editModal = document.getElementById('editModal');
+                    const editForm = document.getElementById('editForm');
+                    const mainPreview = document.getElementById('mainPreview');
+                    const driverPreview = document.getElementById('driverPreview');
+                    const suggestionsContainer = document.getElementById('edit-personname-suggestions');
 
-    if (editModal) {
-        editModal.style.display = 'none';
-    }
-    if (editForm) {
-        editForm.reset();
-    }
-    if (mainPreview) {
-        mainPreview.src = '';
-        mainPreview.style.display = 'none';
-        console.log('Main preview reset');
-    }
-    if (driverPreview) {
-        driverPreview.src = '';
-        driverPreview.style.display = 'none';
-        console.log('Driver preview reset');
-    }
-    if (suggestionsContainer) {
-        suggestionsContainer.classList.add('hidden');
-    }
-    isPersonNameValid = false;
-    clearErrors();
-    const driverToggle = document.getElementById('edit-driverToggle');
-    if (driverToggle) {
-        driverToggle.checked = false;
-        toggleDriverDetails();
-    }
-}
+                    if (editModal) {
+                        editModal.style.display = 'none';
+                    }
+                    if (editForm) {
+                        editForm.reset();
+                    }
+                    if (mainPreview) {
+                        mainPreview.src = '';
+                        mainPreview.style.display = 'none';
+                        console.log('Main preview reset');
+                    }
+                    if (driverPreview) {
+                        driverPreview.src = '';
+                        driverPreview.style.display = 'none';
+                        console.log('Driver preview reset');
+                    }
+                    if (suggestionsContainer) {
+                        suggestionsContainer.classList.add('hidden');
+                    }
+                    isPersonNameValid = false;
+                    clearErrors();
+                    const driverToggle = document.getElementById('edit-driverToggle');
+                    if (driverToggle) {
+                        driverToggle.checked = false;
+                        toggleDriverDetails();
+                    }
+                }
 
-function clearErrors() {
-    document.querySelectorAll('.error').forEach(error => error.textContent = '');
-}
+                function clearErrors() {
+                    document.querySelectorAll('.error').forEach(error => error.textContent = '');
+                }
 
-function validateForm(visitor) {
-    let isValid = true;
-    clearErrors();
-    console.log('Validating form:', visitor);
+                function validateForm(visitor) {
+                    let isValid = true;
+                    clearErrors();
+                    console.log('Validating form:', visitor);
 
-    const requiredFields = [
-        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
-        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
-        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
-        { key: 'contactnumber', error: 'Contact number is required' },
-        { key: 'nationalid', error: 'National ID is required' },
-        { key: 'gender', error: 'Gender is required' },
-        { key: 'date', error: 'Date is required' },
-        { key: 'time', error: 'Time is required' },
-        { key: 'visit', error: 'Purpose of visit is required' },
-        { key: 'personname', error: 'Person name is required' },
-        { key: 'department', error: 'Department is required' },
-        { key: 'durationUnit', error: 'Duration unit is required' },
-        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
-        { key: 'visitortype', error: 'Visitor type is required' },
-    ];
+                    const requiredFields = [
+                        { key: 'firstname', regex: /^[a-zA-Z\s]+$/, error: 'First name is required and must contain only letters' },
+                        { key: 'lastname', regex: /^[a-zA-Z\s]+$/, error: 'Last name is required and must contain only letters' },
+                        { key: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: 'Valid email is required' },
+                        { key: 'contactnumber', error: 'Contact number is required' },
+                        { key: 'nationalid', error: 'National ID is required' },
+                        { key: 'gender', error: 'Gender is required' },
+                        { key: 'date', error: 'Date is required' },
+                        { key: 'time', error: 'Time is required' },
+                        { key: 'visit', error: 'Purpose of visit is required' },
+                        { key: 'personname', error: 'Person name is required' },
+                        { key: 'department', error: 'Department is required' },
+                        { key: 'durationUnit', error: 'Duration unit is required' },
+                        { key: 'durationtime', check: value => parseFloat(value) > 0, error: 'Duration time is required and must be greater than 0' },
+                        { key: 'visitortype', error: 'Visitor type is required' },
+                    ];
 
-    requiredFields.forEach(field => {
-        const value = visitor[field.key];
-        if (!value || value === '') {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        } else if (field.regex && !field.regex.test(value)) {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        } else if (field.check && !field.check(value)) {
-            document.getElementById(`error-${field.key}`).textContent = field.error;
-            isValid = false;
-        }
-    });
+                    requiredFields.forEach(field => {
+                        const value = visitor[field.key];
+                        if (!value || value === '') {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        } else if (field.regex && !field.regex.test(value)) {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        } else if (field.check && !field.check(value)) {
+                            document.getElementById(`error-${field.key}`).textContent = field.error;
+                            isValid = false;
+                        }
+                    });
 
-    // Validate personname
-    if (!isPersonNameValid) {
-        document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
-        isValid = false;
-    }
+                    // Validate personname
+                    if (!isPersonNameValid) {
+                        document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
+                        isValid = false;
+                    }
 
-    if (visitor.date) {
-        let formattedDate = visitor.date;
-        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
-            const [day, month, year] = visitor.date.split('-');
-            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        }
-        const today = new Date().toISOString().split('T')[0];
-        if (formattedDate < today) {
-            document.getElementById('error-date').textContent = 'Date cannot be in the past';
-            isValid = false;
-        }
-    }
+                    if (visitor.date) {
+                        let formattedDate = visitor.date;
+                        if (visitor.date.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                            const [day, month, year] = visitor.date.split('-');
+                            formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                        }
+                        const today = new Date().toISOString().split('T')[0];
+                        if (formattedDate < today) {
+                            document.getElementById('error-date').textContent = 'Date cannot be in the past';
+                            isValid = false;
+                        }
+                    }
 
-    if (visitor.driverToggle) {
-        const driverFields = [
-            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
-            { key: 'drivermobile', error: 'Driver mobile is required' },
-            { key: 'drivernationalid', error: 'Driver national ID is required' },
-        ];
-        driverFields.forEach(field => {
-            const value = visitor[field.key];
-            if (!value || value === '') {
-                document.getElementById(`error-${field.key}`).textContent = field.error;
-                isValid = false;
-            } else if (field.regex && !field.regex.test(value)) {
-                document.getElementById(`error-${field.key}`).textContent = field.error;
-                isValid = false;
-            }
-        });
-    }
+                    if (visitor.driverToggle) {
+                        const driverFields = [
+                            { key: 'drivername', regex: /^[a-zA-Z\s]+$/, error: 'Driver name is required and must contain only letters' },
+                            { key: 'drivermobile', error: 'Driver mobile is required' },
+                            { key: 'drivernationalid', error: 'Driver national ID is required' },
+                        ];
+                        driverFields.forEach(field => {
+                            const value = visitor[field.key];
+                            if (!value || value === '') {
+                                document.getElementById(`error-${field.key}`).textContent = field.error;
+                                isValid = false;
+                            } else if (field.regex && !field.regex.test(value)) {
+                                document.getElementById(`error-${field.key}`).textContent = field.error;
+                                isValid = false;
+                            }
+                        });
+                    }
 
-    if (!isValid) {
-        console.log('Validation failed for:', visitor);
-        showMessage('Please fix the errors in the form', 'error');
-    }
-    return isValid;
-}
+                    if (!isValid) {
+                        console.log('Validation failed for:', visitor);
+                        showMessage('Please fix the errors in the form', 'error');
+                    }
+                    return isValid;
+                }
 
-async function updateVisitorStatus(visitorId, status) {
-    if (!visitorId) {
-        showMessage('No visitor ID provided', 'error');
-        return;
-    }
+                async function updateVisitorStatus(visitorId, status) {
+                    if (!visitorId) {
+                        showMessage('No visitor ID provided', 'error');
+                        return;
+                    }
 
-    try {
-        const response = await fetch(`http://192.168.3.73:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+                    try {
+                        const response = await fetch(`http://192.168.3.73:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
-        }
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
+                        }
 
-        const updatedVisitor = await response.json();
-        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
+                        const updatedVisitor = await response.json();
+                        console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit}`, updatedVisitor);
 
-        // Update local visitors array
-        const index = visitors.findIndex(v => v.id == visitorId);
-        if (index !== -1) {
-            visitors[index] = {
-                ...visitors[index],
-                ...updatedVisitor,
-                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
-            };
-            localStorage.setItem('visitors', JSON.stringify(visitors));
-        }
+                        // Update local visitors array
+                        const index = visitors.findIndex(v => v.id == visitorId);
+                        if (index !== -1) {
+                            visitors[index] = {
+                                ...visitors[index],
+                                ...updatedVisitor,
+                                date: updatedVisitor.date ? updatedVisitor.date.split('-').reverse().join('-') : visitors[index].date,
+                            };
+                            localStorage.setItem('visitors', JSON.stringify(visitors));
+                        }
 
-        showMessage(`Visitor status updated to ${status}`, 'success');
-    } catch (error) {
-        console.error('Error updating status:', error);
-        showMessage(`Failed to update status: ${error.message}`, 'error');
-    }
-}
+                        showMessage(`Visitor status updated to ${status}`, 'success');
+                    } catch (error) {
+                        console.error('Error updating status:', error);
+                        showMessage(`Failed to update status: ${error.message}`, 'error');
+                    }
+                }
 
-// Function to handle the background update process
-async function updateVisitorInBackground(updatedVisitor, apiFormData, originalVisitor) {
-    try {
-        const response = await fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
-            method: 'PATCH',
-            body: apiFormData,
-        });
+                // Function to handle the background update process
+                async function updateVisitorInBackground(updatedVisitor, apiFormData, originalVisitor) {
+                    try {
+                        const response = await fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
+                            method: 'PATCH',
+                            body: apiFormData,
+                        });
 
-        const responseData = await response.json();
-        console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
+                        const responseData = await response.json();
+                        console.log('PATCH response status:', response.status, 'data:', JSON.stringify(responseData, null, 2));
 
-        if (!response.ok) {
-            throw new Error(responseData.message || `HTTP ${response.status}`);
-        }
+                        if (!response.ok) {
+                            throw new Error(responseData.message || `HTTP ${response.status}`);
+                        }
 
-        // Update local visitors array with the actual backend response
-        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
-        if (index !== -1) {
-            visitors[index] = {
-                ...visitors[index],
-                ...responseData,
-                date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
-                photo: responseData.photo || visitors[index].photo || null,
-                driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
-            };
-            console.log('Updated visitor in array with backend data:', JSON.stringify(visitors[index], null, 2));
-            localStorage.setItem('visitors', JSON.stringify(visitors));
-        } else {
-            console.warn('Visitor not found in array for id:', updatedVisitor.id);
-        }
+                        // Update local visitors array with the actual backend response
+                        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
+                        if (index !== -1) {
+                            visitors[index] = {
+                                ...visitors[index],
+                                ...responseData,
+                                date: responseData.date ? responseData.date.split('-').reverse().join('-') : visitors[index].date,
+                                photo: responseData.photo || visitors[index].photo || null,
+                                driverphoto: responseData.driverphoto || visitors[index].driverphoto || null,
+                            };
+                            console.log('Updated visitor in array with backend data:', JSON.stringify(visitors[index], null, 2));
+                            localStorage.setItem('visitors', JSON.stringify(visitors));
+                        } else {
+                            console.warn('Visitor not found in array for id:', updatedVisitor.id);
+                        }
 
-        await fetchVisitors();
-    } catch (error) {
-        console.error('Failed to update visitor:', error.message);
-        showMessage(`Failed to update visitor: ${error.message}`, 'error');
+                        await fetchVisitors();
+                    } catch (error) {
+                        console.error('Failed to update visitor:', error.message);
+                        showMessage(`Failed to update visitor: ${error.message}`, 'error');
 
-        // Revert the optimistic update
-        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
-        if (index !== -1) {
-            visitors[index] = { ...originalVisitor };
-            localStorage.setItem('visitors', JSON.stringify(visitors));
-            populateTable();
-            console.log('Reverted visitor due to backend failure:', JSON.stringify(visitors[index], null, 2));
-        }
-    }
-}
+                        // Revert the optimistic update
+                        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
+                        if (index !== -1) {
+                            visitors[index] = { ...originalVisitor };
+                            localStorage.setItem('visitors', JSON.stringify(visitors));
+                            populateTable();
+                            console.log('Reverted visitor due to backend failure:', JSON.stringify(visitors[index], null, 2));
+                        }
+                    }
+                }
 
-document.getElementById('editForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    clearErrors();
-    console.log('Edit form submitted');
+                document.getElementById('editForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    clearErrors();
+                    console.log('Edit form submitted');
 
-    const formData = new FormData(this);
-    const updatedVisitor = {
-        id: formData.get('id'),
-        firstname: formData.get('firstname')?.trim(),
-        lastname: formData.get('lastname')?.trim(),
-        contactnumber: formData.get('contactnumber')?.trim(),
-        nationalid: formData.get('nationalid')?.trim(),
-        gender: formData.get('gender'),
-        email: formData.get('email')?.trim(),
-        date: formData.get('date'),
-        time: formData.get('time'),
-        visit: formData.get('visit')?.trim(),
-        customPurpose: formData.get('customPurpose')?.trim(),
-        personname: formData.get('personname')?.trim(),
-        department: formData.get('department')?.trim(),
-        durationUnit: formData.get('durationUnit'),
-        durationtime: formData.get('durationtime'),
-        visitortype: formData.get('visitortype'),
-        vehicletype: formData.get('vehicletype')?.trim(),
-        vehiclenumber: formData.get('vehiclenumber')?.trim(),
-        drivername: formData.get('drivername')?.trim(),
-        drivermobile: formData.get('drivermobile')?.trim(),
-        drivernationalid: formData.get('drivernationalid')?.trim(),
-        notes: formData.get('notes')?.trim(),
-        driverToggle: document.getElementById('edit-driverToggle').checked,
-        photo: formData.get('photo'),
-        driverphoto: formData.get('driverphoto'),
-    };
+                    const formData = new FormData(this);
+                    const updatedVisitor = {
+                        id: formData.get('id'),
+                        firstname: formData.get('firstname')?.trim(),
+                        lastname: formData.get('lastname')?.trim(),
+                        contactnumber: formData.get('contactnumber')?.trim(),
+                        nationalid: formData.get('nationalid')?.trim(),
+                        gender: formData.get('gender'),
+                        email: formData.get('email')?.trim(),
+                        date: formData.get('date'),
+                        time: formData.get('time'),
+                        visit: formData.get('visit')?.trim(),
+                        customPurpose: formData.get('customPurpose')?.trim(),
+                        personname: formData.get('personname')?.trim(),
+                        department: formData.get('department')?.trim(),
+                        durationUnit: formData.get('durationUnit'),
+                        durationtime: formData.get('durationtime'),
+                        visitortype: formData.get('visitortype'),
+                        vehicletype: formData.get('vehicletype')?.trim(),
+                        vehiclenumber: formData.get('vehiclenumber')?.trim(),
+                        drivername: formData.get('drivername')?.trim(),
+                        drivermobile: formData.get('drivermobile')?.trim(),
+                        drivernationalid: formData.get('drivernationalid')?.trim(),
+                        notes: formData.get('notes')?.trim(),
+                        driverToggle: document.getElementById('edit-driverToggle').checked,
+                        photo: formData.get('photo'),
+                        driverphoto: formData.get('driverphoto'),
+                    };
 
-    if (validateForm(updatedVisitor)) {
-        const submitBtn = document.getElementById('updateBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
+                    if (validateForm(updatedVisitor)) {
+                        const submitBtn = document.getElementById('updateBtn');
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `
             <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
@@ -4502,181 +4493,181 @@ document.getElementById('editForm').addEventListener('submit', async function (e
             Updating...
         `;
 
-        // Store the original visitor data for potential rollback
-        const originalVisitor = { ...visitors.find(v => v.id == updatedVisitor.id) };
+                        // Store the original visitor data for potential rollback
+                        const originalVisitor = { ...visitors.find(v => v.id == updatedVisitor.id) };
 
-        // Optimistically update the local visitors array
-        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
-        if (index !== -1) {
-            visitors[index] = {
-                ...visitors[index],
-                ...updatedVisitor,
-                date: updatedVisitor.date,
-                photo: updatedVisitor.photo && updatedVisitor.photo.size > 0 ? URL.createObjectURL(updatedVisitor.photo) : visitors[index].photo,
-                driverphoto: updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0 ? URL.createObjectURL(updatedVisitor.driverphoto) : visitors[index].driverphoto,
-            };
-            console.log('Optimistically updated visitor:', JSON.stringify(visitors[index], null, 2));
-            localStorage.setItem('visitors', JSON.stringify(visitors));
-            populateTable();
-        }
+                        // Optimistically update the local visitors array
+                        const index = visitors.findIndex(v => v.id == updatedVisitor.id);
+                        if (index !== -1) {
+                            visitors[index] = {
+                                ...visitors[index],
+                                ...updatedVisitor,
+                                date: updatedVisitor.date,
+                                photo: updatedVisitor.photo && updatedVisitor.photo.size > 0 ? URL.createObjectURL(updatedVisitor.photo) : visitors[index].photo,
+                                driverphoto: updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0 ? URL.createObjectURL(updatedVisitor.driverphoto) : visitors[index].driverphoto,
+                            };
+                            console.log('Optimistically updated visitor:', JSON.stringify(visitors[index], null, 2));
+                            localStorage.setItem('visitors', JSON.stringify(visitors));
+                            populateTable();
+                        }
 
-        // Prepare FormData for the API
-        const apiFormData = new FormData();
-        Object.keys(updatedVisitor).forEach(key => {
-            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
-                apiFormData.append(key, updatedVisitor[key]);
-            }
-        });
-        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
+                        // Prepare FormData for the API
+                        const apiFormData = new FormData();
+                        Object.keys(updatedVisitor).forEach(key => {
+                            if (key !== 'photo' && key !== 'driverphoto' && key !== 'driverToggle' && key !== 'id' && updatedVisitor[key] !== null && updatedVisitor[key] !== undefined) {
+                                apiFormData.append(key, updatedVisitor[key]);
+                            }
+                        });
+                        apiFormData.append('driverToggle', updatedVisitor.driverToggle.toString());
 
-        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
-        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
-        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
+                        const hasPhoto = updatedVisitor.photo && updatedVisitor.photo.size > 0;
+                        const hasDriverPhoto = updatedVisitor.driverToggle && updatedVisitor.driverphoto && updatedVisitor.driverphoto.size > 0;
+                        const existingVisitor = visitors.find(v => v.id == updatedVisitor.id);
 
-        if (hasPhoto) {
-            apiFormData.append('photoFile', updatedVisitor.photo);
-        } else if (existingVisitor?.photo) {
-            apiFormData.append('photo', existingVisitor.photo);
-        }
+                        if (hasPhoto) {
+                            apiFormData.append('photoFile', updatedVisitor.photo);
+                        } else if (existingVisitor?.photo) {
+                            apiFormData.append('photo', existingVisitor.photo);
+                        }
 
-        if (hasDriverPhoto) {
-            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
-        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
-            apiFormData.append('driverphoto', existingVisitor.driverphoto);
-        }
+                        if (hasDriverPhoto) {
+                            apiFormData.append('driverPhotoFile', updatedVisitor.driverphoto);
+                        } else if (updatedVisitor.driverToggle && existingVisitor?.driverphoto) {
+                            apiFormData.append('driverphoto', existingVisitor.driverphoto);
+                        }
 
-        // Log FormData for debugging
-        console.log('Preparing to send PATCH with FormData for id:', updatedVisitor.id);
-        for (const [key, value] of apiFormData.entries()) {
-            console.log(`${key}:`, value instanceof File ? value.name : value);
-        }
+                        // Log FormData for debugging
+                        console.log('Preparing to send PATCH with FormData for id:', updatedVisitor.id);
+                        for (const [key, value] of apiFormData.entries()) {
+                            console.log(`${key}:`, value instanceof File ? value.name : value);
+                        }
 
-        // Close modal immediately and show optimistic success toast
-        closeEditModal();
-        showMessage('Visitor updated successfully', 'success');
+                        // Close modal immediately and show optimistic success toast
+                        closeEditModal();
+                        showMessage('Visitor updated successfully', 'success');
 
-        // Perform the update in the background
-        updateVisitorInBackground(updatedVisitor, apiFormData, originalVisitor);
+                        // Perform the update in the background
+                        updateVisitorInBackground(updatedVisitor, apiFormData, originalVisitor);
 
-        // Reset button state
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Update';
-    }
-});
+                        // Reset button state
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Update';
+                    }
+                });
 
-async function deleteVisitor(id) {
-    const swalWithBootstrapButtons = window.Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-secondary',
-            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-        },
-        buttonsStyling: false,
-    });
-
-    swalWithBootstrapButtons
-        .fire({
-            title: 'Are you sure?',
-            text: 'This action cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true,
-            padding: '2em',
-        })
-        .then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
-                        method: 'DELETE',
+                async function deleteVisitor(id) {
+                    const swalWithBootstrapButtons = window.Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-secondary',
+                            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+                        },
+                        buttonsStyling: false,
                     });
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || `HTTP ${response.status}`);
-                    }
+                    swalWithBootstrapButtons
+                        .fire({
+                            title: 'Are you sure?',
+                            text: 'This action cannot be undone.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, delete it!',
+                            cancelButtonText: 'No, cancel!',
+                            reverseButtons: true,
+                            padding: '2em',
+                        })
+                        .then(async (result) => {
+                            if (result.isConfirmed) {
+                                try {
+                                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
+                                        method: 'DELETE',
+                                    });
 
-                    visitors = visitors.filter(v => v.id != id);
-                    localStorage.setItem('visitors', JSON.stringify(visitors));
-                    populateTable();
-                    showMessage('Visitor deleted successfully', 'success');
-                } catch (error) {
-                    console.error('Failed to delete visitor:', error.message);
-                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
-                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
+                                    if (!response.ok) {
+                                        const errorData = await response.json();
+                                        throw new Error(errorData.message || `HTTP ${response.status}`);
+                                    }
+
+                                    visitors = visitors.filter(v => v.id != id);
+                                    localStorage.setItem('visitors', JSON.stringify(visitors));
+                                    populateTable();
+                                    showMessage('Visitor deleted successfully', 'success');
+                                } catch (error) {
+                                    console.error('Failed to delete visitor:', error.message);
+                                    document.getElementById('error-notes').textContent = error.message || 'Failed to update visitor';
+                                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor', 'error');
+                                }
+                            }
+                        });
                 }
-            }
-        });
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const selector = document.querySelector('.dataTable-selector');
-    if (selector) selector.id = 'entriesPerPage';
-    const input = document.querySelector('.dataTable-input');
-    if (input) input.id = 'searchInput';
+                document.addEventListener('DOMContentLoaded', () => {
+                    const selector = document.querySelector('.dataTable-selector');
+                    if (selector) selector.id = 'entriesPerPage';
+                    const input = document.querySelector('.dataTable-input');
+                    if (input) input.id = 'searchInput';
 
-    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
-        entriesPerPage = parseInt(this.value);
-        currentPage = 1;
-        populateTable();
-    });
+                    document.getElementById('entriesPerPage')?.addEventListener('change', function () {
+                        entriesPerPage = parseInt(this.value);
+                        currentPage = 1;
+                        populateTable();
+                    });
 
-    document.getElementById('searchInput')?.addEventListener('input', function () {
-        searchQuery = this.value;
-        currentPage = 1;
-        populateTable();
-    });
+                    document.getElementById('searchInput')?.addEventListener('input', function () {
+                        searchQuery = this.value;
+                        currentPage = 1;
+                        populateTable();
+                    });
 
-    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
-        previewImage(e.target, 'mainPreview');
-    });
-    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
-        previewImage(e.target, 'driverPreview');
-    });
+                    document.getElementById('edit-photo')?.addEventListener('change', function (e) {
+                        previewImage(e.target, 'mainPreview');
+                    });
+                    document.getElementById('edit-driverphoto')?.addEventListener('change', function (e) {
+                        previewImage(e.target, 'driverPreview');
+                    });
 
-    document.getElementById('approveBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'approve');
-        setButtonVisibility(visitorId, 'complete');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('approveBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'approve');
+                        setButtonVisibility(visitorId, 'complete');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'disapprove');
-        setButtonVisibility(visitorId, 'exit');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('disapproveBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'disapprove');
+                        setButtonVisibility(visitorId, 'exit');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('completeBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'complete');
-        setButtonVisibility(visitorId, 'exit');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('completeBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'complete');
+                        setButtonVisibility(visitorId, 'exit');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    document.getElementById('exitBtn')?.addEventListener('click', async function () {
-        const visitorId = document.getElementById('edit-id').value;
-        await updateVisitorStatus(visitorId, 'exit');
-        setButtonVisibility(visitorId, 'none');
-        closeEditModal();
-        await fetchVisitors();
-    });
+                    document.getElementById('exitBtn')?.addEventListener('click', async function () {
+                        const visitorId = document.getElementById('edit-id').value;
+                        await updateVisitorStatus(visitorId, 'exit');
+                        setButtonVisibility(visitorId, 'none');
+                        closeEditModal();
+                        await fetchVisitors();
+                    });
 
-    // Attach personname listeners
-    attachPersonNameListeners();
+                    // Attach personname listeners
+                    attachPersonNameListeners();
 
-    fetchVisitors();
+                    fetchVisitors();
 
-    if (sessionStorage.getItem('visitorCreated') === 'true') {
-        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
-        sessionStorage.removeItem('visitorCreated');
-    }
-});
- </script>
+                    if (sessionStorage.getItem('visitorCreated') === 'true') {
+                        showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
+                        sessionStorage.removeItem('visitorCreated');
+                    }
+                });
+            </script>
 
 
             <script src="assets/js/alpine-collaspe.min.js"></script>

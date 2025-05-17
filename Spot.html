@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -22,14 +21,18 @@
     <script src="assets/js/auth.js"></script>
     <style>
         .medium-toast {
-    font-size: 14px !important; /* Smaller text */
-}
-.medium-toast-title {
-    font-size: 14px !important; /* Match title size */
-}
-.dark .border-b {
-    border-color: #4b5563;
-}
+            font-size: 14px !important;
+            /* Smaller text */
+        }
+
+        .medium-toast-title {
+            font-size: 14px !important;
+            /* Match title size */
+        }
+
+        .dark .border-b {
+            border-color: #4b5563;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -119,7 +122,7 @@
             text-align: center;
             width: 300px;
         }
- 
+
         .modal-content button {
             margin: 10px;
             padding: 5px 10px;
@@ -127,20 +130,22 @@
             border-radius: 4px;
             cursor: pointer;
         }
- 
+
         .modal-content .gallery-btn {
             color: #4361ee;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            outline: 1px solid #4361ee; /* Added outline */
-                   /* Optional: adds space between button edge and outline */
+            outline: 1px solid #4361ee;
+            /* Added outline */
+            /* Optional: adds space between button edge and outline */
         }
+
         .modal-content .gallery-btn:hover {
             background-color: #4361ee;
             color: #fff;
         }
- 
+
         .modal-content .camera-btn {
             color: #16a34a;
             border: none;
@@ -148,11 +153,12 @@
             cursor: pointer;
             outline: 1px solid #16a34a;
         }
+
         .modal-content .camera-btn:hover {
             background-color: #16a34a;
             color: #fff;
         }
- 
+
         .modal-content .close-btn {
             color: #dc3545;
             border: none;
@@ -160,116 +166,119 @@
             cursor: pointer;
             outline: 1px solid #dc3545
         }
+
         .modal-content .close-btn:hover {
             background-color: #dc3545;
             color: #fff;
         }
+
         .animate-spin {
             animation: spin 1s linear infinite;
         }
 
         /* === Dark Mode Enhancements === */
-        .dark body{
+        .dark body {
             background-color: #111827 !important;
             color: #888ea8;
         }
 
 
-.dark .border-t {
+        .dark .border-t {
             border-color: #4b5563;
         }
-.dark .bg-white {
-    background-color: #111827 !important;
-}
 
-.dark .border {
-    border-color: #374151 !important;
-}
+        .dark .bg-white {
+            background-color: #111827 !important;
+        }
 
-.dark .form-group input,
-.dark .form-group select,
-.dark .form-group textarea,
-.dark input,
-.dark select,
-.dark textarea {
-    background-color: #121e32;
-    border-color: #4b5563;
-    color: #888ea8;
-}
+        .dark .border {
+            border-color: #374151 !important;
+        }
 
-.dark input:focus,
-.dark select:focus,
-.dark textarea:focus {
-    box-shadow: 0 0 0 1px #818cf8;
-    border-color: #818cf8;
-}
+        .dark .form-group input,
+        .dark .form-group select,
+        .dark .form-group textarea,
+        .dark input,
+        .dark select,
+        .dark textarea {
+            background-color: #121e32;
+            border-color: #4b5563;
+            color: #888ea8;
+        }
 
-.dark .btn-outline-primary {
-    border-color: #818cf8;
-    color: #818cf8;
-}
+        .dark input:focus,
+        .dark select:focus,
+        .dark textarea:focus {
+            box-shadow: 0 0 0 1px #818cf8;
+            border-color: #818cf8;
+        }
 
-.dark .btn-outline-primary:hover {
-    background-color: #818cf8;
-    color: white;
-}
+        .dark .btn-outline-primary {
+            border-color: #818cf8;
+            color: #818cf8;
+        }
 
-.dark .modal-content {
-    background-color: #1f2937;
-    color: #e5e7eb;
-}
+        .dark .btn-outline-primary:hover {
+            background-color: #818cf8;
+            color: white;
+        }
 
-.dark .modal-content button {
-    background-color: transparent;
-    color: #e5e7eb;
-}
+        .dark .modal-content {
+            background-color: #1f2937;
+            color: #e5e7eb;
+        }
 
-.dark .modal-content .gallery-btn {
-    color: #a5b4fc;
-    outline-color: #818cf8;
-}
+        .dark .modal-content button {
+            background-color: transparent;
+            color: #e5e7eb;
+        }
 
-.dark .modal-content .gallery-btn:hover {
-    background-color: #818cf8;
-    color: white;
-}
+        .dark .modal-content .gallery-btn {
+            color: #a5b4fc;
+            outline-color: #818cf8;
+        }
 
-.dark .modal-content .camera-btn {
-    color: #86efac;
-    outline-color: #22c55e;
-}
+        .dark .modal-content .gallery-btn:hover {
+            background-color: #818cf8;
+            color: white;
+        }
 
-.dark .modal-content .camera-btn:hover {
-    background-color: #22c55e;
-    color: white;
-}
+        .dark .modal-content .camera-btn {
+            color: #86efac;
+            outline-color: #22c55e;
+        }
 
-.dark .modal-content .close-btn {
-    color: #f87171;
-    outline-color: #ef4444;
-}
+        .dark .modal-content .camera-btn:hover {
+            background-color: #22c55e;
+            color: white;
+        }
 
-.dark .modal-content .close-btn:hover {
-    background-color: #ef4444;
-    color: white;
-}
+        .dark .modal-content .close-btn {
+            color: #f87171;
+            outline-color: #ef4444;
+        }
 
-.dark .error {
-    color: #f87171;
-}
+        .dark .modal-content .close-btn:hover {
+            background-color: #ef4444;
+            color: white;
+        }
 
-.dark .shadow-md {
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
-}
+        .dark .error {
+            color: #f87171;
+        }
 
-/* Scrollbar in dark mode */
-.dark .form-scroll::-webkit-scrollbar-thumb {
-    background-color: #4b5563;
-}
+        .dark .shadow-md {
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+        }
 
-.dark .form-scroll::-webkit-scrollbar-track {
-    background-color: #1e293b;
-}
+        /* Scrollbar in dark mode */
+        .dark .form-scroll::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+        }
+
+        .dark .form-scroll::-webkit-scrollbar-track {
+            background-color: #1e293b;
+        }
 
 
         @keyframes spin {
@@ -283,21 +292,21 @@
         }
 
 
-#personname-suggestions {
-    top: 100%;
-    left: 0;
-    margin-top: 4px;
-  }
+        #personname-suggestions {
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+        }
 
-  #personname-suggestions .suggestion-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
+        #personname-suggestions .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
 
-  #personname-suggestions .suggestion-item:hover {
-    background-color: #f3f4f6;
-  }
+        #personname-suggestions .suggestion-item:hover {
+            background-color: #f3f4f6;
+        }
 
         .photo-preview:hover {
             transform: scale(4.5);
@@ -305,15 +314,15 @@
             z-index: 10;
             /* Ensure the image appears above other elements */
         }
- 
+
         .photo-preview:hover {
             transform: scale(4.5);
             /* Enlarge the image by 1.5x */
             z-index: 10;
             /* Ensure the image appears above other elements */
         }
- 
- 
+
+
         /* Style the image preview */
         .photo-preview {
             height: 34px;
@@ -328,13 +337,13 @@
             /* Smooth transition for zoom effect */
             margin-left: 8px;
         }
- 
+
         /* Show the image preview when a file is selected */
         .photo-preview[src]:not([src=""]) {
             display: inline-block;
             /* Show the image when it has a valid src */
         }
- 
+
         /* Zoom-out effect on hover */
         .photo-preview:hover {
             transform: scale(4.5);
@@ -342,8 +351,6 @@
             z-index: 10;
             /* Ensure the image appears above other elements */
         }
- 
- 
     </style>
 </head>
 
@@ -722,7 +729,8 @@
                                                     fill="currentColor" />
                                             </svg>
                                             <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Spot Entry</span>
+                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Spot
+                                                Entry</span>
                                         </div>
                                     </a>
                                 </li>
@@ -1507,109 +1515,96 @@
                             </ul>
                         </li>
 
-                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <svg
-                                    class="hidden h-5 w-4 flex-none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                <span>SETTINGS</span>
-                            </h2> 
-
-                         <li class="nav-item">
-                                    <a href="Dictionarysettings.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Dictionary Setting</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <!-- passes -->
-
-                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <svg
-                                    class="hidden h-5 w-4 flex-none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                <span>ALL PASSES</span>
-                            </h2> 
-
-                         <li class="nav-item">
-                                    <a href="Approvedpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Approved Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
+                        <h2
+                            class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                            <svg class="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>SETTINGS</span>
+                        </h2>
 
                         <li class="nav-item">
-                                    <a href="Disapprovedpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Disapproved Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <a href="Dictionarysettings.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5"
+                                            d="M21 15.9983V9.99826C21 7.16983 21 5.75562 20.1213 4.87694C19.3529 4.10856 18.175 4.01211 16 4H8C5.82497 4.01211 4.64706 4.10856 3.87868 4.87694C3 5.75562 3 7.16983 3 9.99826V15.9983C3 18.8267 3 20.2409 3.87868 21.1196C4.75736 21.9983 6.17157 21.9983 9 21.9983H15C17.8284 21.9983 19.2426 21.9983 20.1213 21.1196C21 20.2409 21 18.8267 21 15.9983Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z"
+                                            fill="currentColor" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M12 9.25C12.4142 9.25 12.75 9.58579 12.75 10V12.25L15 12.25C15.4142 12.25 15.75 12.5858 15.75 13C15.75 13.4142 15.4142 13.75 15 13.75L12.75 13.75L12.75 16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16L11.25 13.75H9C8.58579 13.75 8.25 13.4142 8.25 13C8.25 12.5858 8.58579 12.25 9 12.25L11.25 12.25L11.25 10C11.25 9.58579 11.5858 9.25 12 9.25Z"
+                                            fill="currentColor" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">
+                                        Dictionary Setting
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <!-- passes -->
+
+                        <h2
+                            class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                            <svg class="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>ALL PASSES</span>
+                        </h2>
 
                         <li class="nav-item">
-                                    <a href="Totalexitpasses.html" >
-                                        <div class="flex items-center">
-                                            <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M10.4036 22.4797L10.6787 22.015C11.1195 21.2703 11.3399 20.8979 11.691 20.6902C12.0422 20.4825 12.5001 20.4678 13.4161 20.4385C14.275 20.4111 14.8523 20.3361 15.3458 20.1317C16.385 19.7012 17.2106 18.8756 17.641 17.8365C17.9639 17.0571 17.9639 16.0691 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C5.43314 6.03516 4.04489 6.03516 3.02507 6.66011C2.45442 7.0098 1.97464 7.48958 1.62495 8.06023C1 9.08006 1 10.4683 1 13.2448V14.093C1 16.0691 1 17.0571 1.32282 17.8365C1.75326 18.8756 2.57886 19.7012 3.61802 20.1317C4.11158 20.3361 4.68882 20.4111 5.5477 20.4385C6.46368 20.4678 6.92167 20.4825 7.27278 20.6902C7.6239 20.8979 7.84431 21.2703 8.28514 22.015L8.5602 22.4797C8.97002 23.1721 9.9938 23.1721 10.4036 22.4797ZM13.1928 14.5171C13.7783 14.5171 14.253 14.0424 14.253 13.4568C14.253 12.8713 13.7783 12.3966 13.1928 12.3966C12.6072 12.3966 12.1325 12.8713 12.1325 13.4568C12.1325 14.0424 12.6072 14.5171 13.1928 14.5171ZM10.5422 13.4568C10.5422 14.0424 10.0675 14.5171 9.48193 14.5171C8.89637 14.5171 8.42169 14.0424 8.42169 13.4568C8.42169 12.8713 8.89637 12.3966 9.48193 12.3966C10.0675 12.3966 10.5422 12.8713 10.5422 13.4568ZM5.77108 14.5171C6.35664 14.5171 6.83133 14.0424 6.83133 13.4568C6.83133 12.8713 6.35664 12.3966 5.77108 12.3966C5.18553 12.3966 4.71084 12.8713 4.71084 13.4568C4.71084 14.0424 5.18553 14.5171 5.77108 14.5171Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.5"
-                                                    d="M15.486 1C16.7529 0.999992 17.7603 0.999986 18.5683 1.07681C19.3967 1.15558 20.0972 1.32069 20.7212 1.70307C21.3632 2.09648 21.9029 2.63623 22.2963 3.27821C22.6787 3.90219 22.8438 4.60265 22.9226 5.43112C22.9994 6.23907 22.9994 7.24658 22.9994 8.51343V9.37869C22.9994 10.2803 22.9994 10.9975 22.9597 11.579C22.9191 12.174 22.8344 12.6848 22.6362 13.1632C22.152 14.3323 21.2232 15.2611 20.0541 15.7453C20.0249 15.7574 19.9955 15.7691 19.966 15.7804C19.8249 15.8343 19.7039 15.8806 19.5978 15.915H17.9477C17.9639 15.416 17.9639 14.8217 17.9639 14.093V13.2448C17.9639 10.4683 17.9639 9.08006 17.3389 8.06023C16.9892 7.48958 16.5094 7.0098 15.9388 6.66011C14.919 6.03516 13.5307 6.03516 10.7542 6.03516H8.20964C7.22423 6.03516 6.41369 6.03516 5.73242 6.06309V4.4127C5.76513 4.29934 5.80995 4.16941 5.86255 4.0169C5.95202 3.75751 6.06509 3.51219 6.20848 3.27821C6.60188 2.63623 7.14163 2.09648 7.78361 1.70307C8.40759 1.32069 9.10805 1.15558 9.93651 1.07681C10.7445 0.999986 11.7519 0.999992 13.0188 1H15.486Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            <span
-                                                class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Total Exit Passes</span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <a href="Approvedpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Approved
+                                        Passes</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="Disapprovedpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M8 8l8 8M8 16l8-8" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Disapproved
+                                        Passes</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="Totalexitpasses.html" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                        <path d="M10 8l4 4-4 4M14 12H8" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Total
+                                        Exit Passes</span>
+                                </div>
+                            </a>
+                        </li>
                         <!-- <li class="menu nav-item">
                                 <button
                                     type="button"
@@ -2985,178 +2980,257 @@
             </header>
 
             <div class="dvanimation animate__animated p-6" :class="[$store.app.animation]">
-    <!-- start main content section -->
-    <div class="ml-64 p-0">
-        <div class="w-full max-w-2xl bg-white rounded-lg shadow-md p-0">
-            <div class="px-6 py-4 border-b text-xl font-semibold flex justify-between items-center">
-                <span>Visitor Registration Form</span>
-                <a href="SpotEntry.html" class="btn btn-sm btn-primary rounded-full">Back</a>
+                <!-- start main content section -->
+                <div class="ml-64 p-0">
+                    <div class="w-full max-w-2xl bg-white rounded-lg shadow-md p-0">
+                        <div class="px-6 py-4 border-b text-xl font-semibold flex justify-between items-center">
+                            <span>Visitor Registration Form</span>
+                            <a href="SpotEntry.html" class="btn btn-sm btn-primary rounded-full">Back</a>
+                        </div>
+                        <form class="p-6 space-y-4" id="visitorForm">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="firstname"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">First
+                                        Name</label>
+                                    <input type="text" id="firstname" name="firstname" placeholder="Enter first name"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-firstname"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="lastname"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Last Name</label>
+                                    <input type="text" id="lastname" name="lastname" placeholder="Enter last name"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-lastname"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="gender"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Gender</label>
+                                    <select id="gender" name="gender"
+                                        class="text-xs form-select w-1/3 border rounded px-3 py-2">
+                                        <option value="">Select gender</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="error text-xs text-red-500" id="error-gender"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="contactnumber"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Contact
+                                        Number</label>
+                                    <input type="text" id="contactnumber" name="contactnumber"
+                                        placeholder="Enter contact number"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-contactnumber"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="email"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Email
+                                        Address</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter email address"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-email"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="date"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Meeting
+                                        Date</label>
+                                    <input type="date" id="date" name="date"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-date"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="time"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Meeting
+                                        Time</label>
+                                    <input type="time" id="time" name="time"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-time"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="nationalid"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">National
+                                        ID</label>
+                                    <input type="text" id="nationalid" name="nationalid" placeholder="Enter national ID"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-nationalid"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="photo"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Visitor
+                                        Photo</label>
+                                    <input type="file" id="photo" name="photo" accept="image/*"
+                                        onchange="previewImage(this, 'mainPreview')"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs"
+                                        onclick="showModal('photo')">Choose Photo</button>
+                                    <span class="error text-xs text-red-500" id="error-photo"></span>
+                                    <img id="mainPreview" class="photo-preview mt-2" />
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="visit"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Purpose of
+                                        Visit</label>
+                                    <select id="visit" name="visit"
+                                        class="text-xs form-select w-1/3 border rounded px-3 py-2">
+                                        <option value="">Select purpose</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <!-- Optional Custom Purpose Field (hidden by default) -->
+                                    <input type="text" id="custom-purpose" name="customPurpose"
+                                        placeholder="Enter custom purpose"
+                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
+                                    <span class="error text-xs text-red-500" id="error-visit"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="personname"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Person
+                                        Name</label>
+                                    <div class="relative w-1/3">
+                                        <input type="text" id="personname" name="personname"
+                                            placeholder="Enter name of person to meet"
+                                            class="text-xs form-input w-full border rounded px-3 py-2"
+                                            autocomplete="off" />
+                                        <div id="personname-suggestions"
+                                            class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto hidden">
+                                        </div>
+                                    </div>
+                                    <span class="error text-xs text-red-500" id="error-personname"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="department"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Department</label>
+                                    <input type="text" id="department" name="department"
+                                        placeholder="Enter the visiting department"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-department"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Expected
+                                        Duration</label>
+                                    <div class="flex w-1/3 space-x-2">
+                                        <select id="durationunit" name="durationunit"
+                                            class="text-xs form-select w-1/2 border rounded px-3 py-2">
+                                            <option value="">Select unit</option>
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                        <input type="number" id="durationtime" name="durationtime"
+                                            placeholder="Enter expected duration"
+                                            class="text-xs form-input w-1/2 border rounded px-3 py-2" min="1" />
+                                    </div>
+                                    <span class="error text-xs text-red-500" id="error-durationunit"></span>
+                                    <span class="error text-xs text-red-500" id="error-durationtime"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="visitortype"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Visitor
+                                        Type</label>
+                                    <select id="visitortype" name="visitortype"
+                                        class="text-xs form-select w-1/3 border rounded px-3 py-2">
+                                        <option value="">Select visitor type</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="error text-xs text-red-500" id="error-visitortype"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="vehicletype"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Vehicle
+                                        Type</label>
+                                    <input type="text" id="vehicletype" name="vehicletype"
+                                        placeholder="Enter vehicle type"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-vehicletype"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label for="vehiclenumber"
+                                        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Vehicle
+                                        Number</label>
+                                    <input type="text" id="vehiclenumber" name="vehiclenumber"
+                                        placeholder="Enter vehicle number"
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                    <span class="error text-xs text-red-500" id="error-vehiclenumber"></span>
+                                </div>
+                                <div class="flex sm:flex-row flex-col">
+                                    <label class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Include
+                                        Driver?</label>
+                                    <input type="checkbox" id="driverToggle" onchange="toggleDriverDetails()"
+                                        class="mt-1" />
+                                    <span class="error text-xs text-red-500" id="error-driverToggle"></span>
+                                </div>
+                            </div>
+                            <div id="driverDetails" class="hidden mt-4 space-y-4 border-t pt-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex sm:flex-row flex-col">
+                                        <label for="drivername"
+                                            class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver
+                                            Name</label>
+                                        <input type="text" id="drivername" name="drivername"
+                                            placeholder="Enter driver name"
+                                            class="text(xs form-input w-1/3 border rounded px-3 py-2" />
+                                        <span class="error text-xs text-red-500" id="error-drivername"></span>
+                                    </div>
+                                    <div class="flex sm:flex-row flex-col">
+                                        <label for="drivermobile"
+                                            class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver
+                                            Mobile</label>
+                                        <input type="text" id="drivermobile" name="drivermobile"
+                                            placeholder="Enter driver mobile"
+                                            class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                        <span class="error text-xs text-red-500" id="error-drivermobile"></span>
+                                    </div>
+                                    <div class="flex sm:flex-row flex-col">
+                                        <label for="drivernationalid"
+                                            class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver
+                                            National ID</label>
+                                        <input type="text" id="drivernationalid" name="drivernationalid"
+                                            placeholder="Enter driver national ID"
+                                            class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                        <span class="error text-xs text-red-500" id="error-drivernationalid"></span>
+                                    </div>
+                                    <div class="flex sm:flex-row flex-col">
+                                        <label for="driverphoto"
+                                            class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver
+                                            Photo</label>
+                                        <input type="file" id="driverphoto" name="driverphoto" accept="image/*"
+                                            onchange="previewImage(this, 'driverPreview')"
+                                            class="text-xs form-input w-1/3 border rounded px-3 py-2" />
+                                        <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs"
+                                            onclick="showModal('driverphoto')">Choose Photo</button>
+                                        <span class="error text-xs text-red-500" id="error-driverphoto"></span>
+                                        <img id="driverPreview" class="photo-preview mt-2" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex sm:flex-row flex-col items-center">
+                                <label for="notes" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Notes</label>
+                                <div class="form-group">
+                                    <textarea id="notes" name="notes" rows="1" placeholder="Enter any notes..."
+                                        class="text-xs form-input w-1/3 border rounded px-3 py-2"></textarea>
+                                    <span class="error text-xs text-red-500" id="error-notes"></span>
+                                </div>
+                            </div>
+                            <button type="submit" id="submitBtn"
+                                class="btn btn-outline-primary btn-sm rounded-full !mt-6">Create</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal for Gallery/Camera selection -->
+                <div id="photoModal" class="modal">
+                    <div class="modal-content">
+                        <h3>Select Photo Source</h3>
+                        <button class="gallery-btn" onclick="openGallery()">Gallery</button>
+                        <button class="camera-btn" onclick="openCamera()">Camera</button>
+                        <button class="close-btn" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+
+                <!-- Hidden video element for camera preview -->
+                <video id="cameraPreview" style="display: none;"></video>
+                <canvas id="cameraCanvas" style="display: none;"></canvas>
+
+                <!-- end main content section -->
             </div>
-            <form class="p-6 space-y-4" id="visitorForm">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="firstname" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">First Name</label>
-                        <input type="text" id="firstname" name="firstname" placeholder="Enter first name" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-firstname"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="lastname" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Last Name</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Enter last name" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-lastname"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="gender" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Gender</label>
-                        <select id="gender" name="gender" class="text-xs form-select w-1/3 border rounded px-3 py-2">
-                            <option value="">Select gender</option>
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <span class="error text-xs text-red-500" id="error-gender"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="contactnumber" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Contact Number</label>
-                        <input type="text" id="contactnumber" name="contactnumber" placeholder="Enter contact number" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-contactnumber"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="email" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="Enter email address" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-email"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="date" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Meeting Date</label>
-                        <input type="date" id="date" name="date" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-date"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="time" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Meeting Time</label>
-                        <input type="time" id="time" name="time" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-time"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="nationalid" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">National ID</label>
-                        <input type="text" id="nationalid" name="nationalid" placeholder="Enter national ID" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-nationalid"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="photo" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Visitor Photo</label>
-                        <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(this, 'mainPreview')" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs" onclick="showModal('photo')">Choose Photo</button>
-                        <span class="error text-xs text-red-500" id="error-photo"></span>
-                        <img id="mainPreview" class="photo-preview mt-2" />
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="visit" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Purpose of Visit</label>
-                        <select id="visit" name="visit" class="text-xs form-select w-1/3 border rounded px-3 py-2">
-                            <option value="">Select purpose</option>
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <!-- Optional Custom Purpose Field (hidden by default) -->
-                        <input type="text" id="custom-purpose" name="customPurpose" placeholder="Enter custom purpose" class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
-                        <span class="error text-xs text-red-500" id="error-visit"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="personname" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Person Name</label>
-                        <div class="relative w-1/3">
-                            <input type="text" id="personname" name="personname" placeholder="Enter name of person to meet" class="text-xs form-input w-full border rounded px-3 py-2" autocomplete="off" />
-                            <div id="personname-suggestions" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto hidden"></div>
-                        </div>
-                        <span class="error text-xs text-red-500" id="error-personname"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="department" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Department</label>
-                        <input type="text" id="department" name="department" placeholder="Enter the visiting department" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-department"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Expected Duration</label>
-                        <div class="flex w-1/3 space-x-2">
-                            <select id="durationunit" name="durationunit" class="text-xs form-select w-1/2 border rounded px-3 py-2">
-                                <option value="">Select unit</option>
-                                <!-- Options will be populated dynamically -->
-                            </select>
-                            <input type="number" id="durationtime" name="durationtime" placeholder="Enter expected duration" class="text-xs form-input w-1/2 border rounded px-3 py-2" min="1" />
-                        </div>
-                        <span class="error text-xs text-red-500" id="error-durationunit"></span>
-                        <span class="error text-xs text-red-500" id="error-durationtime"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="visitortype" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Visitor Type</label>
-                        <select id="visitortype" name="visitortype" class="text-xs form-select w-1/3 border rounded px-3 py-2">
-                            <option value="">Select visitor type</option>
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <span class="error text-xs text-red-500" id="error-visitortype"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="vehicletype" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Vehicle Type</label>
-                        <input type="text" id="vehicletype" name="vehicletype" placeholder="Enter vehicle type" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-vehicletype"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label for="vehiclenumber" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Vehicle Number</label>
-                        <input type="text" id="vehiclenumber" name="vehiclenumber" placeholder="Enter vehicle number" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                        <span class="error text-xs text-red-500" id="error-vehiclenumber"></span>
-                    </div>
-                    <div class="flex sm:flex-row flex-col">
-                        <label class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Include Driver?</label>
-                        <input type="checkbox" id="driverToggle" onchange="toggleDriverDetails()" class="mt-1" />
-                        <span class="error text-xs text-red-500" id="error-driverToggle"></span>
-                    </div>
-                </div>
-                <div id="driverDetails" class="hidden mt-4 space-y-4 border-t pt-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex sm:flex-row flex-col">
-                            <label for="drivername" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver Name</label>
-                            <input type="text" id="drivername" name="drivername" placeholder="Enter driver name" class="text(xs form-input w-1/3 border rounded px-3 py-2" />
-                            <span class="error text-xs text-red-500" id="error-drivername"></span>
-                        </div>
-                        <div class="flex sm:flex-row flex-col">
-                            <label for="drivermobile" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver Mobile</label>
-                            <input type="text" id="drivermobile" name="drivermobile" placeholder="Enter driver mobile" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                            <span class="error text-xs text-red-500" id="error-drivermobile"></span>
-                        </div>
-                        <div class="flex sm:flex-row flex-col">
-                            <label for="drivernationalid" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver National ID</label>
-                            <input type="text" id="drivernationalid" name="drivernationalid" placeholder="Enter driver national ID" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                            <span class="error text-xs text-red-500" id="error-drivernationalid"></span>
-                        </div>
-                        <div class="flex sm:flex-row flex-col">
-                            <label for="driverphoto" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">Driver Photo</label>
-                            <input type="file" id="driverphoto" name="driverphoto" accept="image/*" onchange="previewImage(this, 'driverPreview')" class="text-xs form-input w-1/3 border rounded px-3 py-2" />
-                            <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs" onclick="showModal('driverphoto')">Choose Photo</button>
-                            <span class="error text-xs text-red-500" id="error-driverphoto"></span>
-                            <img id="driverPreview" class="photo-preview mt-2" />
-                        </div>
-                    </div>
-                </div>
-                <div class="flex sm:flex-row flex-col items-center">
-                    <label for="notes" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Notes</label>
-                    <div class="form-group">
-                        <textarea id="notes" name="notes" rows="1" placeholder="Enter any notes..." class="text-xs form-input w-1/3 border rounded px-3 py-2"></textarea>
-                        <span class="error text-xs text-red-500" id="error-notes"></span>
-                    </div>
-                </div>
-                <button type="submit" id="submitBtn" class="btn btn-outline-primary btn-sm rounded-full !mt-6">Create</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal for Gallery/Camera selection -->
-    <div id="photoModal" class="modal">
-        <div class="modal-content">
-            <h3>Select Photo Source</h3>
-            <button class="gallery-btn" onclick="openGallery()">Gallery</button>
-            <button class="camera-btn" onclick="openCamera()">Camera</button>
-            <button class="close-btn" onclick="closeModal()">Close</button>
-        </div>
-    </div>
-
-    <!-- Hidden video element for camera preview -->
-    <video id="cameraPreview" style="display: none;"></video>
-    <canvas id="cameraCanvas" style="display: none;"></canvas>
-
-    <!-- end main content section -->
-</div>
 
             <!-- start footer section -->
             <div class="mt-auto p-6 pt-0 text-center dark:text-white-dark ltr:sm:text-left rtl:sm:text-right">
@@ -3174,860 +3248,860 @@
 
 
 
-            
-  
-         
+
+
+
             <script>
-    // Base URL for the backend API
-    const API_BASE_URL = 'http://192.168.3.73:3001';
+                // Base URL for the backend API
+                const API_BASE_URL = 'http://192.168.3.73:3001';
 
-    let currentFileInputId = '';
-    let isPersonNameValid = false; // Flag to track if personname is valid
+                let currentFileInputId = '';
+                let isPersonNameValid = false; // Flag to track if personname is valid
 
-    // Helper function to handle API requests
-    async function apiRequest(endpoint, method = 'GET', body = null) {
-        const options = {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        if (body) {
-            options.body = JSON.stringify(body);
-        }
-        try {
-            const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
-            if (response.status === 204) {
-                return { message: 'Success' };
-            }
-            const contentType = response.headers.get('content-type');
-            if (!response.ok) {
-                if (contentType && contentType.includes('application/json')) {
-                    const error = await response.json();
-                    throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
-                } else {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-            }
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                return { message: 'Success' };
-            }
-        } catch (error) {
-            console.error(`API request failed (${endpoint}):`, error);
-            throw error;
-        }
-    }
-
-    // Function to populate dropdown
-    function populateDropdown(selectId, data, valueKey = 'name') {
-        const select = document.getElementById(selectId);
-        if (!select) {
-            console.error(`Select element with ID '${selectId}' not found`);
-            return;
-        }
-        select.innerHTML = '<option value="">Select ' + selectId + '</option>';
-        data.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item[valueKey];
-            option.textContent = item[valueKey];
-            select.appendChild(option);
-        });
-    }
-
-    // Fetch and populate dropdowns
-    async function fetchGenders() {
-        try {
-            const genders = await apiRequest('gender');
-            populateDropdown('gender', genders);
-        } catch (error) {
-            console.error('Error fetching genders:', error);
-            showMessage('Failed to load genders: ' + error.message, 'error');
-        }
-    }
-
-    async function fetchPurposeOfVisits() {
-        try {
-            const purposes = await apiRequest('purpose-of-visit');
-            populateDropdown('visit', purposes);
-            // Add 'Others' option for Purpose of Visit
-            const visitSelect = document.getElementById('visit');
-            const othersOption = document.createElement('option');
-            othersOption.value = 'Others';
-            othersOption.textContent = 'Others (please specify)';
-            visitSelect.appendChild(othersOption);
-        } catch (error) {
-            console.error('Error fetching purpose of visits:', error);
-            showMessage('Failed to load purpose of visits: ' + error.message, 'error');
-        }
-    }
-
-    async function fetchVisitorTypes() {
-        try {
-            const visitorTypes = await apiRequest('visitor-type');
-            populateDropdown('visitortype', visitorTypes);
-        } catch (error) {
-            console.error('Error fetching visitor types:', error);
-            showMessage('Failed to load visitor types: ' + error.message, 'error');
-        }
-    }
-
-    async function fetchTimeUnits() {
-        try {
-            const timeUnits = await apiRequest('time-duration-unit');
-            populateDropdown('durationunit', timeUnits);
-        } catch (error) {
-            console.error('Error fetching time units:', error);
-            showMessage('Failed to load time units: ' + error.message, 'error');
-        }
-    }
-
-    const visitSelect = document.getElementById('visit');
-    const customPurposeInput = document.getElementById('custom-purpose');
-
-    visitSelect.addEventListener('change', function () {
-        if (this.value === 'Others') {
-            customPurposeInput.classList.remove('hidden');
-        } else {
-            customPurposeInput.classList.add('hidden');
-        }
-    });
-
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    function showModal(fileInputId) {
-        currentFileInputId = fileInputId;
-        const modal = document.getElementById('photoModal');
-        console.log('Attempting to show photoModal, element:', modal);
-        if (modal) {
-            modal.style.display = 'flex';
-        } else {
-            console.warn('photoModal element not found; ensure <div id="photoModal"> exists in HTML');
-        }
-    }
-
-    function closeModal() {
-        const modal = document.getElementById('photoModal');
-        console.log('Attempting to close photoModal, element:', modal);
-        if (modal) {
-            modal.style.display = 'none';
-        } else {
-            console.warn('photoModal element not found');
-        }
-        stopCamera();
-    }
-
-    function openGallery() {
-        const fileInput = document.getElementById(currentFileInputId);
-        if (fileInput) {
-            fileInput.removeAttribute('capture');
-            fileInput.click();
-        } else {
-            console.error(`File input ${currentFileInputId} not found`);
-        }
-        closeModal();
-    }
-
-    function openCamera() {
-        const fileInput = document.getElementById(currentFileInputId);
-        if (fileInput) {
-            fileInput.setAttribute('capture', 'environment');
-            fileInput.click();
-        } else {
-            console.error(`File input ${currentFileInputId} not found`);
-        }
-        closeModal();
-    }
-
-    function startCamera(fileInput) {
-        const video = document.getElementById('cameraPreview');
-        const canvas = document.getElementById('cameraCanvas');
-        if (video && canvas) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.style.display = 'block';
-                    video.play();
-                    const captureBtn = document.createElement('button');
-                    captureBtn.textContent = 'Capture Photo';
-                    captureBtn.className = 'btn-outline-primary';
-                    captureBtn.onclick = () => {
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-                        canvas.getContext('2d').drawImage(video, 0, 0);
-                        canvas.toBlob(blob => {
-                            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                            const dataTransfer = new DataTransfer();
-                            dataTransfer.items.add(file);
-                            fileInput.files = dataTransfer.files;
-                            fileInput.dispatchEvent(new Event('change'));
-                            stopCamera();
-                        }, 'image/jpeg');
+                // Helper function to handle API requests
+                async function apiRequest(endpoint, method = 'GET', body = null) {
+                    const options = {
+                        method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                     };
-                    document.body.appendChild(captureBtn);
-                })
-                .catch(err => {
-                    console.error('Camera access denied:', err);
-                    showError('error-' + currentFileInputId, 'Unable to access camera');
+                    if (body) {
+                        options.body = JSON.stringify(body);
+                    }
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
+                        if (response.status === 204) {
+                            return { message: 'Success' };
+                        }
+                        const contentType = response.headers.get('content-type');
+                        if (!response.ok) {
+                            if (contentType && contentType.includes('application/json')) {
+                                const error = await response.json();
+                                throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
+                            } else {
+                                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                            }
+                        }
+                        if (contentType && contentType.includes('application/json')) {
+                            return response.json();
+                        } else {
+                            return { message: 'Success' };
+                        }
+                    } catch (error) {
+                        console.error(`API request failed (${endpoint}):`, error);
+                        throw error;
+                    }
+                }
+
+                // Function to populate dropdown
+                function populateDropdown(selectId, data, valueKey = 'name') {
+                    const select = document.getElementById(selectId);
+                    if (!select) {
+                        console.error(`Select element with ID '${selectId}' not found`);
+                        return;
+                    }
+                    select.innerHTML = '<option value="">Select ' + selectId + '</option>';
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item[valueKey];
+                        option.textContent = item[valueKey];
+                        select.appendChild(option);
+                    });
+                }
+
+                // Fetch and populate dropdowns
+                async function fetchGenders() {
+                    try {
+                        const genders = await apiRequest('gender');
+                        populateDropdown('gender', genders);
+                    } catch (error) {
+                        console.error('Error fetching genders:', error);
+                        showMessage('Failed to load genders: ' + error.message, 'error');
+                    }
+                }
+
+                async function fetchPurposeOfVisits() {
+                    try {
+                        const purposes = await apiRequest('purpose-of-visit');
+                        populateDropdown('visit', purposes);
+                        // Add 'Others' option for Purpose of Visit
+                        const visitSelect = document.getElementById('visit');
+                        const othersOption = document.createElement('option');
+                        othersOption.value = 'Others';
+                        othersOption.textContent = 'Others (please specify)';
+                        visitSelect.appendChild(othersOption);
+                    } catch (error) {
+                        console.error('Error fetching purpose of visits:', error);
+                        showMessage('Failed to load purpose of visits: ' + error.message, 'error');
+                    }
+                }
+
+                async function fetchVisitorTypes() {
+                    try {
+                        const visitorTypes = await apiRequest('visitor-type');
+                        populateDropdown('visitortype', visitorTypes);
+                    } catch (error) {
+                        console.error('Error fetching visitor types:', error);
+                        showMessage('Failed to load visitor types: ' + error.message, 'error');
+                    }
+                }
+
+                async function fetchTimeUnits() {
+                    try {
+                        const timeUnits = await apiRequest('time-duration-unit');
+                        populateDropdown('durationunit', timeUnits);
+                    } catch (error) {
+                        console.error('Error fetching time units:', error);
+                        showMessage('Failed to load time units: ' + error.message, 'error');
+                    }
+                }
+
+                const visitSelect = document.getElementById('visit');
+                const customPurposeInput = document.getElementById('custom-purpose');
+
+                visitSelect.addEventListener('change', function () {
+                    if (this.value === 'Others') {
+                        customPurposeInput.classList.remove('hidden');
+                    } else {
+                        customPurposeInput.classList.add('hidden');
+                    }
                 });
-        } else {
-            console.error('cameraPreview or cameraCanvas not found');
-        }
-    }
 
-    function stopCamera() {
-        const video = document.getElementById('cameraPreview');
-        const stream = video?.srcObject;
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
-        if (video) video.style.display = 'none';
-        const captureBtn = document.querySelector('button[onclick*="capture"]');
-        if (captureBtn) captureBtn.remove();
-    }
+                function debounce(func, wait) {
+                    let timeout;
+                    return function executedFunction(...args) {
+                        const later = () => {
+                            clearTimeout(timeout);
+                            func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                    };
+                }
 
-    function previewImage(input, id) {
-        const file = input?.files[0];
-        const img = document.getElementById(id);
-        if (file && img) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                img.src = e.target.result;
-                img.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else if (img) {
-            img.classList.add('hidden');
-        }
-    }
+                function showModal(fileInputId) {
+                    currentFileInputId = fileInputId;
+                    const modal = document.getElementById('photoModal');
+                    console.log('Attempting to show photoModal, element:', modal);
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    } else {
+                        console.warn('photoModal element not found; ensure <div id="photoModal"> exists in HTML');
+                    }
+                }
 
-    function toggleDriverDetails() {
-        const driverDetails = document.getElementById('driverDetails');
-        if (driverDetails) driverDetails.classList.toggle('hidden');
-    }
+                function closeModal() {
+                    const modal = document.getElementById('photoModal');
+                    console.log('Attempting to close photoModal, element:', modal);
+                    if (modal) {
+                        modal.style.display = 'none';
+                    } else {
+                        console.warn('photoModal element not found');
+                    }
+                    stopCamera();
+                }
 
-    function showError(id, msg) {
-        const element = document.getElementById(id);
-        if (element) element.innerText = msg;
-    }
+                function openGallery() {
+                    const fileInput = document.getElementById(currentFileInputId);
+                    if (fileInput) {
+                        fileInput.removeAttribute('capture');
+                        fileInput.click();
+                    } else {
+                        console.error(`File input ${currentFileInputId} not found`);
+                    }
+                    closeModal();
+                }
 
-    function clearErrors() {
-        document.querySelectorAll('.error').forEach(el => (el.innerText = ''));
-    }
+                function openCamera() {
+                    const fileInput = document.getElementById(currentFileInputId);
+                    if (fileInput) {
+                        fileInput.setAttribute('capture', 'environment');
+                        fileInput.click();
+                    } else {
+                        console.error(`File input ${currentFileInputId} not found`);
+                    }
+                    closeModal();
+                }
 
-    const validateField = (name, value, formData = {}) => {
-        let error = '';
-        const requiredFields = [
-            'lastname',
-            'gender',
-            'contactnumber',
-            'date',
-            'time',
-            'nationalid',
-            'visit',
-            'personname',
-            'department',
-            'durationtime',
-            'visitortype',
-        ];
-        const driverToggle = document.getElementById('driverToggle')?.checked;
+                function startCamera(fileInput) {
+                    const video = document.getElementById('cameraPreview');
+                    const canvas = document.getElementById('cameraCanvas');
+                    if (video && canvas) {
+                        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                            .then(stream => {
+                                video.srcObject = stream;
+                                video.style.display = 'block';
+                                video.play();
+                                const captureBtn = document.createElement('button');
+                                captureBtn.textContent = 'Capture Photo';
+                                captureBtn.className = 'btn-outline-primary';
+                                captureBtn.onclick = () => {
+                                    canvas.width = video.videoWidth;
+                                    canvas.height = video.videoHeight;
+                                    canvas.getContext('2d').drawImage(video, 0, 0);
+                                    canvas.toBlob(blob => {
+                                        const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                                        const dataTransfer = new DataTransfer();
+                                        dataTransfer.items.add(file);
+                                        fileInput.files = dataTransfer.files;
+                                        fileInput.dispatchEvent(new Event('change'));
+                                        stopCamera();
+                                    }, 'image/jpeg');
+                                };
+                                document.body.appendChild(captureBtn);
+                            })
+                            .catch(err => {
+                                console.error('Camera access denied:', err);
+                                showError('error-' + currentFileInputId, 'Unable to access camera');
+                            });
+                    } else {
+                        console.error('cameraPreview or cameraCanvas not found');
+                    }
+                }
 
-        const element = document.getElementById(name);
-        if (name === 'firstname' && (!value || value.trim() === '')) {
-            error = 'First name is required and cannot be empty';
-        }
-        if (name === 'email' && (!value || value.trim() === '')) {
-            error = 'Email is required and cannot be empty';
-        }
-        if (
-            name === 'photo' &&
-            !element?.dataset.existingPhoto &&
-            (!value || !input?.files?.length)
-        ) {
-            error = 'Photo is required';
-        }
+                function stopCamera() {
+                    const video = document.getElementById('cameraPreview');
+                    const stream = video?.srcObject;
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                    if (video) video.style.display = 'none';
+                    const captureBtn = document.querySelector('button[onclick*="capture"]');
+                    if (captureBtn) captureBtn.remove();
+                }
 
-        if (requiredFields.includes(name) && !value) {
-            error = `${name
-                .charAt(0)
-                .toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')} is required`;
-        } else if (name === 'durationunit' && driverToggle && !value) {
-            error = 'Duration unit is required when driver details are included';
-        }
-        switch (name) {
-            case 'firstname':
-            case 'lastname':
-                if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                    error = `${name === 'firstname' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
+                function previewImage(input, id) {
+                    const file = input?.files[0];
+                    const img = document.getElementById(id);
+                    if (file && img) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            img.src = e.target.result;
+                            img.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else if (img) {
+                        img.classList.add('hidden');
+                    }
                 }
-                break;
-            case 'drivername':
-                if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                    error =
-                        'Driver name must be at least 2 characters and contain only letters';
+
+                function toggleDriverDetails() {
+                    const driverDetails = document.getElementById('driverDetails');
+                    if (driverDetails) driverDetails.classList.toggle('hidden');
                 }
-                break;
-            case 'contactnumber':
-                if (value && !/^\d+$/.test(value)) {
-                    error = 'Phone number must contain only digits';
+
+                function showError(id, msg) {
+                    const element = document.getElementById(id);
+                    if (element) element.innerText = msg;
                 }
-                break;
-            case 'drivermobile':
-                if (value && !/^\d+$/.test(value)) {
-                    error = 'Phone number must contain only digits';
+
+                function clearErrors() {
+                    document.querySelectorAll('.error').forEach(el => (el.innerText = ''));
                 }
-                break;
-            case 'nationalid':
-                if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                    error =
-                        'National ID must be at least 4 characters (letters and numbers allowed)';
+
+                const validateField = (name, value, formData = {}) => {
+                    let error = '';
+                    const requiredFields = [
+                        'lastname',
+                        'gender',
+                        'contactnumber',
+                        'date',
+                        'time',
+                        'nationalid',
+                        'visit',
+                        'personname',
+                        'department',
+                        'durationtime',
+                        'visitortype',
+                    ];
+                    const driverToggle = document.getElementById('driverToggle')?.checked;
+
+                    const element = document.getElementById(name);
+                    if (name === 'firstname' && (!value || value.trim() === '')) {
+                        error = 'First name is required and cannot be empty';
+                    }
+                    if (name === 'email' && (!value || value.trim() === '')) {
+                        error = 'Email is required and cannot be empty';
+                    }
+                    if (
+                        name === 'photo' &&
+                        !element?.dataset.existingPhoto &&
+                        (!value || !input?.files?.length)
+                    ) {
+                        error = 'Photo is required';
+                    }
+
+                    if (requiredFields.includes(name) && !value) {
+                        error = `${name
+                            .charAt(0)
+                            .toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')} is required`;
+                    } else if (name === 'durationunit' && driverToggle && !value) {
+                        error = 'Duration unit is required when driver details are included';
+                    }
+                    switch (name) {
+                        case 'firstname':
+                        case 'lastname':
+                            if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
+                                error = `${name === 'firstname' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
+                            }
+                            break;
+                        case 'drivername':
+                            if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
+                                error =
+                                    'Driver name must be at least 2 characters and contain only letters';
+                            }
+                            break;
+                        case 'contactnumber':
+                            if (value && !/^\d+$/.test(value)) {
+                                error = 'Phone number must contain only digits';
+                            }
+                            break;
+                        case 'drivermobile':
+                            if (value && !/^\d+$/.test(value)) {
+                                error = 'Phone number must contain only digits';
+                            }
+                            break;
+                        case 'nationalid':
+                            if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                                error =
+                                    'National ID must be at least 4 characters (letters and numbers allowed)';
+                            }
+                            break;
+                        case 'drivernationalid':
+                            if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                                error =
+                                    'National ID must be at least 4 characters (letters and numbers allowed)';
+                            }
+                            break;
+                        case 'email':
+                            if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+                                error = 'Please enter a valid email address';
+                            }
+                            break;
+                        case 'gender':
+                            if (!value) {
+                                error = 'Please select a gender';
+                            }
+                            break;
+                        case 'visitortype':
+                            if (!value) {
+                                error = 'Please select a visitor type';
+                            }
+                            break;
+                        case 'durationunit':
+                            if (value) {
+                                // Validate against fetched time units (assuming API returns valid units)
+                                // Since we're fetching dynamically, we assume the API enforces valid units
+                                // Add additional validation if needed
+                            }
+                            break;
+                        case 'time':
+                            if (value && formData.date) {
+                                const selectedDate = new Date(formData.date);
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                selectedDate.setHours(0, 0, 0, 0);
+                                if (selectedDate.getTime() === today.getTime()) {
+                                    const [hours, minutes] = value.split(':').map(Number);
+                                    const now = new Date();
+                                    if (
+                                        hours < now.getHours() ||
+                                        (hours === now.getHours() && minutes <= now.getMinutes())
+                                    ) {
+                                        error = 'Allocation time cannot be in the past for today';
+                                    }
+                                }
+                            }
+                            break;
+                        case 'durationtime':
+                            if (value && !/^(\d{1,3}|[0-9]{1,2}:[0-5][0-9])$/.test(value)) {
+                                error =
+                                    'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
+                            }
+                            break;
+                        case 'date':
+                            if (value) {
+                                const selectedDate = new Date(value);
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                if (selectedDate < today) {
+                                    error = 'Date must be today or later';
+                                }
+                            }
+                            break;
+                    }
+                    return error;
+                };
+
+                function populateForm(formId, visitor) {
+                    const form = document.getElementById(formId);
+                    if (!form) {
+                        console.error(`Form with ID '${formId}' not found`);
+                        return;
+                    }
+
+                    const fields = ['firstname', 'lastname', 'contactnumber', 'email', 'gender'];
+                    fields.forEach(field => {
+                        const element = form.elements[field];
+                        if (element && visitor[field] !== undefined) {
+                            element.value = visitor[field] || '';
+                            if (element.dataset) element.dataset.populated = 'true';
+                            console.log(`Populated ${field} with: ${visitor[field] || 'undefined'}`);
+                        } else if (!element) {
+                            console.warn(`Element for ${field} not found in form ${formId}`);
+                        } else {
+                            console.log(`No data for ${field} in visitor object`);
+                        }
+                    });
+
+                    const mainPreview = document.getElementById('mainPreview');
+                    const photoInput = form.elements['photo'];
+                    if (photoInput && visitor.photo !== undefined) {
+                        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(
+                            visitor.photo
+                        )}?t=${new Date().getTime()}`;
+                        if (mainPreview) {
+                            mainPreview.src = photoUrl;
+                            mainPreview.classList.remove('hidden');
+                        }
+                        if (photoInput.dataset) photoInput.dataset.existingPhoto = visitor.photo;
+                        console.log(`Populated photo with: ${visitor.photo}`);
+                    } else if (mainPreview) {
+                        mainPreview.src = '';
+                        mainPreview.classList.add('hidden');
+                        if (photoInput && photoInput.dataset)
+                            delete photoInput.dataset.existingPhoto;
+                    }
+
+                    const firstnameElement = form.elements['firstname'];
+                    if (!firstnameElement.value || firstnameElement.value.trim() === '') {
+                        console.warn(
+                            'Firstname is empty after population. Visitor data may be incomplete:',
+                            visitor
+                        );
+                        showError(
+                            'error-firstname',
+                            'First name is required and cannot be empty after loading visitor data'
+                        );
+                    }
                 }
-                break;
-            case 'drivernationalid':
-                if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                    error =
-                        'National ID must be at least 4 characters (letters and numbers allowed)';
-                }
-                break;
-            case 'email':
-                if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-                    error = 'Please enter a valid email address';
-                }
-                break;
-            case 'gender':
-                if (!value) {
-                    error = 'Please select a gender';
-                }
-                break;
-            case 'visitortype':
-                if (!value) {
-                    error = 'Please select a visitor type';
-                }
-                break;
-            case 'durationunit':
-                if (value) {
-                    // Validate against fetched time units (assuming API returns valid units)
-                    // Since we're fetching dynamically, we assume the API enforces valid units
-                    // Add additional validation if needed
-                }
-                break;
-            case 'time':
-                if (value && formData.date) {
-                    const selectedDate = new Date(formData.date);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    selectedDate.setHours(0, 0, 0, 0);
-                    if (selectedDate.getTime() === today.getTime()) {
-                        const [hours, minutes] = value.split(':').map(Number);
-                        const now = new Date();
-                        if (
-                            hours < now.getHours() ||
-                            (hours === now.getHours() && minutes <= now.getMinutes())
-                        ) {
-                            error = 'Allocation time cannot be in the past for today';
+
+                async function checkNationalId(nationalid, formId) {
+                    console.log(`Checking National ID: "${nationalid}" for form ${formId}`);
+                    const trimmedNationalId = nationalid.trim();
+                    if (!trimmedNationalId) {
+                        console.log('National ID is empty or only spaces, no action taken');
+                        return;
+                    }
+
+                    if (trimmedNationalId.length < 4) {
+                        console.log('National ID too short, waiting for more input');
+                        showError('error-nationalid', 'National ID must be at least 4 characters');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(
+                            `http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(
+                                trimmedNationalId
+                            )}`,
+                            {
+                                method: 'GET',
+                                headers: { 'Content-Type': 'application/json' },
+                            }
+                        );
+                        console.log(`Fetch response status: ${response.status}`);
+                        if (response.ok) {
+                            const visitor = await response.json();
+                            console.log('Visitor data fetched:', visitor);
+                            populateForm(formId, visitor);
+                            showMessage('Visitor data loaded', 'success');
+                        } else if (response.status === 404) {
+                            console.log('No visitor found for national ID, allowing new entry');
+                        } else {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Error in checkNationalId:', error.message);
+                        showMessage('Failed to check National ID', 'error');
+                    } finally {
+                        const form = document.getElementById(formId);
+                        if (form) {
+                            form.classList.remove('hidden');
+                            form.style.display = 'block';
                         }
                     }
                 }
-                break;
-            case 'durationtime':
-                if (value && !/^(\d{1,3}|[0-9]{1,2}:[0-5][0-9])$/.test(value)) {
-                    error =
-                        'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
-                }
-                break;
-            case 'date':
-                if (value) {
-                    const selectedDate = new Date(value);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    if (selectedDate < today) {
-                        error = 'Date must be today or later';
+
+                async function fetchPersonNameSuggestions(query) {
+                    const suggestionsContainer = document.getElementById('personname-suggestions');
+                    const personnameInput = document.getElementById('personname');
+                    if (!query || query.trim() === '') {
+                        suggestionsContainer.classList.add('hidden');
+                        isPersonNameValid = false;
+                        showError('error-personname', 'Person name must be selected from suggestions');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(
+                            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(
+                                query
+                            )}`,
+                            {
+                                method: 'GET',
+                                headers: { 'Content-Type': 'application/json' },
+                            }
+                        );
+
+                        if (response.ok) {
+                            const { users } = await response.json();
+                            suggestionsContainer.innerHTML = '';
+                            if (users.length === 0) {
+                                suggestionsContainer.classList.add('hidden');
+                                isPersonNameValid = false;
+                                showError('error-personname', 'Person name not found in database');
+                                return;
+                            }
+
+                            users.forEach(user => {
+                                const div = document.createElement('div');
+                                div.className = 'suggestion-item';
+                                const nameLine = document.createElement('div');
+                                nameLine.textContent = `${user.firstName} ${user.lastName}`;
+                                const deptDesigLine = document.createElement('div');
+                                deptDesigLine.textContent = `${user.department} & ${user.designation}`;
+                                deptDesigLine.style.fontSize = '0.85em';
+                                deptDesigLine.style.color = '#666';
+                                div.appendChild(nameLine);
+                                div.appendChild(deptDesigLine);
+                                div.addEventListener('click', () => {
+                                    personnameInput.value = `${user.firstName} ${user.lastName} (${user.department} & ${user.designation})`;
+                                    suggestionsContainer.classList.add('hidden');
+                                    document.getElementById('department').value = user.department || '';
+                                    isPersonNameValid = true;
+                                    showError('error-personname', '');
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
+
+                            suggestionsContainer.classList.remove('hidden');
+                        } else {
+                            console.error('Failed to fetch suggestions:', response.status);
+                            suggestionsContainer.classList.add('hidden');
+                            isPersonNameValid = false;
+                            showError('error-personname', 'Person name not found in database');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching suggestions:', error);
+                        suggestionsContainer.classList.add('hidden');
+                        isPersonNameValid = false;
+                        showError('error-personname', 'Error fetching person name');
                     }
                 }
-                break;
-        }
-        return error;
-    };
 
-    function populateForm(formId, visitor) {
-        const form = document.getElementById(formId);
-        if (!form) {
-            console.error(`Form with ID '${formId}' not found`);
-            return;
-        }
-
-        const fields = ['firstname', 'lastname', 'contactnumber', 'email', 'gender'];
-        fields.forEach(field => {
-            const element = form.elements[field];
-            if (element && visitor[field] !== undefined) {
-                element.value = visitor[field] || '';
-                if (element.dataset) element.dataset.populated = 'true';
-                console.log(`Populated ${field} with: ${visitor[field] || 'undefined'}`);
-            } else if (!element) {
-                console.warn(`Element for ${field} not found in form ${formId}`);
-            } else {
-                console.log(`No data for ${field} in visitor object`);
-            }
-        });
-
-        const mainPreview = document.getElementById('mainPreview');
-        const photoInput = form.elements['photo'];
-        if (photoInput && visitor.photo !== undefined) {
-            const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(
-                visitor.photo
-            )}?t=${new Date().getTime()}`;
-            if (mainPreview) {
-                mainPreview.src = photoUrl;
-                mainPreview.classList.remove('hidden');
-            }
-            if (photoInput.dataset) photoInput.dataset.existingPhoto = visitor.photo;
-            console.log(`Populated photo with: ${visitor.photo}`);
-        } else if (mainPreview) {
-            mainPreview.src = '';
-            mainPreview.classList.add('hidden');
-            if (photoInput && photoInput.dataset)
-                delete photoInput.dataset.existingPhoto;
-        }
-
-        const firstnameElement = form.elements['firstname'];
-        if (!firstnameElement.value || firstnameElement.value.trim() === '') {
-            console.warn(
-                'Firstname is empty after population. Visitor data may be incomplete:',
-                visitor
-            );
-            showError(
-                'error-firstname',
-                'First name is required and cannot be empty after loading visitor data'
-            );
-        }
-    }
-
-    async function checkNationalId(nationalid, formId) {
-        console.log(`Checking National ID: "${nationalid}" for form ${formId}`);
-        const trimmedNationalId = nationalid.trim();
-        if (!trimmedNationalId) {
-            console.log('National ID is empty or only spaces, no action taken');
-            return;
-        }
-
-        if (trimmedNationalId.length < 4) {
-            console.log('National ID too short, waiting for more input');
-            showError('error-nationalid', 'National ID must be at least 4 characters');
-            return;
-        }
-
-        try {
-            const response = await fetch(
-                `http://192.168.3.73:3001/visitors/nationalid/${encodeURIComponent(
-                    trimmedNationalId
-                )}`,
-                {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-            console.log(`Fetch response status: ${response.status}`);
-            if (response.ok) {
-                const visitor = await response.json();
-                console.log('Visitor data fetched:', visitor);
-                populateForm(formId, visitor);
-                showMessage('Visitor data loaded', 'success');
-            } else if (response.status === 404) {
-                console.log('No visitor found for national ID, allowing new entry');
-            } else {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Error in checkNationalId:', error.message);
-            showMessage('Failed to check National ID', 'error');
-        } finally {
-            const form = document.getElementById(formId);
-            if (form) {
-                form.classList.remove('hidden');
-                form.style.display = 'block';
-            }
-        }
-    }
-
-    async function fetchPersonNameSuggestions(query) {
-        const suggestionsContainer = document.getElementById('personname-suggestions');
-        const personnameInput = document.getElementById('personname');
-        if (!query || query.trim() === '') {
-            suggestionsContainer.classList.add('hidden');
-            isPersonNameValid = false;
-            showError('error-personname', 'Person name must be selected from suggestions');
-            return;
-        }
-
-        try {
-            const response = await fetch(
-                `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(
-                    query
-                )}`,
-                {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-
-            if (response.ok) {
-                const { users } = await response.json();
-                suggestionsContainer.innerHTML = '';
-                if (users.length === 0) {
-                    suggestionsContainer.classList.add('hidden');
-                    isPersonNameValid = false;
-                    showError('error-personname', 'Person name not found in database');
-                    return;
-                }
-
-                users.forEach(user => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    const nameLine = document.createElement('div');
-                    nameLine.textContent = `${user.firstName} ${user.lastName}`;
-                    const deptDesigLine = document.createElement('div');
-                    deptDesigLine.textContent = `${user.department} & ${user.designation}`;
-                    deptDesigLine.style.fontSize = '0.85em';
-                    deptDesigLine.style.color = '#666';
-                    div.appendChild(nameLine);
-                    div.appendChild(deptDesigLine);
-                    div.addEventListener('click', () => {
-                        personnameInput.value = `${user.firstName} ${user.lastName} (${user.department} & ${user.designation})`;
-                        suggestionsContainer.classList.add('hidden');
-                        document.getElementById('department').value = user.department || '';
-                        isPersonNameValid = true;
-                        showError('error-personname', '');
+                const attachLiveValidation = () => {
+                    document.querySelectorAll('input, select, textarea').forEach(input => {
+                        input.addEventListener('input', () => {
+                            const formData = {
+                                date: document.getElementById('date')?.value,
+                                time: document.getElementById('time')?.value,
+                            };
+                            const error = validateField(input.id, input.value, formData);
+                            showError('error-' + input.id, error);
+                        });
                     });
-                    suggestionsContainer.appendChild(div);
-                });
-
-                suggestionsContainer.classList.remove('hidden');
-            } else {
-                console.error('Failed to fetch suggestions:', response.status);
-                suggestionsContainer.classList.add('hidden');
-                isPersonNameValid = false;
-                showError('error-personname', 'Person name not found in database');
-            }
-        } catch (error) {
-            console.error('Error fetching suggestions:', error);
-            suggestionsContainer.classList.add('hidden');
-            isPersonNameValid = false;
-            showError('error-personname', 'Error fetching person name');
-        }
-    }
-
-    const attachLiveValidation = () => {
-        document.querySelectorAll('input, select, textarea').forEach(input => {
-            input.addEventListener('input', () => {
-                const formData = {
-                    date: document.getElementById('date')?.value,
-                    time: document.getElementById('time')?.value,
                 };
-                const error = validateField(input.id, input.value, formData);
-                showError('error-' + input.id, error);
-            });
-        });
-    };
 
-    const showMessage = (
-        msg = 'Example notification text.',
-        type = 'success',
-        position = 'top-right',
-        showCloseButton = true,
-        duration = 2000
-    ) => {
-        const toast = window.Swal.mixin({
-            toast: true,
-            position: position,
-            showConfirmButton: false,
-            timer: duration,
-            showCloseButton: showCloseButton,
-            padding: '5px 10px',
-            width: '300px',
-            fontSize: '14px',
-            customClass: {
-                popup: 'medium-toast',
-                title: 'medium-toast-title',
-            },
-        });
+                const showMessage = (
+                    msg = 'Example notification text.',
+                    type = 'success',
+                    position = 'top-right',
+                    showCloseButton = true,
+                    duration = 2000
+                ) => {
+                    const toast = window.Swal.mixin({
+                        toast: true,
+                        position: position,
+                        showConfirmButton: false,
+                        timer: duration,
+                        showCloseButton: showCloseButton,
+                        padding: '5px 10px',
+                        width: '300px',
+                        fontSize: '14px',
+                        customClass: {
+                            popup: 'medium-toast',
+                            title: 'medium-toast-title',
+                        },
+                    });
 
-        toast.fire({
-            icon: type,
-            title: msg,
-        });
-    };
+                    toast.fire({
+                        icon: type,
+                        title: msg,
+                    });
+                };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Fetch and populate dropdowns
-        fetchGenders();
-        fetchPurposeOfVisits();
-        fetchVisitorTypes();
-        fetchTimeUnits();
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Fetch and populate dropdowns
+                    fetchGenders();
+                    fetchPurposeOfVisits();
+                    fetchVisitorTypes();
+                    fetchTimeUnits();
 
-        attachLiveValidation();
+                    attachLiveValidation();
 
-        const nationalIdInput = document.getElementById('nationalid');
-        if (nationalIdInput) {
-            console.log('Attached national ID input listener');
-            nationalIdInput.addEventListener(
-                'input',
-                debounce(e => {
-                    checkNationalId(e.target.value, 'visitorForm');
-                }, 500)
-            );
-        } else {
-            console.error('National ID input element not found');
-        }
+                    const nationalIdInput = document.getElementById('nationalid');
+                    if (nationalIdInput) {
+                        console.log('Attached national ID input listener');
+                        nationalIdInput.addEventListener(
+                            'input',
+                            debounce(e => {
+                                checkNationalId(e.target.value, 'visitorForm');
+                            }, 500)
+                        );
+                    } else {
+                        console.error('National ID input element not found');
+                    }
 
-        const personnameInput = document.getElementById('personname');
-        if (personnameInput) {
-            console.log('Attached personname input listener');
-            personnameInput.addEventListener(
-                'input',
-                debounce(e => {
-                    fetchPersonNameSuggestions(e.target.value);
-                }, 300)
-            );
+                    const personnameInput = document.getElementById('personname');
+                    if (personnameInput) {
+                        console.log('Attached personname input listener');
+                        personnameInput.addEventListener(
+                            'input',
+                            debounce(e => {
+                                fetchPersonNameSuggestions(e.target.value);
+                            }, 300)
+                        );
 
-            document.addEventListener('click', e => {
-                const suggestionsContainer = document.getElementById(
-                    'personname-suggestions'
-                );
-                if (
-                    !personnameInput.contains(e.target) &&
-                    !suggestionsContainer.contains(e.target)
-                ) {
-                    suggestionsContainer.classList.add('hidden');
-                }
-            });
-        } else {
-            console.error('Personname input element not found');
-        }
+                        document.addEventListener('click', e => {
+                            const suggestionsContainer = document.getElementById(
+                                'personname-suggestions'
+                            );
+                            if (
+                                !personnameInput.contains(e.target) &&
+                                !suggestionsContainer.contains(e.target)
+                            ) {
+                                suggestionsContainer.classList.add('hidden');
+                            }
+                        });
+                    } else {
+                        console.error('Personname input element not found');
+                    }
 
-        const form = document.getElementById('visitorForm');
-        if (!form) {
-            console.error("Form with ID 'visitorForm' not found");
-            return;
-        }
+                    const form = document.getElementById('visitorForm');
+                    if (!form) {
+                        console.error("Form with ID 'visitorForm' not found");
+                        return;
+                    }
 
-        console.log('Form found, attaching submit listener');
+                    console.log('Form found, attaching submit listener');
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            console.log('Form submission triggered');
-            clearErrors();
-            let valid = true;
+                    form.addEventListener('submit', e => {
+                        e.preventDefault();
+                        console.log('Form submission triggered');
+                        clearErrors();
+                        let valid = true;
 
-            const formData = new FormData();
-            const validationFormData = {
-                date: form.elements['date']?.value || '',
-                time: form.elements['time']?.value || '',
-            };
+                        const formData = new FormData();
+                        const validationFormData = {
+                            date: form.elements['date']?.value || '',
+                            time: form.elements['time']?.value || '',
+                        };
 
-            const fields = [
-                'firstname',
-                'lastname',
-                'gender',
-                'contactnumber',
-                'email',
-                'date',
-                'time',
-                'nationalid',
-                'visit',
-                'personname',
-                'department',
-                'durationtime',
-                'durationunit',
-                'visitortype',
-                'vehicletype',
-                'vehiclenumber',
-                'drivername',
-                'drivermobile',
-                'drivernationalid',
-                'notes',
-            ];
+                        const fields = [
+                            'firstname',
+                            'lastname',
+                            'gender',
+                            'contactnumber',
+                            'email',
+                            'date',
+                            'time',
+                            'nationalid',
+                            'visit',
+                            'personname',
+                            'department',
+                            'durationtime',
+                            'durationunit',
+                            'visitortype',
+                            'vehicletype',
+                            'vehiclenumber',
+                            'drivername',
+                            'drivermobile',
+                            'drivernationalid',
+                            'notes',
+                        ];
 
-            for (const id of fields) {
-                const element = form.elements[id];
-                const value = element?.value?.trim() || '';
-                if (id === 'firstname') {
-                    console.log(`Appending Firstname: "${value}"`);
-                    formData.append('Firstname', value);
-                } else {
-                    formData.append(id, value);
-                }
-                const errorMsg = validateField(id, value, validationFormData);
-                if (errorMsg) {
-                    showError('error-' + id, errorMsg);
-                    valid = false;
-                }
-            }
+                        for (const id of fields) {
+                            const element = form.elements[id];
+                            const value = element?.value?.trim() || '';
+                            if (id === 'firstname') {
+                                console.log(`Appending Firstname: "${value}"`);
+                                formData.append('Firstname', value);
+                            } else {
+                                formData.append(id, value);
+                            }
+                            const errorMsg = validateField(id, value, validationFormData);
+                            if (errorMsg) {
+                                showError('error-' + id, errorMsg);
+                                valid = false;
+                            }
+                        }
 
-            const firstname = form.elements['firstname']?.value?.trim() || '';
-            const email = form.elements['email']?.value?.trim() || '';
-            console.log(`Final Firstname value: "${firstname}"`);
-            if (firstname) formData.set('Firstname', firstname);
-            if (email) formData.set('email', email);
+                        const firstname = form.elements['firstname']?.value?.trim() || '';
+                        const email = form.elements['email']?.value?.trim() || '';
+                        console.log(`Final Firstname value: "${firstname}"`);
+                        if (firstname) formData.set('Firstname', firstname);
+                        if (email) formData.set('email', email);
 
-            const photoInput = form.elements['photo'];
-            const hasNewPhoto = photoInput?.files && photoInput.files.length > 0;
-            const hasExistingPhoto = photoInput?.dataset.existingPhoto;
-            if (hasNewPhoto) {
-                formData.append('photoFile', photoInput.files[0]);
-            } else if (hasExistingPhoto) {
-                formData.append('photo', hasExistingPhoto);
-            } else {
-                showError('error-photo', 'Photo is required');
-                valid = false;
-            }
+                        const photoInput = form.elements['photo'];
+                        const hasNewPhoto = photoInput?.files && photoInput.files.length > 0;
+                        const hasExistingPhoto = photoInput?.dataset.existingPhoto;
+                        if (hasNewPhoto) {
+                            formData.append('photoFile', photoInput.files[0]);
+                        } else if (hasExistingPhoto) {
+                            formData.append('photo', hasExistingPhoto);
+                        } else {
+                            showError('error-photo', 'Photo is required');
+                            valid = false;
+                        }
 
-            if (!firstname) {
-                showError('error-firstname', 'First name is required and cannot be empty');
-                valid = false;
-            }
-            if (!email) {
-                showError('error-email', 'Email is required and cannot be empty');
-                valid = false;
-            }
+                        if (!firstname) {
+                            showError('error-firstname', 'First name is required and cannot be empty');
+                            valid = false;
+                        }
+                        if (!email) {
+                            showError('error-email', 'Email is required and cannot be empty');
+                            valid = false;
+                        }
 
-            if (!isPersonNameValid) {
-                showError('error-personname', 'Person name must be selected from database suggestions');
-                valid = false;
-            }
+                        if (!isPersonNameValid) {
+                            showError('error-personname', 'Person name must be selected from database suggestions');
+                            valid = false;
+                        }
 
-            const driverToggle = form.elements['driverToggle']?.checked;
-            formData.append('driverToggle', driverToggle.toString());
-            const driverPhoto = form.elements['driverphoto']?.files[0];
-            if (driverToggle && driverPhoto) {
-                formData.append('driverPhotoFile', driverPhoto);
-            }
-            if (
-                driverToggle &&
-                (!driverPhoto || !/\.(jpg|jpeg|png)$/i.test(driverPhoto?.name))
-            ) {
-                showError('error-driverphoto', 'Upload driver .jpg/.png image');
-                valid = false;
-            }
+                        const driverToggle = form.elements['driverToggle']?.checked;
+                        formData.append('driverToggle', driverToggle.toString());
+                        const driverPhoto = form.elements['driverphoto']?.files[0];
+                        if (driverToggle && driverPhoto) {
+                            formData.append('driverPhotoFile', driverPhoto);
+                        }
+                        if (
+                            driverToggle &&
+                            (!driverPhoto || !/\.(jpg|jpeg|png)$/i.test(driverPhoto?.name))
+                        ) {
+                            showError('error-driverphoto', 'Upload driver .jpg/.png image');
+                            valid = false;
+                        }
 
-            const vehType = form.elements['vehicletype']?.value?.trim();
-            const vehNum = form.elements['vehiclenumber']?.value?.trim();
-            if (vehType && !/^.{2,20}$/.test(vehType)) {
-                showError('error-vehicletype', 'Enter valid vehicle type');
-                valid = false;
-            }
-            if (vehType && !/^[A-Za-z0-9]{6,12}$/.test(vehNum)) {
-                showError('error-vehiclenumber', 'Enter valid vehicle number');
-                valid = false;
-            }
+                        const vehType = form.elements['vehicletype']?.value?.trim();
+                        const vehNum = form.elements['vehiclenumber']?.value?.trim();
+                        if (vehType && !/^.{2,20}$/.test(vehType)) {
+                            showError('error-vehicletype', 'Enter valid vehicle type');
+                            valid = false;
+                        }
+                        if (vehType && !/^[A-Za-z0-9]{6,12}$/.test(vehNum)) {
+                            showError('error-vehiclenumber', 'Enter valid vehicle number');
+                            valid = false;
+                        }
 
-            if (driverToggle) {
-                const dName = form.elements['drivername']?.value?.trim();
-                const dMob = form.elements['drivermobile']?.value?.trim();
-                const dNid = form.elements['drivernationalid']?.value?.trim();
-                if (!/^[A-Za-z\s]{2,50}$/.test(dName)) {
-                    showError('error-drivername', 'Enter valid driver name');
-                    valid = false;
-                }
-                if (!/^\d{5,15}$/.test(dMob)) {
-                    showError('error-drivermobile', 'Enter valid mobile');
-                    valid = false;
-                }
-                if (!/^[a-zA-Z0-9]{4,}$/.test(dNid)) {
-                    showError('error-drivernationalid', 'Enter valid ID');
-                    valid = false;
-                }
-            }
+                        if (driverToggle) {
+                            const dName = form.elements['drivername']?.value?.trim();
+                            const dMob = form.elements['drivermobile']?.value?.trim();
+                            const dNid = form.elements['drivernationalid']?.value?.trim();
+                            if (!/^[A-Za-z\s]{2,50}$/.test(dName)) {
+                                showError('error-drivername', 'Enter valid driver name');
+                                valid = false;
+                            }
+                            if (!/^\d{5,15}$/.test(dMob)) {
+                                showError('error-drivermobile', 'Enter valid mobile');
+                                valid = false;
+                            }
+                            if (!/^[a-zA-Z0-9]{4,}$/.test(dNid)) {
+                                showError('error-drivernationalid', 'Enter valid ID');
+                                valid = false;
+                            }
+                        }
 
-            const notes = form.elements['notes']?.value?.trim();
-            if (notes?.length > 500 || /<script/i.test(notes)) {
-                showError('error-notes', 'Invalid notes content');
-                valid = false;
-            }
+                        const notes = form.elements['notes']?.value?.trim();
+                        if (notes?.length > 500 || /<script/i.test(notes)) {
+                            showError('error-notes', 'Invalid notes content');
+                            valid = false;
+                        }
 
-            if (validationFormData.date) {
-                const [year, month, day] = validationFormData.date.split('-');
-                formData.set('date', `${day}-${month}-${year}`);
-            }
+                        if (validationFormData.date) {
+                            const [year, month, day] = validationFormData.date.split('-');
+                            formData.set('date', `${day}-${month}-${year}`);
+                        }
 
-            console.log('FormData contents before send:');
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value instanceof File ? value.name : value}`);
-            }
+                        console.log('FormData contents before send:');
+                        for (let [key, value] of formData.entries()) {
+                            console.log(`${key}: ${value instanceof File ? value.name : value}`);
+                        }
 
-            if (valid) {
-                const submitBtn = document.getElementById('submitBtn');
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = `
+                        if (valid) {
+                            const submitBtn = document.getElementById('submitBtn');
+                            if (submitBtn) {
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = `
                         <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                         </svg>
                         Creating...
                     `;
-                }
+                            }
 
-                fetch('http://192.168.3.73:3001/visitors', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().catch(() => ({}))
-                                .then(errorData => {
-                                    throw new Error(errorData.message || `HTTP ${response.status}`);
+                            fetch('http://192.168.3.73:3001/visitors', {
+                                method: 'POST',
+                                body: formData,
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.json().catch(() => ({}))
+                                            .then(errorData => {
+                                                throw new Error(errorData.message || `HTTP ${response.status}`);
+                                            });
+                                    }
+                                    return response.json();
+                                })
+                                .then(result => {
+                                    console.log('API response:', result);
+                                    sessionStorage.setItem('visitorCreated', 'true');
+                                })
+                                .catch(error => {
+                                    console.error('Submission error:', error.message);
+                                    sessionStorage.setItem('visitorError', error.message || 'Failed to submit form');
+                                })
+                                .finally(() => {
+                                    console.log('API call completed');
                                 });
+
+                            if (form) {
+                                form.reset();
+                                document.getElementById('mainPreview')?.classList.add('hidden');
+                                document.getElementById('driverPreview')?.classList.add('hidden');
+                                document.getElementById('driverDetails')?.classList.add('hidden');
+                            }
+
+                            window.location.href = 'SpotEntry.html';
+                        } else {
+                            console.log('Validation failed');
+                            const submitBtn = document.getElementById('submitBtn');
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = 'Create';
+                            }
                         }
-                        return response.json();
-                    })
-                    .then(result => {
-                        console.log('API response:', result);
-                        sessionStorage.setItem('visitorCreated', 'true');
-                    })
-                    .catch(error => {
-                        console.error('Submission error:', error.message);
-                        sessionStorage.setItem('visitorError', error.message || 'Failed to submit form');
-                    })
-                    .finally(() => {
-                        console.log('API call completed');
                     });
+                });
+            </script>
 
-                if (form) {
-                    form.reset();
-                    document.getElementById('mainPreview')?.classList.add('hidden');
-                    document.getElementById('driverPreview')?.classList.add('hidden');
-                    document.getElementById('driverDetails')?.classList.add('hidden');
-                }
 
-                window.location.href = 'SpotEntry.html';
-            } else {
-                console.log('Validation failed');
-                const submitBtn = document.getElementById('submitBtn');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Create';
-                }
-            }
-        });
-    });
-</script>
 
-          
-          
-          
-          
-           <script src="assets/js/custom.js"></script>
+
+
+            <script src="assets/js/custom.js"></script>
 
             <script>
                 document.addEventListener('alpine:init', () => {
@@ -4599,7 +4673,7 @@
                     }));
                 });
             </script>
-            
+
             <script src="assets/js/auth.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
