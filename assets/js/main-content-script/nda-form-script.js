@@ -134,7 +134,7 @@
       async function checkFormStatus(email, date, time) {
         try {
           const response = await fetch(
-            `http://192.168.1.57:3001/appointment/nda-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
+            `http://192.168.3.74:3001/appointment/nda-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
             {
               method: 'GET',
               headers: { 'Content-Type': 'application/json' }
@@ -226,7 +226,7 @@
           submitBtn.disabled = true;
 
           try {
-            const response = await fetch('http://192.168.1.57:3001/appointment/nda', {
+            const response = await fetch('http://192.168.3.74:3001/appointment/nda', {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

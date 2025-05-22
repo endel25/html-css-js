@@ -1,6 +1,6 @@
 
 // Base URL for the backend API
-const API_BASE_URL = 'http://192.168.1.57:3001';
+const API_BASE_URL = 'http://192.168.3.74:3001';
 
 let currentFileInputId = '';
 let isPersonNameValid = false; // Flag to track if personname is valid
@@ -405,7 +405,7 @@ function populateForm(formId, visitor) {
     const mainPreview = document.getElementById('mainPreview');
     const photoInput = form.elements['photo'];
     if (photoInput && visitor.photo !== undefined) {
-        const photoUrl = `http://192.168.1.57:3001/uploads/${encodeURIComponent(
+        const photoUrl = `http://192.168.3.74:3001/uploads/${encodeURIComponent(
             visitor.photo
         )}?t=${new Date().getTime()}`;
         if (mainPreview) {
@@ -450,7 +450,7 @@ async function checkNationalId(nationalid, formId) {
 
     try {
         const response = await fetch(
-            `http://192.168.1.57:3001/visitors/nationalid/${encodeURIComponent(
+            `http://192.168.3.74:3001/visitors/nationalid/${encodeURIComponent(
                 trimmedNationalId
             )}`,
             {
@@ -493,7 +493,7 @@ async function fetchPersonNameSuggestions(query) {
 
     try {
         const response = await fetch(
-            `http://192.168.1.57:3001/users/search?query=${encodeURIComponent(
+            `http://192.168.3.74:3001/users/search?query=${encodeURIComponent(
                 query
             )}`,
             {
@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
             }
 
-            fetch('http://192.168.1.57:3001/visitors', {
+            fetch('http://192.168.3.74:3001/visitors', {
                 method: 'POST',
                 body: formData,
             })

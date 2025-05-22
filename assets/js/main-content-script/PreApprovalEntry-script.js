@@ -129,7 +129,7 @@
             console.log(`📡 Fetching visitor data: page=${page}, limit=${limit}`);
             for (let attempt = 1; attempt <= retries; attempt++) {
                 try {
-                    const url = `http://192.168.1.57:3001/appointment?page=${page}&limit=${limit}`;
+                    const url = `http://192.168.3.74:3001/appointment?page=${page}&limit=${limit}`;
                     const response = await fetch(url, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
@@ -314,7 +314,7 @@
         async function fetchVisitorById(visitorId, retries = 3) {
             for (let attempt = 1; attempt <= retries; attempt++) {
                 try {
-                    const response = await fetch(`http://192.168.1.57:3001/appointment/${visitorId}`, {
+                    const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
                     });
@@ -414,7 +414,7 @@
 
                 if (path && path.trim() !== '') {
                     try {
-                        const photoUrl = `http://192.168.1.57:3001/appointment/${visitorId}/photo?type=${type}`;
+                        const photoUrl = `http://192.168.3.74:3001/appointment/${visitorId}/photo?type=${type}`;
                         const response = await fetch(photoUrl, { method: 'GET', mode: 'cors' });
                         if (!response.ok) throw new Error('Photo fetch failed');
                         const blob = await response.blob();
@@ -524,7 +524,7 @@
                 `;
 
                     try {
-                        const response = await fetch(`http://192.168.1.57:3001/appointment/${visitorId}`, {
+                        const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
                             method: 'PUT',
                             body,
                         });
@@ -567,7 +567,7 @@
             const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
             async function attemptApprove(attempt = 1, maxAttempts = 3) {
                 try {
-                    const response = await fetch(`http://192.168.1.57:3001/appointment/${visitorId}/gatepass`, {
+                    const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ gatepassApproved: true }),
@@ -601,7 +601,7 @@
             const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
             async function attemptDisapprove(attempt = 1, maxAttempts = 3) {
                 try {
-                    const response = await fetch(`http://192.168.1.57:3001/appointment/${visitorId}/gatepass`, {
+                    const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ gatepassApproved: false }),

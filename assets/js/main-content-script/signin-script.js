@@ -53,7 +53,7 @@
                         }
 
                         try {
-                            const response = await fetch('http://192.168.1.57:3001/auth/login', {
+                            const response = await fetch('http://192.168.3.74:3001/auth/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ userName: this.userName, password: this.password }),
@@ -69,10 +69,7 @@
     localStorage.setItem('token', token);
     localStorage.setItem('role', user.role);
     localStorage.setItem('permissions', JSON.stringify(user.permissions));
-    console.log('Login API response:', data);
-console.log('Role:', data.user?.role);
-console.log('Permissions:', data.user?.permissions);
-
+    localStorage.setItem('userName', user.userName); // ✅ Add this line
 
     window.location.href = 'index.html';
 }else {
