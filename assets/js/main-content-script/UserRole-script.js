@@ -4,7 +4,7 @@ document.addEventListener('alpine:init', () => {
     });
 });
 
-const API_BASE_URL = 'http://192.168.3.74:3001';
+const API_BASE_URL = 'http://192.168.106.137:3001';
 let currentPage = 1;
 let entriesPerPage = 10;
 let isEditMode = false;
@@ -197,7 +197,7 @@ async function toggleActive(roleId, isChecked) {
             IsCreate: perm.isCreate,
             IsUpdate: perm.isUpdate,
             IsDelete: perm.isDelete,
-            SelectAll: perm.selectAll,
+            IsExecute: perm.isExecute,
         }));
 
         const payload = {
@@ -240,15 +240,15 @@ async function toggleActive(roleId, isChecked) {
     }
 }
 
-// Handle Select All checkbox change
-function handleSelectAllChange(permissionId, checked) {
-    const row = document.querySelector(`#permissionsTable tr input[name="SelectAll${permissionId}"]`).closest('tr');
+// Handle Read checkbox change
+function handleReadChange(permissionId, checked) {
+    const row = document.querySelector(`#permissionsTable tr input[name="IsRead${permissionId}"]`).closest('tr');
     if (row) {
         const checkboxes = [
-            row.querySelector(`input[name="IsRead${permissionId}"]`),
             row.querySelector(`input[name="IsCreate${permissionId}"]`),
             row.querySelector(`input[name="IsUpdate${permissionId}"]`),
             row.querySelector(`input[name="IsDelete${permissionId}"]`),
+            row.querySelector(`input[name="IsExecute${permissionId}"]`),
         ];
         checkboxes.forEach(checkbox => {
             if (checkbox && !checkbox.disabled) {
@@ -280,7 +280,7 @@ async function loadPermissions(permissionsData = []) {
         }
         tbody.innerHTML = '';
         if (permissions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-2 text-center text-gray-500">No permissions available</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-2 text-center text-gray-500">No permissions available</td></tr>';
             return;
         }
 
@@ -290,7 +290,7 @@ async function loadPermissions(permissionsData = []) {
                 IsCreate: false,
                 IsUpdate: false,
                 IsDelete: false,
-                SelectAll: false,
+                IsExecute: false,
             };
 
             console.log(`Rendering permission: ${perm.permissionName}`, {
@@ -298,7 +298,7 @@ async function loadPermissions(permissionsData = []) {
                 isCreateDisplay: perm.isCreateDisplay,
                 isUpdateDisplay: perm.isUpdateDisplay,
                 isDeleteDisplay: perm.isDeleteDisplay,
-                selectAllDisplay: perm.selectAllDisplay,
+                isExecuteDisplay: perm.isExecuteDisplay,
                 existingPerm
             });
 
@@ -306,7 +306,7 @@ async function loadPermissions(permissionsData = []) {
             tr.innerHTML = `
                 <td class="px-4 py-2 text-sm text-gray-900 ${perm.isMaster ? 'font-bold' : ''}">${perm.permissionName}</td>
                 <td class="px-4 py-2 text-center">
-                    <input type="checkbox" name="IsRead${perm.id}" ${existingPerm.IsRead ? 'checked' : ''} ${perm.isReadDisplay ? '' : 'disabled'}>
+                    <input type="checkbox" name="IsRead${perm.id}" ${existingPerm.IsRead ? 'checked' : ''} ${perm.isReadDisplay ? '' : 'disabled'} onchange="handleReadChange(${perm.id}, this.checked)">
                 </td>
                 <td class="px-4 py-2 text-center">
                     <input type="checkbox" name="IsCreate${perm.id}" ${existingPerm.IsCreate ? 'checked' : ''} ${perm.isCreateDisplay ? '' : 'disabled'}>
@@ -318,7 +318,7 @@ async function loadPermissions(permissionsData = []) {
                     <input type="checkbox" name="IsDelete${perm.id}" ${existingPerm.IsDelete ? 'checked' : ''} ${perm.isDeleteDisplay ? '' : 'disabled'}>
                 </td>
                 <td class="px-4 py-2 text-center">
-                    <input type="checkbox" name="SelectAll${perm.id}" ${existingPerm.SelectAll ? 'checked' : ''} onchange="handleSelectAllChange(${perm.id}, this.checked)">
+                    <input type="checkbox" name="IsExecute${perm.id}" ${existingPerm.IsExecute ? 'checked' : ''} ${perm.isExecuteDisplay ? '' : 'disabled'}>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -392,7 +392,7 @@ async function editRole(id) {
             IsCreate: perm.isCreate,
             IsUpdate: perm.isUpdate,
             IsDelete: perm.isDelete,
-            SelectAll: perm.selectAll,
+            IsExecute: perm.isExecute,
         }));
         loadPermissions(formattedPermissions);
         const roleModal = document.getElementById('roleModal');
@@ -430,7 +430,7 @@ function collectPermissions() {
             IsCreate: row.querySelector(`input[name="IsCreate${id}"]`)?.checked || false,
             IsUpdate: row.querySelector(`input[name="IsUpdate${id}"]`)?.checked || false,
             IsDelete: row.querySelector(`input[name="IsDelete${id}"]`)?.checked || false,
-            SelectAll: row.querySelector(`input[name="SelectAll${id}"]`)?.checked || false,
+            IsExecute: row.querySelector(`input[name="IsExecute${id}"]`)?.checked || false,
         });
     });
     return permissions;
