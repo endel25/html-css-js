@@ -154,27 +154,36 @@ menuItems.forEach(item => {
         if (hasSub) {
             const submenuId = `submenu-${item.label.replace(/\s+/g, '')}`;
 
-            li.innerHTML = `
-                <li class="menu nav-item">
-                    <button type="button" class="nav-link group" :class="{ 'active': window.location.pathname.includes('${item.path}') }" @click="activeDropdown = activeDropdown === 'users' ? null : 'users'">
-                        <div class="flex items-center">
-                        ${item.icon || ''}
-                            <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">${item.label}</span>
-                        </div>
-                        <div class="rtl:rotate-180" :class="{'!rotate-90' : activeDropdown === 'users'}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                    </button>
-                    <ul x-cloak x-show="activeDropdown === 'users'" x-collapse class="sub-menu text-gray-500">
-                       ${item.sub.map(subItem => `<li>
-                            <a href="${subItem.path}" :class="{ 'active': window.location.pathname.includes('${subItem.path}') }">${subItem.label}</a>
-                            </li>`
-            ).join('')}
-                    </ul>
-                </li>
-            `;
+li.innerHTML = `
+<li class="menu nav-item" x-data="{ open: ${item.sub.some(subItem => window.location.pathname.includes(subItem.path))} }">
+    <button type="button" class="nav-link group" 
+        :class="{ 'active': ${item.sub.map(subItem => `window.location.pathname.includes('${subItem.path}')`).join(' || ')} }" 
+        @click="open = !open">
+
+        <div class="flex items-center">
+            ${item.icon || ''}
+            <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">${item.label}</span>
+        </div>
+
+        <div :class="{ 'rotate-90': open }">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </button>
+
+    <ul x-show="open" x-collapse class="sub-menu text-gray-500">
+        ${item.sub.map(subItem => `
+            <li>
+                <a href="${subItem.path}" class="${window.location.pathname.includes(subItem.path) ? 'text-primary font-semibold' : ''}">
+                    ${subItem.label}
+                </a>
+            </li>
+        `).join('')}
+    </ul>
+</li>
+`;
+
         } else {
             li.innerHTML = `
                 <li class="menu nav-item">
