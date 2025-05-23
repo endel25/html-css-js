@@ -124,7 +124,7 @@
       async function checkFormStatus(email, date, time) {
         try {
           const response = await fetch(
-            `http://192.168.106.137:3001/appointment/safety-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
+            `http://192.168.3.77:3001/appointment/safety-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
             {
               method: 'GET',
               headers: { 'Content-Type': 'application/json' }
@@ -226,7 +226,7 @@
             };
             console.log('📤 Sending safety acknowledgment:', JSON.stringify(payload, null, 2));
 
-            const response = await fetch('http://192.168.106.137:3001/appointment/safety', {
+            const response = await fetch('http://192.168.3.77:3001/appointment/safety', {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload),

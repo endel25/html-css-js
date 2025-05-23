@@ -17,7 +17,7 @@
             };
 
             // Base URL for the backend API
-            const API_BASE_URL = 'http://192.168.106.137:3001';
+            const API_BASE_URL = 'http://192.168.3.77:3001';
 
             // Helper function to handle API requests
             async function apiRequest(endpoint, method = 'GET', body = null) {
