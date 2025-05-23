@@ -7,7 +7,7 @@ let searchQuery = '';
 let isPersonNameValid = false;
 
 // Base URL for the backend API
-const API_BASE_URL = 'http://192.168.3.77:3001';
+const API_BASE_URL = 'http://192.168.3.73:3001';
 
 // Toast message function
 const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
@@ -159,7 +159,7 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
 
     try {
         const response = await fetch(
-            `http://192.168.3.77:3001/users/search?query=${encodeURIComponent(query)}`,
+            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
             {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -269,8 +269,8 @@ function attachPersonNameListeners() {
 
 async function fetchVisitors() {
     try {
-        console.log('Fetching visitors from http://192.168.3.77:3001/visitors');
-        const response = await fetch(`http://192.168.3.77:3001/visitors?t=${new Date().getTime()}`, {
+        console.log('Fetching visitors from http://192.168.3.73:3001/visitors');
+        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -410,7 +410,7 @@ function toggleDriverDetails() {
             document.getElementById('edit-drivernationalid').value = visitor.drivernationalid || '';
             const driverPreview = document.getElementById('driverPreview');
             if (visitor.driverphoto) {
-                const driverPhotoUrl = `http://192.168.3.77:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+                const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
                 driverPreview.src = '';
                 driverPreview.src = driverPhotoUrl;
                 driverPreview.style.display = 'block';
@@ -646,7 +646,7 @@ async function openEditModal(id) {
 
     const mainPreview = document.getElementById('mainPreview');
     if (visitor.photo) {
-        const photoUrl = `http://192.168.3.77:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
+        const photoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.photo)}?t=${new Date().getTime()}`;
         console.log('Setting mainPreview URL:', photoUrl);
         mainPreview.src = '';
         mainPreview.src = photoUrl;
@@ -670,7 +670,7 @@ async function openEditModal(id) {
 
     const driverPreview = document.getElementById('driverPreview');
     if (visitor.driverphoto) {
-        const driverPhotoUrl = `http://192.168.3.77:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
+        const driverPhotoUrl = `http://192.168.3.73:3001/uploads/${encodeURIComponent(visitor.driverphoto)}?t=${new Date().getTime()}`;
         console.log('Setting driverPreview URL:', driverPhotoUrl);
         driverPreview.src = '';
         driverPreview.src = driverPhotoUrl;
@@ -842,7 +842,7 @@ async function updateVisitorStatus(visitorId, status) {
     }
 
     try {
-        const response = await fetch(`http://192.168.3.77:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
+        const response = await fetch(`http://192.168.3.73:3001/visitors/${visitorId}/status/${status}?sendEmail=false`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -878,7 +878,7 @@ async function updateVisitorStatus(visitorId, status) {
 // Function to handle the background update process
 async function updateVisitorInBackground(updatedVisitor, apiFormData, originalVisitor) {
     try {
-        const response = await fetch(`http://192.168.3.77:3001/visitors/${updatedVisitor.id}`, {
+        const response = await fetch(`http://192.168.3.73:3001/visitors/${updatedVisitor.id}`, {
             method: 'PATCH',
             body: apiFormData,
         });
@@ -1052,7 +1052,7 @@ async function deleteVisitor(id) {
         .then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://192.168.3.77:3001/visitors/${id}`, {
+                    const response = await fetch(`http://192.168.3.73:3001/visitors/${id}`, {
                         method: 'DELETE',
                     });
 

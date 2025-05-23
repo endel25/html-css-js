@@ -184,7 +184,7 @@
         async function checkFormStatus(email, date, time) {
             try {
                 const response = await fetch(
-                    `http://192.168.3.77:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
+                    `http://192.168.3.73:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
                     {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' }
@@ -494,7 +494,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://192.168.3.77:3001/appointment/create', {
+                    const response = await fetch('http://192.168.3.73:3001/appointment/create', {
                         method: 'POST',
                         body: formattedData
                     });

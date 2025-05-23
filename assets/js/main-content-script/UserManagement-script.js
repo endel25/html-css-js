@@ -1,6 +1,6 @@
 
 // Configurable backend URL
-const BASE_URL = 'http://192.168.3.77:3001'; // Change to 3002 if port updated
+const BASE_URL = 'http://192.168.3.73:3001'; // Change to 3002 if port updated
 
 let currentPage = 1;
 let entriesPerPage = 10;
