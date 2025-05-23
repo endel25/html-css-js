@@ -1,4 +1,3 @@
-
 let visitors = [];
 let currentFileInputId = '';
 let currentPage = 1;
@@ -8,6 +7,19 @@ let isPersonNameValid = false;
 
 // Base URL for the backend API
 const API_BASE_URL = 'http://192.168.3.73:3001';
+
+// Function to get SpotEntry permissions from localStorage (aligned with reference script)
+function getPermissions() {
+    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+    const spotEntry = permissions.find(p => p.name === 'SpotEntry') || {
+        canRead: true,
+        canCreate: true,
+        canUpdate: true,
+        canDelete: true
+    };
+    console.log('Retrieved SpotEntry permissions from localStorage:', spotEntry);
+    return spotEntry;
+}
 
 // Toast message function
 const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
@@ -469,6 +481,11 @@ function populateTable() {
     }
     tableBody.innerHTML = '';
 
+    const permissions = getPermissions(); // Fetch permissions for rendering
+    const canUpdate = permissions.canUpdate;
+    const canDelete = permissions.canDelete;
+    console.log('Permissions for table rendering:', { canUpdate, canDelete });
+
     const filteredVisitors = visitors.filter(
         visitor =>
             visitor.firstname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -496,11 +513,17 @@ function populateTable() {
                 <td>${visitor.nationalid || ''}</td>
                 <td>
                     <div class="action-buttons">
-                        <svg class="action-btn" onclick="openEditModal('${visitor.id}')" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 19.0269 10.823 18.7383 11.4001 18.1612Z" fill="currentColor"></path>
+                        <svg class="action-btn" 
+                             ${canUpdate ? `onclick="openEditModal('${visitor.id}')"` : ''} 
+                             width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                             ${!canUpdate ? 'style="opacity: 0.6; cursor: not-allowed;" title="You do not have permission to update"' : ''}>
+                            <path d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 18.7383 11.4001 18.1612Z" fill="currentColor"></path>
                             <path d="M20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178L14.3999 4.03882C14.4121 4.0755 14.4246 4.11268 14.4377 4.15035C14.7628 5.0875 15.3763 6.31601 16.5303 7.47002C17.6843 8.62403 18.9128 9.23749 19.85 9.56262C19.8875 9.57563 19.9245 9.58817 19.961 9.60026L20.8482 8.71306Z" fill="currentColor"></path>
                         </svg>
-                        <svg class="action-btn" onclick="deleteVisitor('${visitor.id}')" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="action-btn" 
+                             ${canDelete ? `onclick="deleteVisitor('${visitor.id}')"` : ''} 
+                             width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                             ${!canDelete ? 'style="opacity: 0.6; cursor: not-allowed;" title="You do not have permission to delete"' : ''}>
                             <path opacity="0.5" d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12405C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001Z" fill="currentColor"></path>
                             <path d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z" fill="currentColor"></path>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z" fill="currentColor"></path>
@@ -510,6 +533,16 @@ function populateTable() {
                 </td>
             `;
             tableBody.appendChild(row);
+
+            // Additional logging for button states
+            console.log(`Edit button for visitor ${visitor.id} state:`, {
+                hasOnClick: !!row.querySelector('.action-btn:nth-child(1)').getAttribute('onclick'),
+                style: row.querySelector('.action-btn:nth-child(1)').style.cssText
+            });
+            console.log(`Delete button for visitor ${visitor.id} state:`, {
+                hasOnClick: !!row.querySelector('.action-btn:nth-child(2)').getAttribute('onclick'),
+                style: row.querySelector('.action-btn:nth-child(2)').style.cssText
+            });
         });
     }
 
@@ -1080,6 +1113,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('.dataTable-input');
     if (input) input.id = 'searchInput';
 
+    // Apply permissions to "Schedule Appointment" button (aligned with reference script)
+    const permissions = getPermissions();
+    const scheduleBtn = document.querySelector('a[href="spot.html"]');
+    if (scheduleBtn) {
+        if (!permissions.canCreate) {
+            scheduleBtn.classList.add('disabled');
+            scheduleBtn.style.pointerEvents = 'none';
+            scheduleBtn.style.opacity = '0.6';
+            scheduleBtn.title = 'You do not have permission to create appointments';
+            scheduleBtn.setAttribute('aria-disabled', 'true');
+        } else {
+            scheduleBtn.classList.remove('disabled');
+            scheduleBtn.style.pointerEvents = 'auto';
+            scheduleBtn.style.opacity = '1';
+            scheduleBtn.title = '';
+            scheduleBtn.setAttribute('aria-disabled', 'false');
+        }
+        console.log('Schedule Appointment button state:', {
+            classList: scheduleBtn.classList.toString(),
+            pointerEvents: scheduleBtn.style.pointerEvents,
+            opacity: scheduleBtn.style.opacity,
+            ariaDisabled: scheduleBtn.getAttribute('aria-disabled')
+        });
+    }
+
     document.getElementById('entriesPerPage')?.addEventListener('change', function () {
         entriesPerPage = parseInt(this.value);
         currentPage = 1;
@@ -1134,11 +1192,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attach personname listeners
     attachPersonNameListeners();
 
+    // Fetch visitors on load
     fetchVisitors();
 
+    // Show success message if visitor was created
     if (sessionStorage.getItem('visitorCreated') === 'true') {
         showMessage('Visitor created successfully', 'success', 'top-right', true, 3000);
         sessionStorage.removeItem('visitorCreated');
     }
 });
-
