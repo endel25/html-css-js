@@ -4,11 +4,41 @@ document.addEventListener('alpine:init', () => {
     });
 });
 
-const API_BASE_URL = 'http://192.168.3.73:3001';
+const API_BASE_URL = 'http://192.168.3.77:3001';
 let currentPage = 1;
 let entriesPerPage = 10;
 let isEditMode = false;
 let currentRoleId = null;
+
+// Retrieve permissions from localStorage with the correct module name
+function getPermissions() {
+    try {
+        const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+        if (!Array.isArray(permissions)) {
+            console.error('Permissions in localStorage is not an array. Using defaults.');
+            return { canRead: true, canCreate: true, canUpdate: true, canDelete: true };
+        }
+
+        // Changed 'UserRoleManagement' to 'UserRole' to match localStorage
+        const currentModule = permissions.find(p => p.name === 'UserRole') || {
+            canRead: true,
+            canCreate: true,
+            canUpdate: true,
+            canDelete: true
+        };
+        const validatedPermissions = {
+            canRead: currentModule.canRead === true,
+            canCreate: currentModule.canCreate === true,
+            canUpdate: currentModule.canUpdate === true,
+            canDelete: currentModule.canDelete === true
+        };
+        console.log('Validated permissions for UserRole:', validatedPermissions);
+        return validatedPermissions;
+    } catch (error) {
+        console.error('Error parsing permissions from localStorage:', error);
+        return { canRead: true, canCreate: true, canUpdate: true, canDelete: true };
+    }
+}
 
 // Toast message function
 const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
@@ -91,6 +121,12 @@ async function loadRoles() {
             throw new Error('Unexpected response format: roles array missing');
         }
 
+        // Get permissions for rendering
+        const permissions = getPermissions();
+        const canUpdate = permissions.canUpdate;
+        const canDelete = permissions.canDelete;
+        console.log('Permissions for table rendering:', { canUpdate, canDelete });
+
         data.roles.forEach(role => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -102,7 +138,8 @@ async function loadRoles() {
                             class="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0"
                             id="custom_switch_checkbox_${role.id}"
                             ${role.active ? 'checked' : ''}
-                            onchange="toggleActive(${role.id}, this.checked)"
+                            ${canUpdate ? `onclick="toggleActive(${role.id}, this.checked)"` : ''}
+                            ${!canUpdate ? 'disabled="true"  title="You do not have permission to update"' : ''}
                         />
                         <span
                             class="outline_checkbox bg-icon block h-full rounded-full border-2 border-[#ebedf2] before:absolute before:bottom-1 before:left-1 before:h-4 before:w-4 before:rounded-full before:bg-[#ebedf2] before:bg-[url('../images/close.svg')] before:bg-center before:bg-no-repeat before:transition-all before:duration-300 peer-checked:border-primary peer-checked:before:left-7 peer-checked:before:bg-primary peer-checked:before:bg-[url('../images/checked.svg')] dark:border-white-dark dark:before:bg-white-dark"
@@ -111,11 +148,17 @@ async function loadRoles() {
                 </td>
                 <td>
                     <div class="action-icons">
-                        <svg class="edit-icon" title="Edit" onclick="editRole(${role.id})" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="edit-icon" 
+                            ${canUpdate ? `onclick="editRole(${role.id})"` : ''} 
+                            width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            ${!canUpdate ? 'style="opacity: 0.6; cursor: not-allowed;" title="You do not have permission to update"' : ''}>
                             <path d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 19.0269 10.823 18.7383 11.4001 18.1612Z" fill="currentColor"></path>
                             <path d="M20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178L14.3999 4.03882C14.4121 4.0755 14.4246 4.11268 14.4377 4.15035C14.7628 5.0875 15.3763 6.31601 16.5303 7.47002C17.6843 8.62403 18.9128 9.23749 19.85 9.56262C19.8875 9.57563 19.9245 9.58817 19.961 9.60026L20.8482 8.71306Z" fill="currentColor"></path>
                         </svg>
-                        <svg class="delete-icon" title="Delete" onclick="deleteRole(${role.id})" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="delete-icon" 
+                            ${canDelete ? `onclick="deleteRole(${role.id})"` : ''} 
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            ${!canDelete ? 'style="opacity: 0.6; cursor: not-allowed;" title="You do not have permission to delete"' : ''}>
                             <path opacity="0.5" d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12405C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001Z" fill="currentColor"></path>
                             <path d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z" fill="currentColor"></path>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z" fill="currentColor"></path>
@@ -168,11 +211,21 @@ async function loadRoles() {
         if (paginationControls) {
             paginationControls.style.display = 'none';
         }
+        const rolesTableBody = document.getElementById('rolesTableBody');
+        if (rolesTableBody) {
+            rolesTableBody.innerHTML = '<tr><td colspan="3" class="text-center">Failed to load roles</td></tr>';
+        }
     }
 }
 
 // Toggle the active status of a role
 async function toggleActive(roleId, isChecked) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update roles', 'error');
+        return;
+    }
+
     try {
         const checkbox = document.getElementById(`custom_switch_checkbox_${roleId}`);
         if (checkbox) {
@@ -337,6 +390,12 @@ async function loadPermissions(permissionsData = []) {
 
 // Open modal for adding a role
 document.getElementById('addRoleBtn')?.addEventListener('click', () => {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create roles', 'error');
+        return;
+    }
+
     isEditMode = false;
     currentRoleId = null;
     const modalTitle = document.getElementById('modalTitle');
@@ -360,6 +419,12 @@ document.getElementById('addRoleBtn')?.addEventListener('click', () => {
 
 // Open modal for editing a role
 async function editRole(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update roles', 'error');
+        return;
+    }
+
     try {
         const response = await fetch(`${API_BASE_URL}/userroles/${id}`, { method: 'GET', timeout: 5000 });
         if (!response.ok) {
@@ -439,13 +504,23 @@ function collectPermissions() {
 // Form submission
 document.getElementById('roleForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const permissions = getPermissions();
+    if (isEditMode && !permissions.canUpdate) {
+        showMessage('You do not have permission to update roles', 'error');
+        return;
+    }
+    if (!isEditMode && !permissions.canCreate) {
+        showMessage('You do not have permission to create roles', 'error');
+        return;
+    }
+
     const roleNameInput = document.getElementById('roleName');
     if (!roleNameInput) {
         showMessage('Role name input not found', 'error');
         return;
     }
     const roleName = roleNameInput.value;
-    const permissions = collectPermissions();
+    const formPermissions = collectPermissions();
 
     if (!roleName) {
         const formError = document.getElementById('formError');
@@ -473,7 +548,7 @@ document.getElementById('roleForm')?.addEventListener('submit', async (e) => {
             data = {
                 UserRoleName: roleName,
                 Active: role.active,
-                permissions,
+                permissions: formPermissions,
             };
         } catch (error) {
             console.error('Error fetching role for active status:', error);
@@ -487,7 +562,7 @@ document.getElementById('roleForm')?.addEventListener('submit', async (e) => {
     } else {
         data = {
             UserRoleName: roleName,
-            permissions,
+            permissions: formPermissions,
         };
     }
 
@@ -525,6 +600,12 @@ document.getElementById('roleForm')?.addEventListener('submit', async (e) => {
 
 // Delete role
 async function deleteRole(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete roles', 'error');
+        return;
+    }
+
     const swalWithBootstrapButtons = window.Swal.mixin({
         confirmButtonClass: 'btn btn-secondary',
         cancelButtonClass: 'btn btn-dark ltr:mr-3 rtl:ml-3',
@@ -570,6 +651,33 @@ async function deleteRole(id) {
 
 // Handle pagination and search
 document.addEventListener('DOMContentLoaded', () => {
+    const permissions = getPermissions();
+    const addRoleBtn = document.getElementById('addRoleBtn');
+    if (addRoleBtn) {
+        if (!permissions.canCreate) {
+            addRoleBtn.disabled = true;
+            addRoleBtn.style.opacity = '0.6';
+            addRoleBtn.style.cursor = 'not-allowed';
+            addRoleBtn.title = 'You do not have permission to create roles';
+            addRoleBtn.setAttribute('aria-disabled', 'true');
+        } else {
+            addRoleBtn.disabled = false;
+            addRoleBtn.style.opacity = '1';
+            addRoleBtn.style.cursor = 'pointer';
+            addRoleBtn.title = '';
+            addRoleBtn.setAttribute('aria-disabled', 'false');
+        }
+        console.log('Add Role button state:', {
+            disabled: addRoleBtn.disabled,
+            opacity: addRoleBtn.style.opacity,
+            cursor: addRoleBtn.style.cursor,
+            title: addRoleBtn.title,
+            ariaDisabled: addRoleBtn.getAttribute('aria-disabled')
+        });
+    } else {
+        console.warn('Add Role button not found');
+    }
+
     const entriesSelect = document.querySelector('.dataTable-selector');
     if (entriesSelect) {
         entriesSelect.addEventListener('change', () => {
@@ -591,6 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Search input not found');
     }
 
+    // Load roles without checking canRead, similar to reference script
     checkServerHealth().then(isUp => {
         if (isUp) {
             loadRoles();
@@ -599,6 +708,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const paginationControls = document.getElementById('paginationControls');
             if (paginationControls) {
                 paginationControls.style.display = 'none';
+            }
+            const rolesTableBody = document.getElementById('rolesTableBody');
+            if (rolesTableBody) {
+                rolesTableBody.innerHTML = '<tr><td colspan="3" class="text-center">Backend server is not responding</td></tr>';
             }
         }
     });

@@ -1,5 +1,8 @@
 
         let currentFileInputId = '';
+        let validGenders = [];
+
+
 
         function showModal(fileInputId) {
             currentFileInputId = fileInputId;
@@ -154,8 +157,11 @@
                     }
                     break;
                 case 'gender':
-                    if (!value) error = 'Please select a gender';
-                    break;
+    if (!value || !validGenders.includes(value)) {
+        error = 'Please select a valid gender';
+    }
+    break;
+
                 case 'visitortype':
                     if (!value) error = 'Please select a visitor type';
                     break;
@@ -180,6 +186,37 @@
                 });
             });
         };
+
+        async function fetchGenders() {
+    try {
+        const response = await fetch('http://192.168.3.73:3001/gender');
+        const data = await response.json();
+
+        validGenders = data.map(item => item.name); // example: ['Male', 'Female', 'Other']
+
+        const select = document.getElementById('gender');
+        if (!select) return;
+
+        // Clear and add default option
+        select.innerHTML = '<option value="">Select gender</option>';
+
+        // Append fetched options
+        validGenders.forEach(gender => {
+            const option = document.createElement('option');
+            option.value = gender;
+            option.textContent = gender;
+            select.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error('Error fetching genders:', error);
+        showError('error-gender', 'Failed to load gender options');
+    }
+}
+
+
+
+
 
         async function checkFormStatus(email, date, time) {
             try {
@@ -285,14 +322,19 @@
         }
 
         async function initializeForm() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const fields = ['firstname', 'lastname', 'gender', 'contactnumber', 'email', 'date', 'time'];
-            const cleanedParams = {};
-            fields.forEach(field => {
-                let value = urlParams.get(field) || '';
-                value = decodeURIComponent(value.replace(/^,+/, ''));
-                cleanedParams[field] = value;
-            });
+await fetchGenders(); // Load gender options
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const genderParam = urlParams.get('gender') || '';
+
+    const genderInput = document.getElementById('gender');
+    if (genderInput && genderParam) {
+        const formatted = genderParam.charAt(0).toUpperCase() + genderParam.slice(1).toLowerCase();
+        if (validGenders.includes(formatted)) {
+            genderInput.value = formatted;
+            genderInput.disabled = true;
+        }
+    }
 
             const email = cleanedParams.email;
             const date = cleanedParams.date;
@@ -368,9 +410,11 @@
                             if (!/^\d{2}:\d{2}$/.test(value)) value = '';
                         }
                         if (field === 'gender') {
-                            value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                            if (!['Male', 'Female', 'Other'].includes(value)) value = '';
-                        }
+    value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    if (!validGenders.includes(value)) value = '';
+}
+
+
                         input.value = value;
                         input.disabled = true;
                     }
@@ -645,4 +689,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', initializeForm);
+        document.addEventListener('DOMContentLoaded', () => {
+    initializeForm();
+});
 
