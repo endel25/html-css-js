@@ -121,7 +121,7 @@
                 }
 
                 try {
-                    const response = await fetch(`http://192.168.3.73:3001/appointment/contactnumber/${encodeURIComponent(contactnumber)}`, {
+                    const response = await fetch(`http://192.168.3.74:3001/appointment/contactnumber/${encodeURIComponent(contactnumber)}`, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
                     });
@@ -212,7 +212,7 @@
                 console.log('📤 Final form data:', Object.fromEntries(formData));
 
                 try {
-                    const response = await fetch('http://192.168.3.73:3001/appointment/create', {
+                    const response = await fetch('http://192.168.3.74:3001/appointment/create', {
                         method: 'POST',
                         body: formData,
                     });

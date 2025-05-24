@@ -1,329 +1,356 @@
-        .dark .btn-primary {
-            background-color: #6366f1;
-            color: #fff;
-        }
+.dark .btn-primary {
+    background-color: #6366f1;
+    color: #fff;
+}
 
-        .dark .btn-outline-primary {
-            border-color: #6366f1;
-            color: #6366f1;
-        }
+.dark .btn-outline-primary {
+    border-color: #6366f1;
+    color: #6366f1;
+}
 
-        .dark .btn-outline-primary:hover {
-            background-color: #6366f1;
-            color: #fff;
-        }
-        
-        .dataTable-dropdown .dataTable-selector,
-        .dataTable-search .dataTable-input {
-            width: auto;
-            background-color: #fff;
-            color: #0e1726;
-            border-color: #e0e6ed;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-size: 14px;
-            line-height: 20px;
-            font-weight: 600;
-            border-width: 1px;
-            outline: none !important;
-        }
+.dark .btn-outline-primary:hover {
+    background-color: #6366f1;
+    color: #fff;
+}
 
-        .dataTable-dropdown .dataTable-selector:focus,
-        .dataTable-search .dataTable-input:focus {
-            border-color: #4361ee;
-        }
+.dataTable-dropdown .dataTable-selector,
+.dataTable-search .dataTable-input {
+    width: auto;
+    background-color: #fff;
+    color: #0e1726;
+    border-color: #e0e6ed;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    border-width: 1px;
+    outline: none !important;
+}
 
-        .dataTable-search .dataTable-input {
-            box-shadow: none !important;
-        }
+.dataTable-dropdown .dataTable-selector:focus,
+.dataTable-search .dataTable-input:focus {
+    border-color: #4361ee;
+}
 
-        .ltr .dataTable-search {
-            margin-left: auto;
-        }
+.dataTable-search .dataTable-input {
+    box-shadow: none !important;
+}
 
-        .rtl .dataTable-search {
-            margin-right: auto;
-        }
+.ltr .dataTable-search {
+    margin-left: auto;
+}
 
-        /* Hide the native checkbox */
-        .approval-checkbox,
-        .progress-checkbox,
-        .complete-checkbox,
-        .exit-checkbox {
-            position: relative;
-            appearance: none;
-            /* Remove default browser styling */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: 14px;
-            height: 14px;
-            outline: none;
-            cursor: not-allowed;
-            /* Since the checkbox is disabled */
-        }
+.rtl .dataTable-search {
+    margin-right: auto;
+}
 
-        /* Create a custom checkbox using ::before */
-        .approval-checkbox::before,
-        .progress-checkbox::before,
-        .complete-checkbox::before,
-        .exit-checkbox::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            border: 2px solid #d1d5db;
-            /* Tailwind gray-300 */
-            border-radius: 3px;
-            background-color: #fff;
-        }
+table tbody tr td:where([dir=ltr], [dir=ltr] *),
+table tfoot tr th:where([dir=ltr], [dir=ltr] *),
+table thead tr th:where([dir=ltr], [dir=ltr] *) {
+    text-align: center;
+}
 
-        /* Style for checked state */
-        .approval-checkbox:checked::before,
-        .progress-checkbox:checked::before,
-        .complete-checkbox:checked::before,
-        .exit-checkbox:checked::before {
-            background-color: #22c55e;
-            /* Green for checked state */
-            border-color: #22c55e;
-        }
+.panel {
+    position: relative;
+    border-radius: .375rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    padding: 1.5rem;
+    --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 
-        /* Add a checkmark for checked state using ::after */
-        .approval-checkbox:checked::after,
-        .progress-checkbox:checked::after,
-        .complete-checkbox:checked::after,
-        .exit-checkbox:checked::after {
-            content: '\2713';
-            /* Unicode for checkmark */
-            position: absolute;
-            top: 0;
-            left: 3px;
-            color: white;
-            font-size: 12px;
-            line-height: 14px;
-        }
+.panel1 {
+    position: relative;
+    border-radius: .375rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    padding: 1.5rem;
+    --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    overflow: hidden;
+    min-height: 350px;
+    max-height: 400px;
+}
 
-        /* Style for disabled state */
-        .approval-checkbox:disabled::before,
-        .progress-checkbox:disabled::before,
-        .complete-checkbox:disabled::before,
-        .exit-checkbox:disabled::before {
-            opacity: 0.7;
-            /* Slightly faded for disabled */
-        }
+table tbody tr td:where([dir=ltr], [dir=ltr] *),
+table tfoot tr th:where([dir=ltr], [dir=ltr] *),
+table thead tr th:where([dir=ltr], [dir=ltr] *) {
+    text-align: center;
+}
 
-        /* Dark mode styling */
-        .dark .approval-checkbox::before,
-        .dark .progress-checkbox::before,
-        .dark .complete-checkbox::before,
-        .dark .exit-checkbox::before {
-            background-color: #374151;
-            /* Tailwind gray-700 */
-            border-color: #6b7280;
-            /* Tailwind gray-500 */
-        }
+.dataTable-container {
+    overflow: auto;
+}
 
-        .dark .approval-checkbox:checked::before,
-        .dark .progress-checkbox:checked::before,
-        .dark .complete-checkbox:checked::before,
-        .dark .exit-checkbox:checked::before {
-            background-color: #4ade80;
-            /* Brighter green for dark mode */
-            border-color: #4ade80;
-        }
+/* CSS for a sticky button */
+.sticky-button {
+    position: fixed;
+    background-color: #4361ee;
+    bottom: 60px;
+    right: 20px;
+    border-radius: 110px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    transition: all 0.2s ease-out;
+}
 
-        .dark .approval-checkbox:checked::after,
-        .dark .progress-checkbox:checked::after,
-        .dark .complete-checkbox:checked::after,
-        .dark .exit-checkbox:checked::after {
-            color: white;
-        }
+.sticky-button:hover {
+    width: 120px;
+}
 
-        .dark .approval-checkbox:disabled::before,
-        .dark .progress-checkbox:disabled::before,
-        .dark .complete-checkbox:disabled::before,
-        .dark .exit-checkbox:disabled::before {
-            opacity: 0.7;
-        }
+.sticky-button svg {
+    margin: auto;
+    fill: #fff;
+    width: 35px;
+    height: 35px;
+}
 
-        table tbody tr td:where([dir=ltr], [dir=ltr] *),
-        table tfoot tr th:where([dir=ltr], [dir=ltr] *),
-        table thead tr th:where([dir=ltr], [dir=ltr] *) {
-            text-align: center;
-        }
+.sticky-button a,
+.sticky-button label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 45px;
+    transition: all 0.3s ease-out;
+}
 
-        .panel {
-            position: relative;
-            border-radius: .375rem;
-            --tw-bg-opacity: 1;
-            background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-            padding: 1.5rem;
-            --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
-            --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        }
+.sticky-button label svg.close-icon {
+    display: none;
+}
 
-        .panel1 {
-            position: relative;
-            border-radius: .375rem;
-            --tw-bg-opacity: 1;
-            background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-            padding: 1.5rem;
-            --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
-            --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            overflow: hidden;
-            min-height: 350px;
-            max-height: 400px;
-            /* Constrain panel height */
-        }
+.sticky-button span {
+    display: none;
+    color: white;
+    font-size: 12px;
+    margin-left: 10px;
+}
 
-        table tbody tr td:where([dir=ltr], [dir=ltr] *),
-        table tfoot tr th:where([dir=ltr], [dir=ltr] *),
-        table thead tr th:where([dir=ltr], [dir=ltr] *) {
-            text-align: center;
-        }
+.sticky-button:hover span {
+    display: inline;
+}
 
+.btn-left {
+    margin-left: auto;
+}
 
-        .dataTable-container {
-            overflow: auto;
-        }
+.table-container {
+    max-height: 280px;
+    overflow-y: auto;
+}
 
-        /* CSS for a sticky button */
-        .sticky-button {
-            position: fixed;
-            background-color: #4361ee;
-            bottom: 60px;
-            right: 20px;
-            border-radius: 110px;
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-            z-index: 20;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 55px;
-            height: 55px;
-            transition: all 0.2s ease-out;
-        }
+thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+}
 
-        .sticky-button:hover {
-            width: 120px;
-        }
+img {
+    max-width: 70%;
+    height: auto;
+}
 
-        .sticky-button svg {
-            margin: auto;
-            fill: #fff;
-            width: 35px;
-            height: 35px;
-        }
+#img1 {
+    max-width: 76%;
+    height: auto;
+}
 
-        .sticky-button a,
-        .sticky-button label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            width: 29px;
-            height: 45px;
-            transition: all 0.3s ease-out;
-        }
+.chart-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    max-height: 350px;
+    max-width: 100%;
+    position: relative;
+}
 
-        .sticky-button label svg.close-icon {
-            display: none;
-        }
+#chart-time,
+#chart-status,
+#chart-frequent,
+#chart-purpose {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 300px !important;
+    max-height: 350px !important;
+    max-width: 100% !important;
+}
 
-        .sticky-button span {
-            display: none;
-            color: white;
-            font-size: 12px;
-            margin-left: 10px;
-        }
+/* Progress Steps */
+.progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 10px 0;
+}
 
-        .sticky-button:hover span {
-            display: inline;
-        }
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    position: relative;
+    z-index: 1;
+}
 
-        .btn-left {
-            margin-left: auto;
-        }
+.step-circle {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 3px solid #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
 
-        .table-container {
-            max-height: 280px;
-            overflow-y: auto;
-        }
+.step-icon {
+    color: #999;
+}
 
-        thead th {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 1;
-        }
+.step-label {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+}
 
-        img {
-            max-width: 70%;
-            height: auto;
-        }
+/* Line connecting the steps */
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 12.5%;
+    width: 75%;
+    height: 3px;
+    background: linear-gradient(to right, #e0e0e0 50%, #e0e0e0 50%);
+    z-index: 0;
+}
 
-        #img1 {
-            max-width: 76%;
-            height: auto;
-        }
+/* Active/Completed Step Styles (Green) */
+.step.active .step-circle {
+    border-color: #22c55e; /* Green color */
+    background-color: #22c55e;
+}
 
-        .chart-container {
-            width: 100%;
-            height: 100%;
-            min-height: 300px;
-            max-height: 350px;
-            /* Constrain chart height */
-            max-width: 100%;
-            /* Prevent horizontal overflow */
-            position: relative;
-        }
+.step.active .step-icon {
+    color: white;
+}
 
-        #chart-time,
-        #chart-status,
-        #chart-frequent,
-        #chart-purpose {
-            width: 100% !important;
-            height: 100% !important;
-            min-height: 300px !important;
-            max-height: 350px !important;
-            /* Constrain chart height */
-            max-width: 100% !important;
-            /* Constrain chart width */
-        }
+.step.active .step-label {
+    color: #22c55e;
+}
 
-        /* === Dark Mode Styling === */
-        .dark .panel1 {
-            background-color: #1f2937;
-            /* Tailwind gray-800 */
-            color: #888ea8;
-            /* Tailwind gray-50 */
-            border-color: #374151;
-            /* Optional: Tailwind gray-700 for border */
-        }
+/* Red Step Styles (for Disapproved or Exited) */
+.step.red .step-circle {
+    border-color: #ef4444; /* Red color */
+    background-color: #ef4444;
+}
 
-        .dark .chart-container {
-            background-color: #111827;
-            /* Tailwind gray-900 */
-        }
+.step.red .step-icon {
+    color: white;
+}
 
-        .dark h3 {
-            color: #888ea8;
-            /* Tailwind gray-100 */
-        }
+.step.red .step-label {
+    color: #ef4444;
+}
 
-        .dark th {
-            background-color: #1E2A42;
-            color: #888ea8;
-        }
+/* Dark mode styling */
+.dark .step-circle {
+    background-color: #374151; /* Tailwind gray-700 */
+    border-color: #6b7280; /* Tailwind gray-500 */
+}
 
-        .dark td {
-            color: #888ea8;
-            border-bottom: 1px solid #e0e6ed1e;
-        }
+.dark .step-icon {
+    color: #888ea8;
+}
 
+.dark .step-label {
+    color: #888ea8;
+}
 
-        .dark tr:hover {
-            background-color: #2d3748;
-        }
+.dark .progress-steps::before {
+    background: linear-gradient(to right, #6b7280 50%, #6b7280 50%);
+}
 
+.dark .step.active .step-circle {
+    border-color: #4ade80; /* Brighter green for dark mode */
+    background-color: #4ade80;
+}
+
+.dark .step.active .step-label {
+    color: #4ade80;
+}
+
+.dark .step.red .step-circle {
+    border-color: #f87171; /* Brighter red for dark mode */
+    background-color: #f87171;
+}
+
+.dark .step.red .step-label {
+    color: #f87171;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .progress-steps {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .step {
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .step-label {
+        margin-top: 0;
+        margin-left: 10px;
+    }
+
+    .progress-steps::before {
+        display: none;
+    }
+}
+
+/* Dark Mode Styling */
+.dark .panel1 {
+    background-color: #1f2937;
+    color: #888ea8;
+    border-color: #374151;
+}
+
+.dark .chart-container {
+    background-color: #111827;
+}
+
+.dark h3 {
+    color: #888ea8;
+}
+
+.dark th {
+    background-color: #1E2A42;
+    color: #888ea8;
+}
+
+.dark td {
+    color: #888ea8;
+    border-bottom: 1px solid #e0e6ed1e;
+}
+
+.dark tr:hover {
+    background-color: #2d3748;
+}
