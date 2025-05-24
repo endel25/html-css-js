@@ -53,7 +53,7 @@
                         }
 
                         try {
-                            const response = await fetch('http://192.168.3.74:3001/auth/login', {
+                            const response = await fetch('http://192.168.3.73:3001/auth/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ userName: this.userName, password: this.password }),

@@ -16,7 +16,7 @@
     };
 
     // Base URL for the backend API
-    const API_BASE_URL = 'http://192.168.3.74:3001';
+    const API_BASE_URL = 'http://192.168.3.73:3001';
 
     // Function to get Dictionarysettings permissions from localStorage
     function getPermissions() {
