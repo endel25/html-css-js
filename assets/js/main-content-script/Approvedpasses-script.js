@@ -18,8 +18,8 @@
 
                 async function fetchVisitors() {
                     try {
-                        console.log('Fetching approved visitors from http://192.168.3.73:3001/visitors');
-                        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+                        console.log('Fetching approved visitors from http://192.168.3.74:3001/visitors');
+                        const response = await fetch(`http://192.168.3.74:3001/visitors?t=${new Date().getTime()}`, {
                             method: 'GET',
                             headers: { 'Content-Type': 'application/json' },
                         });

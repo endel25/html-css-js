@@ -364,10 +364,10 @@
                                                     <th>Host</th>
                                                     <th>Purpose</th>
                                                     <th>National ID</th>
-                                                    <th>Pending Approval</th>
+                                                    <!-- <th>Pending Approval</th>
                                                     <th>InCampus</th>
                                                     <th>Complete</th>
-                                                    <th>Exit Approval</th>
+                                                    <th>Exit Approval</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -388,48 +388,10 @@
                                                         <td x-text="visitor.host"></td>
                                                         <td x-text="visitor.purpose"></td>
                                                         <td x-text="visitor.nationalId"></td>
-                                                        <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                class="approval-checkbox"
-                                                                :data-id="visitor.id"
-                                                                x-model="visitor.pendingApproval"
-                                                                :checked="visitor.pendingApproval"
-                                                                disabled
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                class="progress-checkbox"
-                                                                :data-id="visitor.id"
-                                                                x-model="visitor.inCampus"
-                                                                :checked="visitor.inCampus"
-                                                                @change="updateVisitor(visitor)"
-                                                                disabled
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                class="complete-checkbox"
-                                                                :data-id="visitor.id"
-                                                                x-model="visitor.complete"
-                                                                :checked="visitor.complete"
-                                                                @change="updateVisitor(visitor)"
-                                                                disabled
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                class="exit-checkbox"
-                                                                :data-id="visitor.id"
-                                                                x-model="visitor.exitApproval"
-                                                                :checked="visitor.exitApproval"
-                                                                @change="updateVisitor(visitor)"
-                                                                disabled
-                                                            />
+                                                        <!-- Progress Steps -->
+                                                        <td colspan="4">
+                                                            <!-- Use renderProgressSteps to dynamically render the progress steps -->
+                                                            <div x-html="renderProgressSteps(visitor)"></div>
                                                         </td>
                                                     </tr>
                                                 </template>
