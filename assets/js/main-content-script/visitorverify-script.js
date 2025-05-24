@@ -154,6 +154,46 @@ async function fetchVisitPurposes() {
     }
 }
 
+async function fetchVisitorTypes() {
+    try {
+        const response = await fetch('http://192.168.3.73:3001/visitor-type');
+        const data = await response.json();
+        validVisitorTypes = data.map(item => item.name); // e.g., ['Vendor', 'Client', 'Interview', 'Guest']
+        const select = document.getElementById('visitortype');
+        if (!select) return;
+        select.innerHTML = '<option value="">Select visitor type</option>';
+        validVisitorTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching visitor types:', error);
+        showError('error-visitortype', 'Failed to load visitor type options');
+    }
+}
+
+
+async function fetchDurationUnits() {
+    try {
+        const response = await fetch('http://192.168.3.73:3001/time-duration-unit');
+        const data = await response.json();
+        validDurationUnits = data.map(item => item.name); // e.g., ['Minutes', 'Hours', 'Days']
+        const select = document.getElementById('durationUnit');
+        if (!select) return;
+        select.innerHTML = '<option value="">Select unit</option>';
+        validDurationUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit;
+            option.textContent = unit;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching duration units:', error);
+        showError('error-durationtime', 'Failed to load duration unit options');
+    }
+}
 const validateField = (name, value, formData = {}) => {
     let error = '';
     const requiredFields = [
@@ -336,7 +376,7 @@ function displaySuccessMessage(email, date, time) {
 }
 
 async function initializeForm() {
-    await Promise.all([fetchGenders(), fetchVisitPurposes()]);
+    await Promise.all([fetchGenders(), fetchVisitPurposes(), fetchVisitorTypes(), fetchDurationUnits()]);
 
     const urlParams = new URLSearchParams(window.location.search);
     const genderParam = urlParams.get('gender') || '';
