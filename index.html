@@ -353,23 +353,20 @@
                                 </div>
 
                                 <div class="overflow-x-auto">
-                                    <div class="table-container">
+                                    <div class="table-container1">
                                         <table class="table-hover whitespace-nowrap w-full">
                                             <thead>
-                                                <tr>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Date</th>
-                                                    <th>Allocated Time</th>
-                                                    <th>Host</th>
-                                                    <th>Purpose</th>
-                                                    <th>National ID</th>
-                                                    <!-- <th>Pending Approval</th>
-                                                    <th>InCampus</th>
-                                                    <th>Complete</th>
-                                                    <th>Exit Approval</th> -->
-                                                </tr>
-                                            </thead>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Date</th>
+    <th>Allocated Time</th>
+    <th>Host</th>
+    <th>Purpose</th>
+    <th>National ID</th>
+    <th colspan="4" class="text-center">Status</th>
+  </tr>
+</thead>
                                             <tbody>
                                                 <!-- If no matches -->
                                                 <template x-if="filteredVisitors.length === 0">

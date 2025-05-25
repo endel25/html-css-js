@@ -548,7 +548,7 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
-        renderProgressSteps(visitor) {
+renderProgressSteps(visitor) {
             const status = this.getVisitorStatus(visitor);
             const isDisapproved = !visitor.isApproved;
             const isExited = visitor.exitApproval;

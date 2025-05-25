@@ -149,6 +149,12 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
     overflow-y: auto;
 }
 
+
+.table-container1 {
+    max-height: 520px;
+    overflow-y: auto;
+}
+
 thead th {
     position: sticky;
     top: 0;
@@ -193,7 +199,9 @@ img {
     justify-content: space-between;
     position: relative;
     padding: 10px 0;
+    flex-wrap: nowrap;
 }
+
 
 .step {
     display: flex;
@@ -201,20 +209,25 @@ img {
     align-items: center;
     width: 25%;
     position: relative;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
+
+
 .step-circle {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     background-color: white;
-    border: 3px solid #e0e0e0;
+    border: 2px solid #e0e0e0;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
     transition: all 0.3s ease;
 }
+
+
 
 .step-icon {
     color: #999;
