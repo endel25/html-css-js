@@ -33,6 +33,80 @@
         };
     }
 
+async function fetchAndPopulateDropdowns(visitor) {
+    try {
+        // Helper to fetch and parse JSON
+        const fetchAndParse = async (url) => {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (!Array.isArray(data)) {
+                throw new Error(`Expected array, got ${typeof data}`);
+            }
+            return data;
+        };
+
+        // Fetch Genders
+        const genders = await fetchAndParse('http://192.168.3.73:3001/gender');
+        console.log('Genders:', genders);
+        populateDropdown('edit-gender', genders, 'name', visitor.gender || '');
+
+        // Fetch Purpose of Visits
+        const purposes = await fetchAndParse('http://192.168.3.73:3001/purpose-of-visit');
+        console.log('Purposes:', purposes);
+        populateDropdown('edit-visit', purposes, 'name', visitor.visit || '');
+        // Add 'Others' option for Purpose of Visit
+        const visitSelect = document.getElementById('edit-visit');
+        if (visitSelect) {
+            const othersOption = document.createElement('option');
+            othersOption.value = 'Others';
+            othersOption.textContent = 'Others (please specify)';
+            if (visitor.visit === 'Others') {
+                othersOption.selected = true;
+            }
+            visitSelect.appendChild(othersOption);
+        }
+
+        // Fetch Visitor Types
+        const visitorTypes = await fetchAndParse('http://192.168.3.73:3001/visitor-type');
+        console.log('Visitor Types:', visitorTypes);
+        populateDropdown('edit-visitortype', visitorTypes, 'name', visitor.visitortype || '');
+
+        // Fetch Time Units
+        const timeUnits = await fetchAndParse('http://192.168.3.73:3001/time-duration-unit');
+        console.log('Time Units:', timeUnits);
+        populateDropdown('edit-durationUnit', timeUnits, 'name', visitor.durationunit || visitor.durationUnit || '');
+    } catch (error) {
+        console.error('Error fetching dropdown data:', error);
+        showMessage('Failed to load dropdown data: ' + error.message, 'error');
+    }
+}
+
+function populateDropdown(selectId, data, valueKey = 'name', selectedValue = '') {
+    const select = document.getElementById(selectId);
+    if (!select) {
+        console.error(`Select element with ID '${selectId}' not found`);
+        return;
+    }
+    select.innerHTML = '<option value="">Select ' + selectId.replace('edit-', '') + '</option>';
+    if (!Array.isArray(data)) {
+        console.error(`Invalid data format for ${selectId}:`, data);
+        showMessage(`Failed to populate ${selectId}: Invalid data format`, 'error');
+        return;
+    }
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item[valueKey] || '';
+        option.textContent = item[valueKey] || '';
+        if (item[valueKey] === selectedValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+}
+
     // Initialize page and check for success message
     document.addEventListener('DOMContentLoaded', () => {
         const message = localStorage.getItem('appointmentSuccessMessage');
@@ -400,12 +474,12 @@
         const visitor = await fetchVisitorById(visitorId);
         if (!visitor) return;
 
-        originalVisitorData = { ...visitor };
-
-        const populateField = (id, value, defaultValue = '') => {
+        originalVisitorData = { ...visitor };        const populateField = (id, value, defaultValue = '') => {
             const element = document.getElementById(`edit-${id}`);
             if (element) element.value = value ?? defaultValue;
         };
+        
+            await fetchAndPopulateDropdowns(visitor);
 
         // Populate existing fields
         populateField('firstname', visitor.firstname);

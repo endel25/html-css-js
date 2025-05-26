@@ -102,6 +102,44 @@
                 return error;
             };
 
+            // Function to populate dropdown
+function populateDropdown(selectId, data, valueKey = 'name') {
+    const select = document.getElementById(selectId);
+    if (!select) {
+        console.error(`Select element with ID '${selectId}' not found`);
+        return;
+    }
+    select.innerHTML = '<option value="">Select ' + selectId + '</option>';
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item[valueKey];
+        option.textContent = item[valueKey];
+        select.appendChild(option);
+    });
+}
+ 
+async function fetchGender() {
+    try {
+        const response = await fetch('http://192.168.3.73:3001/gender');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const genders = await response.json(); // Parse JSON response
+        if (!Array.isArray(genders)) {
+            throw new Error('API response is not an array');
+        }
+        populateDropdown('gender', genders);
+ 
+ 
+        const genderSelect = document.getElementById('gender');
+    } catch (error) {
+        console.error('Error fetching purpose of genders:', error);
+        alert('Failed to load purpose of gender: ' + error.message);
+    }
+}
+
+fetchGender();
+
             function populateForm(appointment) {
                 const fields = ['firstname', 'lastname', 'gender', 'contactnumber', 'email',];
                 fields.forEach(field => {

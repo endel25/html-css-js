@@ -341,6 +341,26 @@
             border-color: #4361ee;
         }
 
+        .dark .btn-outline-success {
+            border-color: #22c55e;
+            color: #22c55e
+        }
+
+        .dark .btn-outline-success:hover {
+            background-color: #16a34a;
+            color: #fff;
+        }
+
+        .dark .btn-outline-danger {
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .dark .btn-outline-danger:hover {
+            background-color: #dc2626;
+            color: #fff;
+        }
+
         .dataTable-dropdown label {
             margin-bottom: 0;
         }

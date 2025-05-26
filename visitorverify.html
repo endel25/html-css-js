@@ -10,6 +10,22 @@
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/vms _css/visitorverify.css">
+    <!-- Added CSS for personname suggestions dropdown and error styling -->
+    <style>
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
@@ -83,7 +99,8 @@
                         </div>
 
                         <div class="flex sm:flex-row flex-col items-center">
-                            <label for="time" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">MetinTime</label>
+                            <!-- Fixed typo: MetinTime → Meeting Time -->
+                            <label for="time" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Meeting Time</label>
                             <div class="form-group">
                                 <input type="time" id="time" name="time"
                                     class="w-full text-xs px-3 py-2 border rounded" />
@@ -100,77 +117,52 @@
                             </div>
                         </div>
 
-<div class="flex sm:flex-row flex-col items-start mb-3">
-  <label for="photo" class="w-40 text-sm font-medium pt-2">Visitor Photo</label>
-
-  <div class="w-full">
-    <input type="file" id="photo" name="photo" accept="image/*"
-           onchange="previewImage(this, 'mainPreview')" class="hidden" />
-
-    <div class="flex items-center gap-2">
-      <button type="button"
-              class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
-              onclick="showModal('photo')">Choose Photo</button>
-
-      <img id="mainPreview" class="photo-preview rounded border" alt="Preview" />
-    </div>
-
-    <span class="error text-xs text-red-500 block mt-1" id="error-photo"></span>
-  </div>
-</div>
-
-
-
-
-
-                            <div class="flex sm:flex-row flex-col items-center">
-                                    <label for="visit"
-                                        class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Purpose of
-                                        Visit</label>
-                                <div class="form-group">
-                                    <select id="visit" name="visit"
-                                        class="tw-full text-xs px-3 py-2 border rounded">
-                                        <option value="">Select purpose</option>
-                                        <option value="Business Meeting">Business Meeting</option>
-                                        <option value="Interview">Interview</option>
-                                        <option value="Delivery">Delivery</option>
-                                        <option value="Maintenance/Service">Maintenance/Service</option>
-                                        <option value="Training/Workshop">Training/Workshop</option>
-                                        <option value="Official Visit">Official Visit</option>
-                                        <option value="Personal Visit">Personal Visit</option>
-                                        <option value="Client Meeting">Client Meeting</option>
-                                        <option value="Vendor Meeting">Vendor Meeting</option>
-                                        <option value="Site Inspection">Site Inspection</option>
-                                        <option value="Audit">Audit</option>
-                                        <option value="Consultation">Consultation</option>
-                                        <option value="Medical Appointment">Medical Appointment</option>
-                                        <option value="Student Admission">Student Admission</option>
-                                        <option value="Others">Others (please specify)</option>
-                                    </select>
-                                    <!-- Optional Custom Purpose Field (hidden by default) -->
-                                    <input type="text" id="custom-purpose" name="customPurpose"
-                                        placeholder="Enter custom purpose"
-                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
-                                    <span class="error text-xs text-red-500" id="error-visit"></span>
-                                    </div>
+                        <div class="flex sm:flex-row flex-col items-start mb-3">
+                            <label for="photo" class="w-40 text-sm font-medium pt-2">Visitor Photo</label>
+                            <div class="w-full">
+                                <input type="file" id="photo" name="photo" accept="image/*"
+                                    onchange="previewImage(this, 'mainPreview')" class="hidden" />
+                                <div class="flex items-center gap-2">
+                                    <button type="button"
+                                        class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+                                        onclick="showModal('photo')">Choose Photo</button>
+                                    <img id="mainPreview" class="photo-preview rounded border" alt="Preview" />
                                 </div>
-
-                        <div class="flex sm:flex-row flex-col items-center">
-                            <label for="personname" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Person Name</label>
-                            <div class="form-group">
-                                <input type="text" id="personname" name="personname"
-                                    placeholder="Enter name of person to meet"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
-                                <span class="error text-xs text-red-500" id="error-personname"></span>
+                                <span class="error text-xs text-red-500 block mt-1" id="error-photo"></span>
                             </div>
                         </div>
 
                         <div class="flex sm:flex-row flex-col items-center">
+                            <label for="visit" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Purpose of Visit</label>
+                            <div class="form-group">
+                                <!-- Fixed class: tw-full → w-full -->
+                                <select id="visit" name="visit" class="w-full text-xs px-3 py-2 border rounded">
+                                    <option value="">Select purpose</option>
+                                </select>
+                                <span class="error text-xs text-red-500" id="error-visit"></span>
+                            </div>
+                        </div>
+
+                        <!-- Updated personname field to include suggestions dropdown -->
+                        <div class="flex sm:flex-row flex-col items-center">
+                            <label for="personname" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Person Name</label>
+                            <div class="form-group relative">
+                                <input type="text" id="personname" name="personname"
+                                    placeholder="Enter name of person to meet"
+                                    class="w-full text-xs px-3 py-2 border rounded" autocomplete="off" />
+                                <span class="error text-xs text-red-500" id="error-personname"></span>
+                                <!-- Added div for suggestions dropdown -->
+                                <div id="personname-suggestions" class="hidden absolute z-10 bg-white border border-gray-300 w-full max-h-60 overflow-y-auto shadow-lg"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex sm:flex-row flex-col items-center">
+                            <!-- Added readonly attribute to department field -->
                             <label for="department" class="sm:mb-0 mb-1 sm:mr-2 text-sm font-medium">Department</label>
                             <div class="form-group">
                                 <input type="text" id="department" name="department"
                                     placeholder="Enter the visiting department"
-                                    class="w-full text-xs px-3 py-2 border rounded" />
+                                    class="w-full text-xs px-3 py-2 border rounded" readonly />
                                 <span class="error text-xs text-red-500" id="error-department"></span>
                             </div>
                         </div>
@@ -184,9 +176,6 @@
                                     <select id="durationUnit" name="durationUnit"
                                         class="w-full text-xs px-3 py-2 border rounded">
                                         <option value="">Select unit</option>
-                                        <option value="Hours">Hours</option>
-                                        <option value="Minutes">Minutes</option>
-                                        <option value="Days">Days</option>
                                     </select>
                                 </div>
                                 <div class="w-full sm:w-2/3">
@@ -205,10 +194,6 @@
                                 <select id="visitortype" name="visitortype"
                                     class="w-full text-xs px-3 py-2 border rounded">
                                     <option value="">Select visitor type</option>
-                                    <option>Vendor</option>
-                                    <option>Client</option>
-                                    <option>Interview</option>
-                                    <option>Guest</option>
                                 </select>
                                 <span class="error text-xs text-red-500" id="error-visitortype"></span>
                             </div>
@@ -272,25 +257,20 @@
                                     <span class="error text-xs text-red-500" id="error-drivernationalid"></span>
                                 </div>
                             </div>
-<div class="flex sm:flex-row flex-col items-start mb-3">
-  <label for="driverphoto" class="w-40 text-sm font-medium pt-2">Driver Photo</label>
-
-  <div class="w-full">
-    <input type="file" id="driverphoto" name="driverphoto" accept="image/*"
-           onchange="previewImage(this, 'driverPreview')" class="hidden" />
-
-    <div class="flex items-center gap-2">
-      <button type="button"
-              class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
-              onclick="showModal('driverphoto')">Choose Photo</button>
-
-      <img id="driverPreview" class="photo-preview rounded border" alt="Preview" />
-    </div>
-
-    <span class="error text-xs text-red-500 block mt-1" id="error-driverphoto"></span>
-  </div>
-</div>
-
+                            <div class="flex sm:flex-row flex-col items-start mb-3">
+                                <label for="driverphoto" class="w-40 text-sm font-medium pt-2">Driver Photo</label>
+                                <div class="w-full">
+                                    <input type="file" id="driverphoto" name="driverphoto" accept="image/*"
+                                        onchange="previewImage(this, 'driverPreview')" class="hidden" />
+                                    <div class="flex items-center gap-2">
+                                        <button type="button"
+                                            class="w-full text-xs px-3 py-2 border rounded choose-photo-btn"
+                                            onclick="showModal('driverphoto')">Choose Photo</button>
+                                        <img id="driverPreview" class="photo-preview rounded border" alt="Preview" />
+                                    </div>
+                                    <span class="error text-xs text-red-500 block mt-1" id="error-driverphoto"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -303,11 +283,15 @@
                         </div>
                     </div>
 
+                    <!-- Added error-general span for form submission errors -->
+                    <div>
+                        <span class="error text-xs text-red-500" id="error-general"></span>
+                    </div>
+
                     <div class="flex justify-end mt-6">
                         <button type="submit" id="submitBtn" class="btn-outline-primary rounded-full text-sm">
                             <span class="loader"></span>
                             <span>Submit</span>
-                            
                         </button>
                     </div>
                 </form>
@@ -327,9 +311,8 @@
     <video id="cameraPreview" style="display: none;"></video>
     <canvas id="cameraCanvas" style="display: none;"></canvas>
 
- <script src="assets/js/main-content-script/visitorverify-script.js"></script>
-
-
+    <script src="assets/js/main-content-script/visitorverify-script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
