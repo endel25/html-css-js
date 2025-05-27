@@ -23,7 +23,7 @@
             /* Adjust line height for text alignment */
             box-sizing: border-box;
             margin-right: 8PX;
-            padding: 8px 31px !important;
+            padding: 8px 28px !important;
             font-size: 0.8rem;
         }
 
@@ -64,6 +64,14 @@
             /* Enlarge the image by 1.5x */
             z-index: 10;
             /* Ensure the image appears above other elements */
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
         }
 
         body {

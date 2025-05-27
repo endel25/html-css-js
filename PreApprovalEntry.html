@@ -232,27 +232,29 @@
                                     <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
 
-                                <!-- Person Name -->
-                                <div class="form-group">
-                                    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
-                                    <div class="flex-1">
-                                        <input type="text" id="edit-personname" name="personname"
-                                            placeholder="Enter person to meet"
-                                            class="w-full text-xs px-3 py-2 border rounded" />
-                                        <span class="error text-red-500 text-xs" id="error-personname"></span>
-                                    </div>
-                                </div>
+<!-- Person Name -->
+<div class="form-group">
+    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
+    <div class="flex-1 relative">
+        <input type="text" id="edit-personname" name="personname"
+            placeholder="Enter person to meet"
+            class="w-full text-xs px-3 py-2 border rounded" />
+        <div id="edit-personname-suggestions" class="absolute w-full bg-white border rounded shadow-lg hidden z-10 max-h-60 overflow-y-auto"></div>
+        <span class="error text-red-500 text-xs" id="error-personname"></span>
+    </div>
+</div>
 
-                                <!-- Department -->
-                                <div class="form-group">
-                                    <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
-                                    <div class="flex-1">
-                                        <input type="text" id="edit-department" name="department"
-                                            placeholder="Enter department"
-                                            class="w-full text-xs px-3 py-2 border rounded" />
-                                        <span class="error text-red-500 text-xs" id="error-department"></span>
-                                    </div>
-                                </div>
+<!-- Department -->
+<div class="form-group">
+    <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
+    <div class="flex-1">
+        <input type="text" id="edit-department" name="department"
+            placeholder="Enter department"
+            class="w-full text-xs px-3 py-2 border rounded" readonly />
+        <span class="error text-red-500 text-xs" id="error-department"></span>
+    </div>
+</div>
+
 
                                 <!-- Expected Duration -->
                                 <div class="form-group">

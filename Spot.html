@@ -128,7 +128,7 @@
                                     <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs"
                                         onclick="showModal('photo')">Choose Photo</button>
                                     <span class="error text-xs text-red-500" id="error-photo"></span>
-                                    <img id="mainPreview" class="photo-preview mt-2" />
+                                    <img id="mainPreview" class="photo-preview mt-2 rounded border" />
                                 </div>
                                 <div class="flex sm:flex-row flex-col">
                                     <label for="visit"
@@ -139,10 +139,6 @@
                                         <option value="">Select purpose</option>
                                         <!-- Options will be populated dynamically -->
                                     </select>
-                                    <!-- Optional Custom Purpose Field (hidden by default) -->
-                                    <input type="text" id="custom-purpose" name="customPurpose"
-                                        placeholder="Enter custom purpose"
-                                        class="text-xs form-input mt-2 w-1/3 border rounded px-3 py-2 hidden" />
                                     <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
                                 <div class="flex sm:flex-row flex-col">
@@ -260,7 +256,7 @@
                                         <button type="button" class="w-1/3 mt-2 px-3 py-2 border rounded text-xs"
                                             onclick="showModal('driverphoto')">Choose Photo</button>
                                         <span class="error text-xs text-red-500" id="error-driverphoto"></span>
-                                        <img id="driverPreview" class="photo-preview mt-2" />
+                                        <img id="driverPreview" class="photo-preview mt-2 rounded border" />
                                     </div>
                                 </div>
                             </div>

@@ -74,10 +74,6 @@ async function fetchPurposeOfVisits() {
         populateDropdown('visit', purposes);
         // Add 'Others' option for Purpose of Visit
         const visitSelect = document.getElementById('visit');
-        const othersOption = document.createElement('option');
-        othersOption.value = 'Others';
-        othersOption.textContent = 'Others (please specify)';
-        visitSelect.appendChild(othersOption);
     } catch (error) {
         console.error('Error fetching purpose of visits:', error);
         showMessage('Failed to load purpose of visits: ' + error.message, 'error');
