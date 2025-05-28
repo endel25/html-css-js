@@ -333,7 +333,13 @@ function openGallery() {
 }
 
 function openCamera() {
-    startCamera(document.getElementById(currentFileInputId));
+    const fileInput = document.getElementById(currentFileInputId);
+    if (fileInput) {
+        fileInput.setAttribute('capture', 'environment');
+        fileInput.click();
+    } else {
+        console.error(`File input ${currentFileInputId} not found`);
+    }
     closeModal();
 }
 
