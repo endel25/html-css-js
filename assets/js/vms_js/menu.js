@@ -216,4 +216,3 @@ menuList.addEventListener('click', (e) => {
         }
     }
 });
-
