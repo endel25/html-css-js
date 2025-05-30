@@ -7,7 +7,7 @@ let originalVisitorData = null;
 let isPersonNameValid = false; // Track person name validity
 
 // Define API base URL
-const API_BASE_URL = 'http://192.168.3.74:3001';
+const API_BASE_URL = 'http://192.168.3.73:3001';
 
 // Helper function to handle API requests
 async function apiRequest(endpoint, method = 'GET', body = null) {
@@ -78,7 +78,7 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
 
     try {
         const response = await fetch(
-            `http://192.168.3.74:3001/users/search?query=${encodeURIComponent(query)}`,
+            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
             {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -382,7 +382,7 @@ async function fetchVisitorData(page = 1, limit = 10, retries = 3) {
     console.log(`📡 Fetching visitor data: page=${page}, limit=${limit}`);
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const url = `http://192.168.3.74:3001/appointment?page=${page}&limit=${limit}`;
+            const url = `http://192.168.3.73:3001/appointment?page=${page}&limit=${limit}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -579,7 +579,7 @@ async function loadVisitorData() {
 async function fetchVisitorById(visitorId, retries = 3) {
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
+            const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -692,7 +692,7 @@ async function openVisitorModal(visitorId) {
 
         if (path && path.trim() !== '') {
             try {
-                const photoUrl = `http://192.168.3.74:3001/appointment/${visitorId}/photo?type=${type}`;
+                const photoUrl = `http://192.168.3.73:3001/appointment/${visitorId}/photo?type=${type}`;
                 const response = await fetch(photoUrl, { method: 'GET', mode: 'cors' });
                 if (!response.ok) throw new Error('Photo fetch failed');
                 const blob = await response.blob();
@@ -820,7 +820,7 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             `;
 
             try {
-                const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}`, {
+                const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}`, {
                     method: 'PUT',
                     body,
                 });
@@ -863,7 +863,7 @@ document.getElementById('approveGatepass').addEventListener('click', async () =>
     const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
     async function attemptApprove(attempt = 1, maxAttempts = 3) {
         try {
-            const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
+            const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ gatepassApproved: true }),
@@ -897,7 +897,7 @@ document.getElementById('disapproveGatepass').addEventListener('click', async ()
     const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
     async function attemptDisapprove(attempt = 1, maxAttempts = 3) {
         try {
-            const response = await fetch(`http://192.168.3.74:3001/appointment/${visitorId}/gatepass`, {
+            const response = await fetch(`http://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ gatepassApproved: false }),

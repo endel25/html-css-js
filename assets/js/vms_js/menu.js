@@ -185,16 +185,18 @@ li.innerHTML = `
 `;
 
         } else {
-            li.innerHTML = `
-                <li class="menu nav-item">
-                    <a href="${link}" class="nav-link group" :class="{ active: window.location.pathname.includes('${item.path}') }">
-                        <div class="flex items-center">
-                            ${item.icon || ''}
-                            <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">${item.label}</span>
-                        </div>
-                    </a>
-                </li>
-            `;
+li.innerHTML = `
+    <li class="menu nav-item">
+        <a href="${link}" class="nav-link group" 
+            :class="{ active: window.location.pathname.toLowerCase().includes('${item.path.toLowerCase()}') }">
+            <div class="flex items-center">
+                ${item.icon || ''}
+                <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">${item.label}</span>
+            </div>
+        </a>
+    </li>
+`;
+
         }
 
 
