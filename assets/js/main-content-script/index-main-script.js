@@ -1,4 +1,4 @@
-// Function to get Dashboard permissions from localStorage
+// Function to get permissions from localStorage
 function getPermissions() {
     const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
     const dashboardPermissions = permissions.find(p => p.name === 'Dashboard') || {
@@ -7,8 +7,42 @@ function getPermissions() {
         canUpdate: false,
         canDelete: false
     };
-    console.log('Retrieved Dashboard permissions:', dashboardPermissions);
-    return dashboardPermissions;
+    // Check for specific module permissions (if they exist)
+    const totalVisitorsPermissions = permissions.find(p => p.name === 'TotalVisitors') || dashboardPermissions;
+    const approvedPermissions = permissions.find(p => p.name === 'ApprovedPasses') || dashboardPermissions;
+    const disapprovedPermissions = permissions.find(p => p.name === 'DisapprovedPasses') || dashboardPermissions;
+    const exitPermissions = permissions.find(p => p.name === 'TotalExitPasses') || dashboardPermissions;
+    
+    const result = {
+        dashboard: dashboardPermissions,
+        totalVisitors: {
+            canRead: totalVisitorsPermissions.canRead,
+            canCreate: totalVisitorsPermissions.canCreate,
+            canUpdate: totalVisitorsPermissions.canUpdate,
+            canDelete: totalVisitorsPermissions.canDelete
+        },
+        approved: {
+            canRead: approvedPermissions.canRead,
+            canCreate: approvedPermissions.canCreate,
+            canUpdate: approvedPermissions.canUpdate,
+            canDelete: approvedPermissions.canDelete
+        },
+        disapproved: {
+            canRead: disapprovedPermissions.canRead,
+            canCreate: disapprovedPermissions.canCreate,
+            canUpdate: disapprovedPermissions.canUpdate,
+            canDelete: disapprovedPermissions.canDelete
+        },
+        exit: {
+            canRead: exitPermissions.canRead,
+            canCreate: exitPermissions.canCreate,
+            canUpdate: exitPermissions.canUpdate,
+            canDelete: exitPermissions.canDelete
+        }
+    };
+    
+    console.log('Retrieved permissions:', result);
+    return result;
 }
 
 let approvedVisitors = [];
@@ -18,9 +52,9 @@ let exitVisitors = [];
 async function fetchApprovedVisitors() {
     try {
         console.log('Fetching approved visitors...');
-        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+        const response = await fetch(`http://192.168.3.77:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
@@ -33,14 +67,14 @@ async function fetchApprovedVisitors() {
             .map(visitor => ({
                 ...visitor,
                 date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-                durationunit: visitor.durationunit || visitor.durationUnit || '',
+                durationunit: visitor.durationunit || visitor.durationUnit || ''
             }));
 
         localStorage.setItem('approvedVisitors', JSON.stringify(approvedVisitors));
         updateApprovedCard();
     } catch (error) {
         console.error('Failed to fetch approved visitors:', error.message);
-        approvedVisitors = JSON.parse(localStorage.getItem('approvedVisitors')) || [];
+        approvedVisitors = JSON.parse(localStorage.getItem('approvedVisitors') || '[]');
         approvedVisitors = approvedVisitors.filter(visitor => visitor.isApproved === true);
         updateApprovedCard();
     }
@@ -49,9 +83,9 @@ async function fetchApprovedVisitors() {
 async function fetchDisapprovedVisitors() {
     try {
         console.log('Fetching disapproved visitors...');
-        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+        const response = await fetch(`http://192.168.3.77:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
@@ -64,14 +98,14 @@ async function fetchDisapprovedVisitors() {
             .map(visitor => ({
                 ...visitor,
                 date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-                durationunit: visitor.durationunit || visitor.durationUnit || '',
+                durationunit: visitor.durationunit || visitor.durationUnit || ''
             }));
 
         localStorage.setItem('disapprovedVisitors', JSON.stringify(disapprovedVisitors));
         updateDisapprovedCard();
     } catch (error) {
         console.error('Failed to fetch disapproved visitors:', error.message);
-        disapprovedVisitors = JSON.parse(localStorage.getItem('disapprovedVisitors')) || [];
+        disapprovedVisitors = JSON.parse(localStorage.getItem('disapprovedVisitors') || '[]');
         disapprovedVisitors = disapprovedVisitors.filter(visitor => visitor.isApproved === false);
         updateDisapprovedCard();
     }
@@ -80,9 +114,9 @@ async function fetchDisapprovedVisitors() {
 async function fetchExitVisitors() {
     try {
         console.log('Fetching exit visitors...');
-        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+        const response = await fetch(`http://192.168.3.77:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
@@ -95,14 +129,14 @@ async function fetchExitVisitors() {
             .map(visitor => ({
                 ...visitor,
                 date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-                durationunit: visitor.durationunit || visitor.durationUnit || '',
+                durationunit: visitor.durationunit || visitor.durationUnit || ''
             }));
 
         localStorage.setItem('exitVisitors', JSON.stringify(exitVisitors));
         updateExitCard();
     } catch (error) {
         console.error('Failed to fetch exit visitors:', error.message);
-        exitVisitors = JSON.parse(localStorage.getItem('exitVisitors')) || [];
+        exitVisitors = JSON.parse(localStorage.getItem('exitVisitors') || '[]');
         exitVisitors = exitVisitors.filter(visitor => visitor.exit === true);
         updateExitCard();
     }
@@ -158,10 +192,10 @@ let visitors = [];
 
 async function fetchVisitors() {
     try {
-        console.log('Fetching all visitors from http://192.168.3.73:3001/visitors');
-        const response = await fetch(`http://192.168.3.73:3001/visitors?t=${new Date().getTime()}`, {
+        console.log('Fetching all visitors from http://192.168.3.77:3001/visitors');
+        const response = await fetch(`http://192.168.3.77:3001/visitors?t=${new Date().getTime()}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
@@ -173,7 +207,7 @@ async function fetchVisitors() {
         visitors = data.map(visitor => ({
             ...visitor,
             date: visitor.date ? visitor.date.split('-').reverse().join('-') : '',
-            durationunit: visitor.durationunit || visitor.durationUnit || '',
+            durationunit: visitor.durationunit || visitor.durationUnit || ''
         }));
 
         if (visitors.length === 0) {
@@ -184,7 +218,7 @@ async function fetchVisitors() {
         updateCard();
     } catch (error) {
         console.error('Failed to fetch visitors:', error.message);
-        visitors = JSON.parse(localStorage.getItem('allVisitors')) || [];
+        visitors = JSON.parse(localStorage.getItem('allVisitors') || '[]');
         if (visitors.length === 0) {
             console.warn('No cached visitors available either');
         }
@@ -225,7 +259,7 @@ document.addEventListener('alpine:init', () => {
 
         async fetchUpcomingAppointments() {
             try {
-                const response = await fetch('http://192.168.3.73:3001/appointment');
+                const response = await fetch('http://192.168.3.77:3001/appointment');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -240,7 +274,7 @@ document.addEventListener('alpine:init', () => {
                         allocatedTime: item.time || 'N/A',
                         host: item.personname || 'Unknown',
                         purpose: item.visit || 'N/A',
-                        nationalId: item.nationalid || 'N/A',
+                        nationalId: item.nationalid || 'N/A'
                     }))
                     : (data.data || []).map(item => ({
                         id: item.id,
@@ -250,12 +284,12 @@ document.addEventListener('alpine:init', () => {
                         allocatedTime: item.time || 'N/A',
                         host: item.personname || 'Unknown',
                         purpose: item.visit || 'N/A',
-                        nationalId: item.nationalid || 'N/A',
+                        nationalId: item.nationalid || 'N/A'
                     }));
 
                 this.appointmentsList = apiData;
             } catch (error) {
-                console.error('Error fetching appointments:', error);
+                console.error('Error fetching visitor details:', error);
             }
         }
     }));
@@ -277,7 +311,7 @@ document.addEventListener('alpine:init', () => {
 
         async fetchTodaysVisitors() {
             try {
-                const response = await fetch('http://192.168.3.73:3001/visitors');
+                const response = await fetch('http://192.168.3.77:3001/visitors');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -296,7 +330,7 @@ document.addEventListener('alpine:init', () => {
                             host: item.personname || 'Unknown',
                             purpose: item.visit || 'N/A',
                             nationalId: item.nationalid || 'N/A',
-                            pendingApproval: item.isApproved ?? true,
+                            pendingApproval: item.isApproved ?? true
                         }))
                     : (data.data || [])
                         .filter(item => item.date === today)
@@ -309,7 +343,7 @@ document.addEventListener('alpine:init', () => {
                             host: item.personname || 'Unknown',
                             purpose: item.visit || 'N/A',
                             nationalId: item.nationalid || 'N/A',
-                            pendingApproval: item.isApproved ?? true,
+                            pendingApproval: item.isApproved ?? true
                         }));
                 this.visitorsList = apiData;
             } catch (error) {
@@ -321,9 +355,9 @@ document.addEventListener('alpine:init', () => {
         async toggleApproval(id, currentStatus) {
             try {
                 const status = currentStatus ? 'disapprove' : 'approve';
-                const response = await fetch(`http://192.168.3.73:3001/appointment/${id}/status/${status}`, {
+                const response = await fetch(`http://192.168.3.77:3001/appointment/${id}/status/${status}`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json' }
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -341,14 +375,14 @@ document.addEventListener('alpine:init', () => {
                 toast: true,
                 position: 'top',
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 3000
             });
             toast.fire({
                 icon: type,
                 title: msg,
-                padding: '10px 20px',
+                padding: '10px 20px'
             });
-        },
+        }
     }));
 
     // Visitor Details
@@ -375,184 +409,168 @@ document.addEventListener('alpine:init', () => {
         },
 
         async fetchVisitorDetails() {
-    try {
-        const response = await fetch('http://192.168.3.73:3001/visitors');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('API Response for Visitor Details:', JSON.stringify(data, null, 2)); // Detailed log for API response
+            try {
+                const response = await fetch('http://192.168.3.77:3001/visitors');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('API Response for Visitor Details:', JSON.stringify(data, null, 2));
 
-        // Get today's date in DD-MM-YYYY format for logging
-        const today = new Date();
-        const todayStr = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
-        console.log('Today\'s date:', todayStr);
+                const today = new Date();
+                const todayStr = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
+                console.log('Today\'s date:', todayStr);
 
-        const apiData = Array.isArray(data)
-            ? data
-                .map(item => {
-                    // Validate and normalize exitDate format
-                    let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
-                    if (exitDateToUse.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                        // Convert YYYY-MM-DD to DD-MM-YYYY
-                        const [year, month, day] = exitDateToUse.split('-').map(Number);
-                        exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
-                    }
-                    if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                        console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
-                        exitDateToUse = todayStr; // Fallback to today if invalid
-                    }
+                const apiData = Array.isArray(data)
+                    ? data
+                        .map(item => {
+                            let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
+                            if (exitDateToUse?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                                const [year, month, day] = exitDateToUse.split('-').map(Number);
+                                exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+                            }
+                            if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                                console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
+                                exitDateToUse = todayStr;
+                            }
 
-                    return {
-                        id: item.id,
-                        firstName: item.firstname || 'Unknown',
-                        lastName: item.lastname || 'Unknown',
-                        date: item.date || 'N/A',
-                        allocatedTime: item.time || 'N/A',
-                        host: item.personname || 'Unknown',
-                        purpose: item.visit || 'N/A',
-                        nationalId: item.nationalid || 'N/A',
-                        pendingApproval: true,
-                        inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                        complete: item.complete ?? false,
-                        exitApproval: item.exit ?? false,
-                        exitDate: exitDateToUse,
-                        isApproved: item.isApproved ?? true,
-                    };
-                })
-                .filter(item => {
-                    // If the visitor has exited, check if exitDate is before today
-                    if (item.exitApproval && item.exitDate) {
-                        const [exitDay, exitMonth, exitYear] = item.exitDate.split('-').map(Number);
-                        const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
-                        const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+                            return {
+                                id: item.id,
+                                firstName: item.firstname || 'Unknown',
+                                lastName: item.lastname || 'Unknown',
+                                date: item.date || 'N/A',
+                                allocatedTime: item.time || 'N/A',
+                                host: item.personname || 'Unknown',
+                                purpose: item.visit || 'N/A',
+                                nationalId: item.nationalid || 'N/A',
+                                pendingApproval: true,
+                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
+                                complete: item.complete ?? false,
+                                exitApproval: item.exit ?? false,
+                                exitDate: exitDateToUse,
+                                isApproved: item.isApproved ?? true
+                            };
+                        })
+                        .filter(item => {
+                            if (item.exitApproval && item.exitDate) {
+                                const [exitDay, exitMonth, exitYear] = item.exitDate.split('-').map(Number);
+                                const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
+                                const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+                                console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
+                                return exitDate >= todayDate;
+                            }
+                            console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
+                            return true;
+                        })
+                    : (data.data || [])
+                        .map(item => {
+                            let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
+                            if (exitDateToUse?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                                const [year, month, day] = exitDateToUse.split('-').map(Number);
+                                exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+                            }
+                            if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                                console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
+                                exitDateToUse = todayStr;
+                            }
 
-                        // Log detailed comparison
-                        console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
+                            return {
+                                id: item.id,
+                                firstName: item.firstname || 'Unknown',
+                                lastName: item.lastname || 'Unknown',
+                                date: item.date || 'N/A',
+                                allocatedTime: item.time || 'N/A',
+                                host: item.personname || 'Unknown',
+                                purpose: item.visit || 'N/A',
+                                nationalId: item.nationalid || 'N/A',
+                                pendingApproval: true,
+                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
+                                complete: item.complete ?? false,
+                                exitApproval: item.exit ?? false,
+                                exitDate: exitDateToUse,
+                                isApproved: item.isApproved ?? true
+                            };
+                        })
+                        .filter(item => {
+                            if (item.exitApproval && item.exitDate) {
+                                const [exitDay, exitModule, exitYear] = item.exitDate.split('-').map(Number);
+                                const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
+                                const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+                                console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
+                                return exitDate >= todayDate;
+                            }
+                            console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
+                            return true;
+                        });
 
-                        // Keep the visitor if their exitDate is today or in the future
-                        return exitDate >= todayDate;
-                    }
-                    console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
-                    return true; // Keep non-exited visitors or those without an exit date
-                })
-            : (data.data || [])
-                .map(item => {
-                    // Validate and normalize exitDate format
-                    let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
-                    if (exitDateToUse.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                        // Convert YYYY-MM-DD to DD-MM-YYYY
-                        const [year, month, day] = exitDateToUse.split('-').map(Number);
-                        exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
-                    }
-                    if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                        console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
-                        exitDateToUse = todayStr; // Fallback to today if invalid
-                    }
-
-                    return {
-                        id: item.id,
-                        firstName: item.firstname || 'Unknown',
-                        lastName: item.lastname || 'Unknown',
-                        date: item.date || 'N/A',
-                        allocatedTime: item.time || 'N/A',
-                        host: item.personname || 'Unknown',
-                        purpose: item.visit || 'N/A',
-                        nationalId: item.nationalid || 'N/A',
-                        pendingApproval: true,
-                        inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                        complete: item.complete ?? false,
-                        exitApproval: item.exit ?? false,
-                        exitDate: exitDateToUse,
-                        isApproved: item.isApproved ?? true,
-                    };
-                })
-                .filter(item => {
-                    // If the visitor has exited, check if exitDate is before today
-                    if (item.exitApproval && item.exitDate) {
-                        const [exitDay, exitMonth, exitYear] = item.exitDate.split('-').map(Number);
-                        const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
-                        const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-
-                        // Log detailed comparison
-                        console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
-
-                        // Keep the visitor if their exitDate is today or in the future
-                        return exitDate >= todayDate;
-                    }
-                    console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
-                    return true; // Keep non-exited visitors or those without an exit date
-                });
-
-        this.visitorsList = apiData;
-        console.log('Mapped Visitor List:', JSON.stringify(this.visitorsList, null, 2)); // Detailed log for final mapped list
-    } catch (error) {
-        console.error('Error fetching visitor details:', error);
-        this.showMessage('Failed to load visitor details.', 'error');
-    }
-},
+                this.visitorsList = apiData;
+                console.log('Mapped Visitor List:', JSON.stringify(this.visitorsList, null, 2));
+            } catch (error) {
+                console.error('Error fetching visitor details:', error);
+                this.showMessage('Failed to load visitor details.', 'error');
+            }
+        },
 
         async updateVisitor(visitor) {
-    try {
-        let status = '';
-        let body = {};
-        if (visitor.inCampus) {
-            status = 'inprogress';
-            body = { inprogress: true };
-        } else if (visitor.complete) {
-            status = 'complete';
-            body = { complete: true };
-        } else if (visitor.exitApproval) {
-            status = 'exit';
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const year = today.getFullYear();
-            const exitDateStr = `${day}-${month}-${year}`;
-            body = { exit: true, exitDate: exitDateStr };
-            // Store in localStorage as a fallback
-            localStorage.setItem(`exitDate_${visitor.id}`, exitDateStr);
-        }
+            try {
+                let status = '';
+                let body = {};
+                if (visitor.inCampus) {
+                    status = 'inprogress';
+                    body = { inprogress: true };
+                } else if (visitor.complete) {
+                    status = 'complete';
+                    body = { complete: true };
+                } else if (visitor.exitApproval) {
+                    status = 'exit';
+                    const today = new Date();
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const month = String(today.getMonth() + 1).padStart(2, '0');
+                    const year = today.getFullYear();
+                    const exitDateStr = `${day}-${month}-${year}`;
+                    body = { exit: true, exitDate: exitDateStr };
+                    localStorage.setItem(`exitDate_${visitor.id}`, exitDateStr);
+                }
 
-        if (status) {
-            const response = await fetch(`http://192.168.3.73:3001/visitors/${visitor.id}/status/${status}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (status) {
+                    const response = await fetch(`http://192.168.3.77:3001/visitors/${visitor.id}/status/${status}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    this.showMessage('Visitor status updated successfully.');
+                    await this.fetchVisitorDetails();
+                } else {
+                    throw new Error('No status change detected.');
+                }
+            } catch (error) {
+                console.error('Error updating visitor status:', error);
+                this.showMessage('Failed to update visitor status.', 'error');
             }
-            this.showMessage('Visitor status updated successfully.');
-            await this.fetchVisitorDetails();
-        } else {
-            throw new Error('No status change detected.');
-        }
-    } catch (error) {
-        console.error('Error updating visitor status:', error);
-        this.showMessage('Failed to update visitor status.', 'error');
-    }
-},
+        },
 
         showMessage(msg = '', type = 'success') {
             const toast = window.Swal.mixin({
                 toast: true,
                 position: 'top',
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 3000
             });
             toast.fire({
                 icon: type,
                 title: msg,
-                padding: '10px 20px',
+                padding: '10px 20px'
             });
         },
 
-renderProgressSteps(visitor) {
+        renderProgressSteps(visitor) {
             const status = this.getVisitorStatus(visitor);
             const isDisapproved = !visitor.isApproved;
             const isExited = visitor.exitApproval;
-            console.log(`Rendering progress steps for visitor ID ${visitor.id}: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`); // Debug log
+            console.log(`Rendering progress steps for visitor ID ${visitor.id}: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`);
             return `
                 <div class="progress-steps" data-status="${status}" data-is-disapproved="${isDisapproved}" data-is-exited="${isExited}">
                     <div class="step" data-step="pending">
@@ -589,7 +607,7 @@ renderProgressSteps(visitor) {
                     </div>
                 </div>
             `;
-        },
+        }
     }));
 });
 
@@ -598,18 +616,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateSteps = () => {
         document.querySelectorAll('.progress-steps').forEach(progress => {
             const status = progress.dataset.status;
-            // Fallback to false if attributes are missing
-            const isDisapproved = (progress.dataset.isDisapproved === 'true') || false;
-            const isExited = (progress.dataset.isExited === 'true') || false;
+            const isDisapproved = progress.dataset.isDisapproved === 'true' || false;
+            const isExited = progress.dataset.isExited === 'true' || false;
             const steps = progress.querySelectorAll('.step');
 
-            console.log(`Updating steps: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`); // Debug log
+            console.log(`Updating steps: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`);
 
             steps.forEach(step => {
                 step.classList.remove('active', 'red');
                 const stepType = step.dataset.step;
 
-                // Determine if this step should be highlighted based on status
                 const shouldHighlight =
                     (status === 'pending' && stepType === 'pending') ||
                     (status === 'incampus' && (stepType === 'pending' || stepType === 'incampus')) ||
@@ -618,20 +634,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (shouldHighlight) {
                     if (isDisapproved) {
-                        // Apply red class if disapproved, takes precedence
-                        console.log(`Applying red class to step ${stepType} due to disapproval`); // Debug log
+                        console.log(`Applying red class to step ${stepType} due to disapproval`);
                         step.classList.add('red');
                     } else if (isExited && stepType === 'exit') {
-                        // Apply red class to the exit step if exited
-                        console.log(`Applying red class to exit step due to exit status`); // Debug log
+                        console.log(`Applying red class to exit step due to exit status`);
                         step.classList.add('red');
                     } else {
-                        // Apply green class only if not disapproved
-                        console.log(`Applying active (green) class to step ${stepType}`); // Debug log
+                        console.log(`Applying active (green) class to step ${stepType}`);
                         step.classList.add('active');
                     }
                 } else {
-                    console.log(`Step ${stepType} not highlighted (gray)`); // Debug log
+                    console.log(`Step ${stepType} not highlighted (gray)`);
                 }
             });
         });
@@ -642,56 +655,126 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Watch for Alpine.js updates
     document.addEventListener('alpine:initialized', updateSteps);
-    setInterval(updateSteps, 1000); // Update periodically in case of dynamic changes
+    setInterval(updateSteps, 1000);
 });
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded, initializing dashboard');
 
-    // Setup Create Visitor Gatepass button
+    // Get permissions
     const permissions = getPermissions();
-    const button = document.getElementById('sticky-button');
 
-    if (!button) {
+    // Setup Create Visitor Gatepass button
+    const createButton = document.getElementById('sticky-button');
+    if (!createButton) {
         console.error('Create Visitor Gatepass button not found');
-        return;
-    }
-
-    if (!permissions.canRead || !permissions.canCreate) {
-        button.classList.add('disabled');
-        button.style.pointerEvents = 'none';
-        button.style.opacity = '0.6';
-        button.setAttribute('aria-disabled', 'true');
-        const reason = !permissions.canRead 
-            ? 'You do not have permission to view the dashboard'
-            : 'You do not have permission to create a visitor gatepass';
-        button.setAttribute('title', reason);
-
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const toast = window.Swal.mixin({
-                toast: true,
-                position: 'top',
-                showConfirmButton: false,
-                timer: 3000,
-            });
-            toast.fire({
-                icon: 'error',
-                title: reason,
-                padding: '10px 20px',
-            });
-        });
-
-        console.log('Create Visitor Gatepass button disabled:', { canRead: permissions.canRead, canCreate: permissions.canCreate });
     } else {
-        button.classList.remove('disabled');
-        button.style.pointerEvents = 'auto';
-        button.style.opacity = '1';
-        button.removeAttribute('aria-disabled');
-        button.removeAttribute('title');
-        console.log('Create Visitor Gatepass button enabled');
+        if (!permissions.dashboard.canRead || !permissions.dashboard.canCreate) {
+            createButton.style.pointerEvents = 'none';
+            createButton.setAttribute('aria-disabled', 'true');
+            const reason = !permissions.dashboard.canRead 
+                ? 'You do not have permission to view the dashboard'
+                : 'You do not have permission to create a visitor gatepass';
+            createButton.setAttribute('title', reason);
+
+            createButton.addEventListener('click', e => {
+                e.preventDefault();
+                const toast = window.Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                toast.fire({
+                    icon: 'error',
+                    title: reason,
+                    padding: '10px 20px'
+                });
+            });
+
+            console.log('Create Visitor Gatepass button disabled:', { canRead: permissions.dashboard.canRead, canCreate: permissions.dashboard.canCreate });
+        } else {
+            createButton.style.pointerEvents = 'auto';
+            createButton.removeAttribute('aria-disabled');
+            createButton.removeAttribute('title');
+            console.log('Create Visitor Gatepass button enabled');
+        }
     }
+
+    // Setup dashboard cards permissions
+    const cards = [
+        {
+            id: 'totalVisitorsCard',
+            selector: '.panel[onclick*="SpotEntry.html"]',
+            permissions: permissions.totalVisitors,
+            reason: 'You do not have permission to interact with Total Visitors.'
+        },
+        {
+            id: 'approvedCard',
+            selector: '.panel[onclick*="Approvedpasses.html"]',
+            permissions: permissions.approved,
+            reason: 'You do not have permission to interact with Approved Passes.'
+        },
+        {
+            id: 'disapprovedCard',
+            selector: '.panel[onclick*="Disapprovedpasses.html"]',
+            permissions: permissions.disapproved,
+            reason: 'You do not have permission to interact with Disapproved Passes.'
+        },
+        {
+            id: 'exitCard',
+            selector: '.panel[onclick*="Totalexitpasses.html"]',
+            permissions: permissions.exit,
+            reason: 'You do not have permission to interact with Total Exit Passes.'
+        }
+    ];
+
+    cards.forEach(card => {
+        const element = document.querySelector(card.selector);
+        if (!element) {
+            console.error(`${card.id} not found`);
+            return;
+        }
+
+        // Card is interactive only if canRead is true AND at least one of canCreate, canUpdate, or canDelete is true
+        const isInteractive = card.permissions.canRead && 
+                             (card.permissions.canCreate || card.permissions.canUpdate || card.permissions.canDelete);
+
+        if (!isInteractive) {
+            element.style.pointerEvents = 'none';
+            element.setAttribute('aria-disabled', 'true');
+            element.setAttribute('title', card.reason);
+
+            element.addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                const toast = window.Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                toast.fire({
+                    icon: 'error',
+                    title: card.reason,
+                    padding: '10px 20px'
+                });
+            });
+
+            console.log(`${card.id} made static:`, { 
+                canRead: card.permissions.canRead,
+                canCreate: card.permissions.canCreate,
+                canUpdate: card.permissions.canUpdate,
+                canDelete: card.permissions.canDelete
+            });
+        } else {
+            element.style.pointerEvents = 'auto';
+            element.removeAttribute('aria-disabled');
+            element.removeAttribute('title');
+            console.log(`${card.id} enabled`);
+        }
+    });
 
     // Initial fetch
     fetchApprovedVisitors();
