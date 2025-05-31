@@ -104,15 +104,6 @@ async function fetchAndPopulateDropdowns(visitor) {
         // Fetch Purpose of Visits
         const purposes = await apiRequest('purpose-of-visit');
         populateDropdown('edit-visit', purposes, 'name', visitor.visit || '');
-        // Add 'Others' option for Purpose of Visit
-        const visitSelect = document.getElementById('edit-visit');
-        const othersOption = document.createElement('option');
-        othersOption.value = 'Others';
-        othersOption.textContent = 'Others (please specify)';
-        if (visitor.visit === 'Others') {
-            othersOption.selected = true;
-        }
-        visitSelect.appendChild(othersOption);
 
         // Fetch Visitor Types
         const visitorTypes = await apiRequest('visitor-type');

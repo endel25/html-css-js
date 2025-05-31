@@ -876,6 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
+            // Initiate the fetch request and redirect immediately
             fetch('http://192.168.3.73:3001/visitors', {
                 method: 'POST',
                 body: formData,
@@ -897,7 +898,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('mainPreview')?.classList.add('hidden');
                     document.getElementById('driverPreview')?.classList.add('hidden');
                     document.getElementById('driverDetails')?.classList.add('hidden');
-                    window.location.href = 'SpotEntry.html';
                 })
                 .catch(error => {
                     console.error('Submission error:', error.message);
@@ -911,6 +911,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitBtn.innerHTML = 'Create';
                     }
                 });
+
+            // Redirect immediately after initiating the fetch
+            window.location.href = 'SpotEntry.html';
         } else {
             console.log('Validation failed');
             const submitBtn = document.getElementById('submitBtn');

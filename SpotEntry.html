@@ -183,27 +183,28 @@
                                         <span class="error text-red-500 text-xs" id="error-nationalid"></span>
                                     </div>
                                 </div>
-<div class="flex sm:flex-row flex-col sm:items-center mb-4">
-    <label for="edit-photo" class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">
-        Visitor Photo
-    </label>
+                                <div class="flex sm:flex-row flex-col sm:items-center mb-4">
+                                    <label for="edit-photo" class="mb-0 sm:w-1/4 rtl:ml-2 text-sm font-medium">
+                                        Visitor Photo
+                                    </label>
 
-    <div class="flex-1 flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-        <input type="file" id="edit-photo" name="photo"
-            accept="image/jpeg,image/png,image/jpg"
-            class="hidden"
-            onchange="previewImage(this, 'mainPreview')" />
+                                    <div
+                                        class="flex-1 flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                                        <input type="file" id="edit-photo" name="photo"
+                                            accept="image/jpeg,image/png,image/jpg" class="hidden"
+                                            onchange="previewImage(this, 'mainPreview')" />
 
-        <button type="button"
-            class="w-full sm:w-1/3 text-xs px-3 py-2 mr-2 border rounded"
-            onclick="showModal('edit-photo')">Choose Photo</button>
+                                        <button type="button"
+                                            class="w-full sm:w-1/3 text-xs px-3 py-2 mr-2 border rounded"
+                                            onclick="showModal('edit-photo')">Choose Photo</button>
 
-        <img id="mainPreview" src="" alt="Photo Preview"
-            class="photo-preview rounded border hidden sm:block sm:w-24 sm:h-24 object-cover" />
-    </div>
+                                        <img id="mainPreview" src="" alt="Photo Preview"
+                                            class="photo-preview rounded border hidden sm:block sm:w-24 sm:h-24 object-cover" />
+                                    </div>
 
-    <span class="error text-xs text-red-500 mt-1 sm:mt-0 sm:ml-2" id="error-photo"></span>
-</div>
+                                    <span class="error text-xs text-red-500 mt-1 sm:mt-0 sm:ml-2"
+                                        id="error-photo"></span>
+                                </div>
 
                                 <div class="flex items-center">
                                     <label for="edit-visit" class="w-40 text-sm font-medium">Purpose of
@@ -324,28 +325,29 @@
                                             <span class="error text-red-500 text-xs" id="error-drivernationalid"></span>
                                         </div>
                                     </div>
-<div class="flex sm:flex-row flex-col sm:items-center mb-4">
-    <label for="edit-driverphoto"
-        class="mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2 text-sm font-medium">
-        Driver Photo
-    </label>
+                                    <div class="flex sm:flex-row flex-col sm:items-center mb-4">
+                                        <label for="edit-driverphoto"
+                                            class="mb-0 sm:w-1/4 rtl:ml-2 text-sm font-medium">
+                                            Driver Photo
+                                        </label>
 
-    <div class="flex-1 flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-        <input type="file" id="edit-driverphoto" name="driverphoto"
-            accept="image/jpeg,image/png,image/jpg"
-            class="hidden"
-            onchange="previewImage(this, 'driverPreview')" />
+                                        <div
+                                            class="flex-1 flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                                            <input type="file" id="edit-driverphoto" name="driverphoto"
+                                                accept="image/jpeg,image/png,image/jpg" class="hidden"
+                                                onchange="previewImage(this, 'driverPreview')" />
 
-        <button type="button"
-            class="w-full sm:w-1/3 text-xs px-3 py-2 mr-2 border rounded"
-            onclick="showModal('edit-driverphoto')">Choose Photo</button>
+                                            <button type="button"
+                                                class="w-full sm:w-1/3 text-xs px-3 py-2 mr-2 border rounded"
+                                                onclick="showModal('edit-driverphoto')">Choose Photo</button>
 
-        <img id="driverPreview" src="" alt="Driver Photo Preview"
-            class="photo-preview rounded border hidden sm:block sm:w-24 sm:h-24 object-cover" />
-    </div>
+                                            <img id="driverPreview" src="" alt="Driver Photo Preview"
+                                                class="photo-preview rounded border hidden sm:block sm:w-24 sm:h-24 object-cover" />
+                                        </div>
 
-    <span class="error text-xs text-red-500 mt-1 sm:mt-0 sm:ml-2" id="error-driverphoto"></span>
-</div>
+                                        <span class="error text-xs text-red-500 mt-1 sm:mt-0 sm:ml-2"
+                                            id="error-driverphoto"></span>
+                                    </div>
 
                                 </div>
                             </div>
@@ -401,21 +403,21 @@
                 </div>
 
                 <!-- Driver Camera Modal -->
-<div id="driverCameraModal" class="modal2">
-    <div class="modal-content2">
-        <h3>Capture Driver Photo</h3>
-        <div id="cameraStreamContainer" class="flex flex-col items-center">
-            <video id="driverCameraPreview" class="w-48 h-36 rounded border" autoplay></video>
-            <div class="flex space-x-2 mt-2">
-                <button type="button" class="px-3 py-2 border rounded text-xs" id="captureBtn"
-                    onclick="capturePhoto('edit-driverphoto')">Capture</button>
+                <div id="driverCameraModal" class="modal2">
+                    <div class="modal-content2">
+                        <h3>Capture Driver Photo</h3>
+                        <div id="cameraStreamContainer" class="flex flex-col items-center">
+                            <video id="driverCameraPreview" class="w-48 h-36 rounded border" autoplay></video>
+                            <div class="flex space-x-2 mt-2">
+                                <button type="button" class="px-3 py-2 border rounded text-xs" id="captureBtn"
+                                    onclick="capturePhoto('edit-driverphoto')">Capture</button>
 
-                <button class="close-btn px-3 py-2 border rounded text-xs"
-                    onclick="closeCameraModal()">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+                                <button class="close-btn px-3 py-2 border rounded text-xs"
+                                    onclick="closeCameraModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
