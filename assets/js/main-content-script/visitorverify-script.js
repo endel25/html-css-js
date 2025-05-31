@@ -134,7 +134,7 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
 
     try {
         const response = await fetch(
-            `http://192.168.3.77:3001/users/search?query=${encodeURIComponent(query)}`,
+            `http://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
             {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -365,7 +365,7 @@ function populateDropdown(selectId, data, valueKey = 'name') {
 
 async function fetchPurposeOfVisits() {
     try {
-        const response = await fetch('http://192.168.3.77:3001/purpose-of-visit');
+        const response = await fetch('http://192.168.3.73:3001/purpose-of-visit');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
         }
@@ -382,7 +382,7 @@ async function fetchPurposeOfVisits() {
 
 async function fetchTimeUnits() {
     try {
-        const response = await fetch('http://192.168.3.77:3001/time-duration-unit');
+        const response = await fetch('http://192.168.3.73:3001/time-duration-unit');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
         }
@@ -399,7 +399,7 @@ async function fetchTimeUnits() {
 
 async function fetchVisitorTypes() {
     try {
-        const response = await fetch('http://192.168.3.77:3001/visitor-type');
+        const response = await fetch('http://192.168.3.73:3001/visitor-type');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
         }
@@ -417,7 +417,7 @@ async function fetchVisitorTypes() {
 async function checkFormStatus(email, date, time) {
     try {
         const response = await fetch(
-            `http://192.168.3.77:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
+            `http://192.168.3.73:3001/appointment/check-status?email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
             {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
@@ -714,7 +714,7 @@ async function initializeForm() {
         }
 
         try {
-            const response = await fetch('http://192.168.3.77:3001/appointment/create', {
+            const response = await fetch('http://192.168.3.73:3001/appointment/create', {
                 method: 'POST',
                 body: formattedData
             });
