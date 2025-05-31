@@ -397,7 +397,7 @@ async function fetchVisitorData(page = 1, limit = 10, retries = 3) {
                 throw new Error('Invalid response format: expected { data, total }');
             }
             return {
-                data: data.data || [],
+                data: (data.data || []).sort((a, b) => b.id - a.id), // Sort by id in descending order
                 total: data.total || 0,
             };
         } catch (error) {

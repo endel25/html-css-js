@@ -72,12 +72,6 @@ async function fetchPurposeOfVisits() {
     try {
         const purposes = await apiRequest('purpose-of-visit');
         populateDropdown('visit', purposes);
-        // Add 'Others' option for Purpose of Visit
-        const visitSelect = document.getElementById('visit');
-        const option = document.createElement('option');
-        option.value = 'Others';
-        option.textContent = 'Others';
-        visitSelect.appendChild(option);
     } catch (error) {
         console.error('Error fetching purpose of visits:', error);
         showMessage('Failed to load purpose of visits: ' + error.message, 'error');

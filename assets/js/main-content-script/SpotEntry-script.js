@@ -1,5 +1,6 @@
 let visitors = [];
 let currentFileInputId = '';
+let stream = null; // Store the camera stream globally
 let currentPage = 1;
 let entriesPerPage = 10;
 let searchQuery = '';
@@ -317,90 +318,225 @@ async function fetchVisitors() {
 
 function showModal(fileInputId) {
     currentFileInputId = fileInputId;
-    document.getElementById('photoModal').style.display = 'flex';
+    const modalId = 'photoModal'; // Single modal for source selection (Gallery/Camera)
+    const modal = document.getElementById(modalId);
+    console.log(`Attempting to show ${modalId}, element:`, modal);
+    if (modal) {
+        modal.style.display = 'flex';
+    } else {
+        console.error(`${modalId} element not found; ensure <div id="${modalId}"> exists in HTML`);
+        showMessage('Photo modal not found. Please check page setup.', 'error');
+    }
 }
 
 function closeModal() {
-    document.getElementById('photoModal').style.display = 'none';
+    const modalIds = ['photoModal'];
+    modalIds.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+        } else {
+            console.warn(`${modalId} element not found`);
+        }
+    });
+}
+
+function closeCameraModal() {
+    const modalIds = ['cameraModal', 'driverCameraModal'];
+    modalIds.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+        } else {
+            console.warn(`${modalId} element not found`);
+        }
+    });
     stopCamera();
 }
 
 function openGallery() {
     const fileInput = document.getElementById(currentFileInputId);
-    fileInput.removeAttribute('capture');
-    fileInput.click();
-    closeModal();
-}
-
-function openCamera() {
-    const fileInput = document.getElementById(currentFileInputId);
     if (fileInput) {
-        fileInput.setAttribute('capture', 'environment');
-        fileInput.click();
+        fileInput.removeAttribute('capture');
+        fileInput.accept = 'image/*';
+        console.log('Triggering file input click for:', fileInput);
+        try {
+            fileInput.click();
+            setTimeout(() => {
+                if (!fileInput.files.length) {
+                    console.warn('File input click may not have triggered.');
+                }
+            }, 1000);
+        } catch (error) {
+            console.error('Error triggering file input:', error);
+            showError('error-' + currentFileInputId, 'Failed to open gallery');
+        }
     } else {
         console.error(`File input ${currentFileInputId} not found`);
+        showError('error-' + currentFileInputId, 'File input not found');
     }
     closeModal();
 }
 
-function startCamera(fileInput) {
-    const video = document.getElementById('cameraPreview');
-    const canvas = document.getElementById('cameraCanvas');
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(stream => {
+async function openCamera() {
+    console.log('openCamera called with currentFileInputId:', currentFileInputId);
+    const fileInput = document.getElementById(currentFileInputId);
+    if (fileInput) {
+        currentModalId = currentFileInputId === 'edit-photo' ? 'cameraModal' : 'driverCameraModal';
+        await startCamera(fileInput);
+    } else {
+        console.error(`File input ${currentFileInputId} not found`);
+        showError('error-' + currentFileInputId, 'File input not found');
+    }
+    closeModal();
+}
+
+async function startCamera(fileInput) {
+    const videoId = currentFileInputId === 'edit-photo' ? 'cameraPreview' : 'driverCameraPreview';
+    const video = document.getElementById(videoId);
+    const cameraModal = document.getElementById(currentModalId);
+
+    // Check if required elements exist
+    if (!video || !cameraModal) {
+        console.error('Camera modal elements not found');
+        showError('error-' + currentFileInputId, 'Camera modal elements not found');
+        return;
+    }
+
+    // Check browser support for getUserMedia
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('getUserMedia is not supported in this browser');
+        showError('error-' + currentFileInputId, 'Camera access not supported in this browser');
+        return;
+    }
+
+    // Configure video constraints with fallback
+    const tryCameraWithConstraints = async (facingMode) => {
+        const constraints = {
+            video: {
+                facingMode: facingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
+
+        console.log(`Attempting to access camera with facingMode: ${facingMode}`);
+
+        try {
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            console.log('Camera stream successfully obtained');
             video.srcObject = stream;
-            video.style.display = 'block';
-            video.play();
-            const captureBtn = document.createElement('button');
-            captureBtn.textContent = 'Capture Photo';
-            captureBtn.className = 'btn-outline-primary';
-            captureBtn.onclick = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                canvas.toBlob(blob => {
-                    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
-                    fileInput.dispatchEvent(new Event('change'));
-                    stopCamera();
-                }, 'image/jpeg');
-            };
-            document.body.appendChild(captureBtn);
-        })
-        .catch(err => {
-            console.error('Camera access denied:', err);
-        });
+            cameraModal.style.display = 'flex'; // Show the camera modal
+            video.play().catch(err => {
+                console.error('Error playing video stream:', err);
+                showError('error-' + currentFileInputId, 'Failed to play camera stream');
+                stopCamera();
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    // Try with 'environment' (rear camera), fall back to 'user' (front camera) if it fails
+    try {
+        await tryCameraWithConstraints('environment');
+    } catch (err) {
+        console.error('Failed with facingMode "environment":', err);
+        if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+            console.log('Falling back to facingMode "user"');
+            try {
+                await tryCameraWithConstraints('user');
+            } catch (fallbackErr) {
+                handleCameraError(fallbackErr);
+            }
+        } else {
+            handleCameraError(err);
+        }
+    }
+}
+
+function handleCameraError(err) {
+    console.error('Camera access error:', err);
+    let errorMessage = 'Unable to access camera';
+    if (err.name === 'NotAllowedError') {
+        errorMessage = 'Camera access denied by user';
+    } else if (err.name === 'NotFoundError') {
+        errorMessage = 'No camera found on this device';
+    } else if (err.name === 'OverconstrainedError') {
+        errorMessage = 'Camera constraints not supported on this device';
+    }
+    showError('error-' + currentFileInputId, errorMessage);
+    stopCamera();
 }
 
 function stopCamera() {
-    const video = document.getElementById('cameraPreview');
-    const stream = video.srcObject;
+    const videoIds = ['cameraPreview', 'driverCameraPreview'];
+    videoIds.forEach(videoId => {
+        const video = document.getElementById(videoId);
+        if (video) video.srcObject = null;
+    });
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
+        stream = null;
     }
-    video.style.display = 'none';
-    const captureBtn = document.querySelector('button[onclick*="capture"]');
-    if (captureBtn) captureBtn.remove();
+}
+
+function capturePhoto(fileInputId) {
+    const videoId = fileInputId === 'edit-photo' ? 'cameraPreview' : 'driverCameraPreview';
+    const video = document.getElementById(videoId);
+    const fileInput = document.getElementById(fileInputId);
+
+    if (!video || !fileInput) {
+        console.error('Camera elements or file input not found');
+        showError('error-' + fileInputId, 'Camera elements not found');
+        return;
+    }
+
+    // Create a temporary canvas for capturing
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw the current video frame onto the canvas
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Convert canvas to blob and create a file
+    canvas.toBlob(blob => {
+        if (!blob) {
+            console.error('Failed to create blob from canvas');
+            showError('error-' + fileInputId, 'Failed to capture photo');
+            return;
+        }
+
+        console.log('Photo captured successfully, creating file');
+        const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        // Trigger preview update
+        const previewId = (fileInputId === 'edit-driverphoto') ? 'driverPreview' : 'mainPreview';
+        previewImage(fileInput, previewId);
+
+        // Cleanup
+        closeCameraModal();
+    }, 'image/jpeg', 0.9); // Use 90% quality for JPEG
 }
 
 function previewImage(input, id) {
-    const file = input.files ? input.files[0] : null;
+    const file = input?.files[0];
     const img = document.getElementById(id);
-    console.log('Previewing image for', id, 'with file:', file);
-    if (file) {
+    if (file && img) {
         const reader = new FileReader();
         reader.onload = e => {
             img.src = e.target.result;
             img.style.display = 'block';
-            console.log('Image preview updated for', id, 'to', e.target.result);
         };
-        reader.onerror = () => console.error('Error reading file for', id);
         reader.readAsDataURL(file);
-    } else {
+    } else if (img) {
+        img.src = '';
         img.style.display = 'none';
-        console.log('No file selected for', id, 'hiding preview');
     }
 }
 

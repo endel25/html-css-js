@@ -165,6 +165,35 @@
             gap: 8px;
         }
 
+        .modal-content2 #captureBtn {
+            color: #4361ee;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: 1px solid #4361ee;
+            /* Added outline */
+            /* Optional: adds space between button edge and outline */
+        }
+
+        .modal-content2 #captureBtn:hover {
+            background-color: #4361ee;
+            color: #fff;
+        }
+
+        .modal-content2 .close-btn {
+            color: #dc3545;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: 1px solid #dc3545;
+        }
+
+        .modal-content2 .close-btn:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        
+
         label {
             min-width: 160px;
         }
@@ -198,6 +227,36 @@
             margin-top: 4px;
             color: #dc3545;
             font-size: 12px;
+        }
+                /* Modal styles */
+        .modal2 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Modal styles for photo selection */
+        .modal-content2 {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .modal-content2 button {
+            margin: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
         input:focus,
@@ -339,6 +398,17 @@
         .dark .dataTable-dropdown .dataTable-selector:focus,
         .dark .dataTable-search .dataTable-input:focus {
             border-color: #4361ee;
+        }
+
+
+        .dark .modal-content2 {
+            background-color: #1f2937;
+            color: #e5e7eb;
+        }
+
+        .dark .modal-content2 button {
+            background-color: transparent;
+            color: #e5e7eb;
         }
 
         .dark .btn-outline-success {
@@ -505,6 +575,26 @@
 
         .dark .modal-content1 .close-btn:hover {
             background-color: #ef4444;
+            color: white;
+        }
+
+        .dark .modal-content2 .close-btn {
+            color: #f87171;
+            outline-color: #ef4444;
+        }
+
+        .dark .modal-content2 .close-btn:hover {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .dark .modal-content2 #captureBtn {
+            color: #a5b4fc;
+            outline-color: #818cf8;
+        }
+
+        .dark .modal-content2 #captureBtn:hover {
+            background-color: #818cf8;
             color: white;
         }
 
