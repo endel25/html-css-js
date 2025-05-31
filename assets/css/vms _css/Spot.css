@@ -138,6 +138,21 @@
             color: #fff;
         }
 
+        .modal-content #captureBtn {
+            color: #4361ee;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: 1px solid #4361ee;
+            /* Added outline */
+            /* Optional: adds space between button edge and outline */
+        }
+
+        .modal-content #captureBtn:hover {
+            background-color: #4361ee;
+            color: #fff;
+        }
+
         .modal-content .camera-btn {
             color: #16a34a;
             border: none;
@@ -221,6 +236,16 @@
         }
 
         .dark .modal-content .gallery-btn:hover {
+            background-color: #818cf8;
+            color: white;
+        }
+
+        .dark .modal-content #captureBtn {
+            color: #a5b4fc;
+            outline-color: #818cf8;
+        }
+
+        .dark .modal-content #captureBtn:hover {
             background-color: #818cf8;
             color: white;
         }

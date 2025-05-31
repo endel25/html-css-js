@@ -1,9 +1,9 @@
-
 // Base URL for the backend API
 const API_BASE_URL = 'http://192.168.3.73:3001';
 
 let currentFileInputId = '';
 let isPersonNameValid = false; // Flag to track if personname is valid
+let stream = null; // Store the camera stream globally
 
 // Helper function to handle API requests
 async function apiRequest(endpoint, method = 'GET', body = null) {
@@ -74,6 +74,10 @@ async function fetchPurposeOfVisits() {
         populateDropdown('visit', purposes);
         // Add 'Others' option for Purpose of Visit
         const visitSelect = document.getElementById('visit');
+        const option = document.createElement('option');
+        option.value = 'Others';
+        option.textContent = 'Others';
+        visitSelect.appendChild(option);
     } catch (error) {
         console.error('Error fetching purpose of visits:', error);
         showMessage('Failed to load purpose of visits: ' + error.message, 'error');
@@ -102,14 +106,15 @@ async function fetchTimeUnits() {
 
 const visitSelect = document.getElementById('visit');
 const customPurposeInput = document.getElementById('custom-purpose');
-
-visitSelect.addEventListener('change', function () {
-    if (this.value === 'Others') {
-        customPurposeInput.classList.remove('hidden');
-    } else {
-        customPurposeInput.classList.add('hidden');
-    }
-});
+if (visitSelect && customPurposeInput) {
+    visitSelect.addEventListener('change', function () {
+        if (this.value === 'Others') {
+            customPurposeInput.classList.remove('hidden');
+        } else {
+            customPurposeInput.classList.add('hidden');
+        }
+    });
+}
 
 function debounce(func, wait) {
     let timeout;
@@ -142,6 +147,16 @@ function closeModal() {
     } else {
         console.warn('photoModal element not found');
     }
+}
+
+function closeCameraModal() {
+    const modal = document.getElementById('cameraModal');
+    console.log('Attempting to close cameraModal, element:', modal);
+    if (modal) {
+        modal.style.display = 'none';
+    } else {
+        console.warn('cameraModal element not found');
+    }
     stopCamera();
 }
 
@@ -156,62 +171,140 @@ function openGallery() {
     closeModal();
 }
 
-function openCamera() {
+async function openCamera() {
+    console.log('openCamera called with currentFileInputId:', currentFileInputId);
     const fileInput = document.getElementById(currentFileInputId);
     if (fileInput) {
-        fileInput.setAttribute('capture', 'environment');
-        fileInput.click();
+        await startCamera(fileInput);
     } else {
         console.error(`File input ${currentFileInputId} not found`);
+        showError('error-' + currentFileInputId, 'File input not found');
     }
     closeModal();
 }
 
-function startCamera(fileInput) {
+async function startCamera(fileInput) {
     const video = document.getElementById('cameraPreview');
-    const canvas = document.getElementById('cameraCanvas');
-    if (video && canvas) {
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(stream => {
-                video.srcObject = stream;
-                video.style.display = 'block';
-                video.play();
-                const captureBtn = document.createElement('button');
-                captureBtn.textContent = 'Capture Photo';
-                captureBtn.className = 'btn-outline-primary';
-                captureBtn.onclick = () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    canvas.getContext('2d').drawImage(video, 0, 0);
-                    canvas.toBlob(blob => {
-                        const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        fileInput.files = dataTransfer.files;
-                        fileInput.dispatchEvent(new Event('change'));
-                        stopCamera();
-                    }, 'image/jpeg');
-                };
-                document.body.appendChild(captureBtn);
-            })
-            .catch(err => {
-                console.error('Camera access denied:', err);
-                showError('error-' + currentFileInputId, 'Unable to access camera');
-            });
-    } else {
-        console.error('cameraPreview or cameraCanvas not found');
+    const cameraModal = document.getElementById('cameraModal');
+    const captureBtn = document.getElementById('captureBtn');
+
+    // Check if required elements exist
+    if (!video || !cameraModal || !captureBtn) {
+        console.error('Camera modal elements not found');
+        showError('error-' + currentFileInputId, 'Camera modal elements not found');
+        return;
     }
+
+    // Check browser support for getUserMedia
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('getUserMedia is not supported in this browser');
+        showError('error-' + currentFileInputId, 'Camera access not supported in this browser');
+        return;
+    }
+
+    // Configure video constraints with fallback
+    const tryCameraWithConstraints = async (facingMode) => {
+        const constraints = {
+            video: {
+                facingMode: facingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
+
+        console.log(`Attempting to access camera with facingMode: ${facingMode}`);
+
+        try {
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            console.log('Camera stream successfully obtained');
+            video.srcObject = stream;
+            cameraModal.style.display = 'flex'; // Show the camera modal
+            video.play().catch(err => {
+                console.error('Error playing video stream:', err);
+                showError('error-' + currentFileInputId, 'Failed to play camera stream');
+                stopCamera();
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    // Try with 'environment' (rear camera), fall back to 'user' (front camera) if it fails
+    try {
+        await tryCameraWithConstraints('environment');
+    } catch (err) {
+        console.error('Failed with facingMode "environment":', err);
+        if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+            console.log('Falling back to facingMode "user"');
+            try {
+                await tryCameraWithConstraints('user');
+            } catch (fallbackErr) {
+                handleCameraError(fallbackErr);
+            }
+        } else {
+            handleCameraError(err);
+        }
+    }
+}
+
+function handleCameraError(err) {
+    console.error('Camera access error:', err);
+    let errorMessage = 'Unable to access camera';
+    if (err.name === 'NotAllowedError') {
+        errorMessage = 'Camera access denied by user';
+    } else if (err.name === 'NotFoundError') {
+        errorMessage = 'No camera found on this device';
+    } else if (err.name === 'OverconstrainedError') {
+        errorMessage = 'Camera constraints not supported on this device';
+    }
+    showError('error-' + currentFileInputId, errorMessage);
+    stopCamera();
 }
 
 function stopCamera() {
     const video = document.getElementById('cameraPreview');
-    const stream = video?.srcObject;
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
+        stream = null;
     }
-    if (video) video.style.display = 'none';
-    const captureBtn = document.querySelector('button[onclick*="capture"]');
-    if (captureBtn) captureBtn.remove();
+    if (video) video.srcObject = null;
+}
+
+function capturePhoto(fileInputId) {
+    const video = document.getElementById('cameraPreview');
+    const fileInput = document.getElementById(fileInputId);
+
+    if (!video || !fileInput) {
+        console.error('Camera elements or file input not found');
+        showError('error-' + fileInputId, 'Camera elements not found');
+        return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+        if (!blob) {
+            console.error('Failed to create blob from canvas');
+            showError('error-' + fileInputId, 'Failed to capture photo');
+            return;
+        }
+
+        const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        // Trigger preview update
+        const previewId = (fileInputId === 'driverphoto') ? 'driverPreview' : 'mainPreview';
+        previewImage(fileInput, previewId);
+
+        closeCameraModal();
+    }, 'image/jpeg', 0.9);
 }
 
 function previewImage(input, id) {
@@ -270,7 +363,7 @@ const validateField = (name, value, formData = {}) => {
     if (
         name === 'photo' &&
         !element?.dataset.existingPhoto &&
-        (!value || !input?.files?.length)
+        (!value || !element?.files?.length)
     ) {
         error = 'Photo is required';
     }
@@ -291,8 +384,7 @@ const validateField = (name, value, formData = {}) => {
             break;
         case 'drivername':
             if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                error =
-                    'Driver name must be at least 2 characters and contain only letters';
+                error = 'Driver name must be at least 2 characters and contain only letters';
             }
             break;
         case 'contactnumber':
@@ -307,14 +399,12 @@ const validateField = (name, value, formData = {}) => {
             break;
         case 'nationalid':
             if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                error =
-                    'National ID must be at least 4 characters (letters and numbers allowed)';
+                error = 'National ID must be at least 4 characters (letters and numbers allowed)';
             }
             break;
         case 'drivernationalid':
             if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                error =
-                    'National ID must be at least 4 characters (letters and numbers allowed)';
+                error = 'National ID must be at least 4 characters (letters and numbers allowed)';
             }
             break;
         case 'email':
@@ -335,8 +425,6 @@ const validateField = (name, value, formData = {}) => {
         case 'durationunit':
             if (value) {
                 // Validate against fetched time units (assuming API returns valid units)
-                // Since we're fetching dynamically, we assume the API enforces valid units
-                // Add additional validation if needed
             }
             break;
         case 'time':
@@ -359,8 +447,7 @@ const validateField = (name, value, formData = {}) => {
             break;
         case 'durationtime':
             if (value && !/^(\d{1,3}|[0-9]{1,2}:[0-5][0-9])$/.test(value)) {
-                error =
-                    'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
+                error = 'Duration must be in minutes (e.g. 90) or HH:MM format (e.g. 01:30)';
             }
             break;
         case 'date':
@@ -380,7 +467,7 @@ const validateField = (name, value, formData = {}) => {
 function populateForm(formId, visitor) {
     const form = document.getElementById(formId);
     if (!form) {
-        console.error(`Form with ID '${formId}' not found`);
+        console.error(`Forum with ID '${formId}' not found`);
         return;
     }
 
@@ -787,12 +874,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `
-                        <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                        </svg>
-                        Creating...
-                    `;
+                    <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                    Creating...
+                `;
             }
 
             fetch('http://192.168.3.73:3001/visitors', {
@@ -811,23 +898,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(result => {
                     console.log('API response:', result);
                     sessionStorage.setItem('visitorCreated', 'true');
+                    showMessage('Visitor created successfully', 'success');
+                    form.reset();
+                    document.getElementById('mainPreview')?.classList.add('hidden');
+                    document.getElementById('driverPreview')?.classList.add('hidden');
+                    document.getElementById('driverDetails')?.classList.add('hidden');
+                    window.location.href = 'SpotEntry.html';
                 })
                 .catch(error => {
                     console.error('Submission error:', error.message);
                     sessionStorage.setItem('visitorError', error.message || 'Failed to submit form');
+                    showMessage('Failed to submit form: ' + error.message, 'error');
                 })
                 .finally(() => {
                     console.log('API call completed');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Create';
+                    }
                 });
-
-            if (form) {
-                form.reset();
-                document.getElementById('mainPreview')?.classList.add('hidden');
-                document.getElementById('driverPreview')?.classList.add('hidden');
-                document.getElementById('driverDetails')?.classList.add('hidden');
-            }
-
-            window.location.href = 'SpotEntry.html';
         } else {
             console.log('Validation failed');
             const submitBtn = document.getElementById('submitBtn');
@@ -838,4 +927,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
