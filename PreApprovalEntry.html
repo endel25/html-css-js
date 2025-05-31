@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>ENDEL DIGITAL</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
@@ -232,28 +232,30 @@
                                     <span class="error text-xs text-red-500" id="error-visit"></span>
                                 </div>
 
-<!-- Person Name -->
-<div class="form-group">
-    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
-    <div class="flex-1 relative">
-        <input type="text" id="edit-personname" name="personname"
-            placeholder="Enter person to meet"
-            class="w-full text-xs px-3 py-2 border rounded" />
-        <div id="edit-personname-suggestions" class="absolute w-full bg-white border rounded shadow-lg hidden z-10 max-h-60 overflow-y-auto"></div>
-        <span class="error text-red-500 text-xs" id="error-personname"></span>
-    </div>
-</div>
+                                <!-- Person Name -->
+                                <div class="form-group">
+                                    <label for="edit-personname" class="w-40 text-sm font-medium">Person Name</label>
+                                    <div class="flex-1 relative">
+                                        <input type="text" id="edit-personname" name="personname"
+                                            placeholder="Enter person to meet"
+                                            class="w-full text-xs px-3 py-2 border rounded" />
+                                        <div id="edit-personname-suggestions"
+                                            class="absolute w-full bg-white border rounded shadow-lg hidden z-10 max-h-60 overflow-y-auto">
+                                        </div>
+                                        <span class="error text-red-500 text-xs" id="error-personname"></span>
+                                    </div>
+                                </div>
 
-<!-- Department -->
-<div class="form-group">
-    <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
-    <div class="flex-1">
-        <input type="text" id="edit-department" name="department"
-            placeholder="Enter department"
-            class="w-full text-xs px-3 py-2 border rounded" readonly />
-        <span class="error text-red-500 text-xs" id="error-department"></span>
-    </div>
-</div>
+                                <!-- Department -->
+                                <div class="form-group">
+                                    <label for="edit-department" class="w-40 text-sm font-medium">Department</label>
+                                    <div class="flex-1">
+                                        <input type="text" id="edit-department" name="department"
+                                            placeholder="Enter department"
+                                            class="w-full text-xs px-3 py-2 border rounded" readonly />
+                                        <span class="error text-red-500 text-xs" id="error-department"></span>
+                                    </div>
+                                </div>
 
 
                                 <!-- Expected Duration -->

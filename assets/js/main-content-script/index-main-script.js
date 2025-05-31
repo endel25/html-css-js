@@ -12,7 +12,7 @@ function getPermissions() {
     const approvedPermissions = permissions.find(p => p.name === 'ApprovedPasses') || dashboardPermissions;
     const disapprovedPermissions = permissions.find(p => p.name === 'DisapprovedPasses') || dashboardPermissions;
     const exitPermissions = permissions.find(p => p.name === 'TotalExitPasses') || dashboardPermissions;
-    
+
     const result = {
         dashboard: dashboardPermissions,
         totalVisitors: {
@@ -40,7 +40,7 @@ function getPermissions() {
             canDelete: exitPermissions.canDelete
         }
     };
-    
+
     console.log('Retrieved permissions:', result);
     return result;
 }
@@ -673,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!permissions.dashboard.canRead || !permissions.dashboard.canCreate) {
             createButton.style.pointerEvents = 'none';
             createButton.setAttribute('aria-disabled', 'true');
-            const reason = !permissions.dashboard.canRead 
+            const reason = !permissions.dashboard.canRead
                 ? 'You do not have permission to view the dashboard'
                 : 'You do not have permission to create a visitor gatepass';
             createButton.setAttribute('title', reason);
@@ -738,8 +738,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Card is interactive only if canRead is true AND at least one of canCreate, canUpdate, or canDelete is true
-        const isInteractive = card.permissions.canRead && 
-                             (card.permissions.canCreate || card.permissions.canUpdate || card.permissions.canDelete);
+        const isInteractive = card.permissions.canRead &&
+            (card.permissions.canCreate || card.permissions.canUpdate || card.permissions.canDelete);
 
         if (!isInteractive) {
             element.style.pointerEvents = 'none';
@@ -762,7 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            console.log(`${card.id} made static:`, { 
+            console.log(`${card.id} made static:`, {
                 canRead: card.permissions.canRead,
                 canCreate: card.permissions.canCreate,
                 canUpdate: card.permissions.canUpdate,

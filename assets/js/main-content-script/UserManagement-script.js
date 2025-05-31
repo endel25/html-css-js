@@ -1,124 +1,124 @@
 
-        const BASE_URL = 'https://192.168.3.73:3001';
-        let currentPage = 1;
-        let entriesPerPage = 10;
-        let isPaginatedView = false;
-        let currentEditUserId = null;
+const BASE_URL = 'https://192.168.3.73:3001';
+let currentPage = 1;
+let entriesPerPage = 10;
+let isPaginatedView = false;
+let currentEditUserId = null;
 
-        function getPermissions() {
-            const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
-            const currentModule = permissions.find(p => p.name === 'UserManagement') || {
-                canRead: true,
-                canCreate: true,
-                canUpdate: true,
-                canDelete: true
-            };
-            console.log('Retrieved permissions from localStorage:', currentModule);
-            return currentModule;
-        }
+function getPermissions() {
+    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+    const currentModule = permissions.find(p => p.name === 'UserManagement') || {
+        canRead: true,
+        canCreate: true,
+        canUpdate: true,
+        canDelete: true
+    };
+    console.log('Retrieved permissions from localStorage:', currentModule);
+    return currentModule;
+}
 
-        function openAddUserModal() {
-            document.getElementById('addUserModal').style.display = 'flex';
-        }
+function openAddUserModal() {
+    document.getElementById('addUserModal').style.display = 'flex';
+}
 
-        function closeAddUserModal() {
-            document.getElementById('addUserModal').style.display = 'none';
-            document.getElementById('addUserForm').reset();
-            $('.form-group').removeClass('has-error has-success');
-            $('.error-message').text('');
-        }
+function closeAddUserModal() {
+    document.getElementById('addUserModal').style.display = 'none';
+    document.getElementById('addUserForm').reset();
+    $('.form-group').removeClass('has-error has-success');
+    $('.error-message').text('');
+}
 
-        function openEditUserModal() {
-            document.getElementById('editUserModal').style.display = 'flex';
-        }
+function openEditUserModal() {
+    document.getElementById('editUserModal').style.display = 'flex';
+}
 
-        function closeEditUserModal() {
-            document.getElementById('editUserModal').style.display = 'none';
-            document.getElementById('editUserForm').reset();
-            $('.form-group').removeClass('has-error has-success');
-            $('.error-message').text('');
-        }
+function closeEditUserModal() {
+    document.getElementById('editUserModal').style.display = 'none';
+    document.getElementById('editUserForm').reset();
+    $('.form-group').removeClass('has-error has-success');
+    $('.error-message').text('');
+}
 
-        const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-            const toast = window.Swal.mixin({
-                toast: true,
-                position: position,
-                showConfirmButton: false,
-                timer: duration,
-                showCloseButton: showCloseButton,
-                padding: '10px 20px',
-            });
-            toast.fire({ icon: type, title: msg });
-        };
+const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: position,
+        showConfirmButton: false,
+        timer: duration,
+        showCloseButton: showCloseButton,
+        padding: '10px 20px',
+    });
+    toast.fire({ icon: type, title: msg });
+};
 
-        async function checkServerHealth(retries = 3, delay = 1000) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(`${BASE_URL}/health`, { timeout: 3000 });
-                    if (!response.ok) throw new Error(`Health check failed: Status ${response.status}`);
-                    const data = await response.text();
-                    console.log('Server health response:', data);
-                    try {
-                        const json = JSON.parse(data);
-                        return json.status === 'UP';
-                    } catch (e) {
-                        if (data === 'Hello World!') {
-                            console.error('Received Hello World! from health endpoint');
-                            return false;
-                        }
-                        throw e;
-                    }
-                } catch (error) {
-                    console.error(`Health check attempt ${i + 1} failed:`, error);
-                    if (i < retries - 1) {
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    }
-                }
-            }
-            return false;
-        }
-
-        async function fetchAllUsers() {
+async function checkServerHealth(retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(`${BASE_URL}/health`, { timeout: 3000 });
+            if (!response.ok) throw new Error(`Health check failed: Status ${response.status}`);
+            const data = await response.text();
+            console.log('Server health response:', data);
             try {
-                const isServerUp = await checkServerHealth();
-                if (!isServerUp) {
-                    throw new Error('Backend server is not responding correctly. Please check the server configuration at ' + BASE_URL);
+                const json = JSON.parse(data);
+                return json.status === 'UP';
+            } catch (e) {
+                if (data === 'Hello World!') {
+                    console.error('Received Hello World! from health endpoint');
+                    return false;
                 }
+                throw e;
+            }
+        } catch (error) {
+            console.error(`Health check attempt ${i + 1} failed:`, error);
+            if (i < retries - 1) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+    }
+    return false;
+}
 
-                const response = await fetch(`${BASE_URL}/users/all`, { timeout: 5000 });
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const text = await response.text();
-                console.log('Raw API response (fetchAllUsers):', text);
+async function fetchAllUsers() {
+    try {
+        const isServerUp = await checkServerHealth();
+        if (!isServerUp) {
+            throw new Error('Backend server is not responding correctly. Please check the server configuration at ' + BASE_URL);
+        }
 
-                let data;
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    console.error('Invalid JSON response:', text);
-                    if (text === 'Hello World!') {
-                        throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
-                    }
-                    throw new Error('Invalid JSON response from server');
-                }
+        const response = await fetch(`${BASE_URL}/users/all`, { timeout: 5000 });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const text = await response.text();
+        console.log('Raw API response (fetchAllUsers):', text);
 
-                if (!data.users || !Array.isArray(data.users)) {
-                    throw new Error('Unexpected response format: users array missing');
-                }
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Invalid JSON response:', text);
+            if (text === 'Hello World!') {
+                throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
+            }
+            throw new Error('Invalid JSON response from server');
+        }
 
-                data.users.sort((a, b) => a.id - b.id);
+        if (!data.users || !Array.isArray(data.users)) {
+            throw new Error('Unexpected response format: users array missing');
+        }
 
-                const permissions = getPermissions();
-                const canUpdate = permissions.canUpdate;
-                const canDelete = permissions.canDelete;
-                console.log('Permissions for table rendering:', { canUpdate, canDelete });
+        data.users.sort((a, b) => a.id - b.id);
 
-                const tbody = document.getElementById('userTableBody');
-                tbody.innerHTML = '';
+        const permissions = getPermissions();
+        const canUpdate = permissions.canUpdate;
+        const canDelete = permissions.canDelete;
+        console.log('Permissions for table rendering:', { canUpdate, canDelete });
 
-                data.users.forEach(user => {
-                    console.log(`User ${user.id}: isActive = ${user.isActive}, type = ${typeof user.isActive}`);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+        const tbody = document.getElementById('userTableBody');
+        tbody.innerHTML = '';
+
+        data.users.forEach(user => {
+            console.log(`User ${user.id}: isActive = ${user.isActive}, type = ${typeof user.isActive}`);
+            const row = document.createElement('tr');
+            row.innerHTML = `
                         <td>${user.firstName} ${user.lastName}</td>
                         <td>${user.userName}</td>
                         <td style="text-align-last: center;">
@@ -157,67 +157,67 @@
                             </div>
                         </td>
                     `;
-                    tbody.appendChild(row);
-                });
+            tbody.appendChild(row);
+        });
 
-                document.getElementById('panelFooter').textContent = `Showing 1 to ${data.users.length} of ${data.users.length} entries`;
-                const paginationControls = document.getElementById('paginationControls');
-                if (paginationControls) {
-                    paginationControls.style.display = 'none';
-                }
-                isPaginatedView = false;
-            } catch (error) {
-                console.error('Error fetching all users:', error);
-                showMessage(`Error fetching all users: ${error.message}`, 'error');
-            }
+        document.getElementById('panelFooter').textContent = `Showing 1 to ${data.users.length} of ${data.users.length} entries`;
+        const paginationControls = document.getElementById('paginationControls');
+        if (paginationControls) {
+            paginationControls.style.display = 'none';
+        }
+        isPaginatedView = false;
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+        showMessage(`Error fetching all users: ${error.message}`, 'error');
+    }
+}
+
+async function fetchUsers() {
+    entriesPerPage = document.getElementById('entriesPerPage').value;
+    const searchQuery = document.getElementById('searchInput').value;
+
+    try {
+        const isServerUp = await checkServerHealth();
+        if (!isServerUp) {
+            throw new Error('Backend server is not responding correctly. Please check the server configuration at ' + BASE_URL);
         }
 
-        async function fetchUsers() {
-            entriesPerPage = document.getElementById('entriesPerPage').value;
-            const searchQuery = document.getElementById('searchInput').value;
+        const response = await fetch(`${BASE_URL}/users?page=${currentPage}&limit=${entriesPerPage}&search=${searchQuery}`, { timeout: 5000 });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-            try {
-                const isServerUp = await checkServerHealth();
-                if (!isServerUp) {
-                    throw new Error('Backend server is not responding correctly. Please check the server configuration at ' + BASE_URL);
-                }
+        const text = await response.text();
+        console.log('Raw API response (fetchUsers):', text);
 
-                const response = await fetch(`${BASE_URL}/users?page=${currentPage}&limit=${entriesPerPage}&search=${searchQuery}`, { timeout: 5000 });
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Invalid JSON response:', text);
+            if (text === 'Hello World!') {
+                throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
+            }
+            throw new Error('Invalid JSON response from server');
+        }
 
-                const text = await response.text();
-                console.log('Raw API response (fetchUsers):', text);
+        if (!data.users || !Array.isArray(data.users)) {
+            console.error('Unexpected response format:', data);
+            throw new Error('Unexpected response format: users array missing');
+        }
 
-                let data;
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    console.error('Invalid JSON response:', text);
-                    if (text === 'Hello World!') {
-                        throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
-                    }
-                    throw new Error('Invalid JSON response from server');
-                }
+        data.users.sort((a, b) => a.id - b.id);
 
-                if (!data.users || !Array.isArray(data.users)) {
-                    console.error('Unexpected response format:', data);
-                    throw new Error('Unexpected response format: users array missing');
-                }
+        const permissions = getPermissions();
+        const canUpdate = permissions.canUpdate;
+        const canDelete = permissions.canDelete;
+        console.log('Permissions for table rendering:', { canUpdate, canDelete });
 
-                data.users.sort((a, b) => a.id - b.id);
+        const tbody = document.getElementById('userTableBody');
+        tbody.innerHTML = '';
 
-                const permissions = getPermissions();
-                const canUpdate = permissions.canUpdate;
-                const canDelete = permissions.canDelete;
-                console.log('Permissions for table rendering:', { canUpdate, canDelete });
-
-                const tbody = document.getElementById('userTableBody');
-                tbody.innerHTML = '';
-
-                data.users.forEach(user => {
-                    console.log(`User ${user.id}: isActive = ${user.isActive}, type = ${typeof user.isActive}`);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+        data.users.forEach(user => {
+            console.log(`User ${user.id}: isActive = ${user.isActive}, type = ${typeof user.isActive}`);
+            const row = document.createElement('tr');
+            row.innerHTML = `
                         <td>${user.firstName} ${user.lastName}</td>
                         <td>${user.userName}</td>
                         <td style="text-align-last: center;">
@@ -256,603 +256,602 @@
                             </div>
                         </td>
                     `;
-                    tbody.appendChild(row);
-                });
-
-                if (typeof data.start !== 'number' || typeof data.end !== 'number' || typeof data.total !== 'number') {
-                    console.warn('Missing pagination data, using defaults');
-                    data.start = 1;
-                    data.end = data.users.length;
-                    data.total = data.users.length;
-                }
-
-                document.getElementById('panelFooter').textContent = `Showing ${data.start} to ${data.end} of ${data.total} entries`;
-
-                const paginationControls = document.getElementById('paginationControls');
-                if (paginationControls) {
-                    if (data.total <= entriesPerPage) {
-                        paginationControls.style.display = 'none';
-                    } else {
-                        paginationControls.style.display = 'flex';
-                        paginationControls.innerHTML = '';
-                        const prevButton = document.createElement('button');
-                        prevButton.className = 'btn btn-outline-primary';
-                        prevButton.textContent = 'Previous';
-                        prevButton.disabled = currentPage === 1;
-                        prevButton.onclick = () => {
-                            if (currentPage > 1) {
-                                currentPage--;
-                                fetchUsers();
-                            }
-                        };
-                        paginationControls.appendChild(prevButton);
-                        const nextButton = document.createElement('button');
-                        nextButton.className = 'btn btn-outline-primary';
-                        nextButton.textContent = 'Next';
-                        nextButton.disabled = data.end >= data.total;
-                        nextButton.onclick = () => {
-                            if (data.end < data.total) {
-                                currentPage++;
-                                fetchUsers();
-                            }
-                        };
-                        paginationControls.appendChild(nextButton);
-                    }
-                }
-                isPaginatedView = true;
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                showMessage(`Error fetching users: ${error.message}`, 'error');
-                checkServerHealth().then(isUp => {
-                    if (isUp) fetchAllUsers();
-                });
-            }
-        }
-
-        async function toggleUserStatus(userId) {
-            try {
-                let toggleInput = document.getElementById(`toggleActive_${userId}`);
-                let isActive = toggleInput.checked;
-                console.log(`Toggling user ${userId}: isActive = ${isActive}`);
-
-                toggleInput.checked = !isActive;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
-                const response = await fetch(`${BASE_URL}/users/${userId}/toggle`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ isActive: !isActive }),
-                    signal: controller.signal,
-                });
-                clearTimeout(timeoutId);
-
-                console.log(`API response status: ${response.status}`);
-                const text = await response.text();
-                console.log(`API response body: ${text}`);
-
-                if (!response.ok) {
-                    toggleInput.checked = isActive;
-                    throw new Error(`HTTP error! Status: ${response.status} - ${text}`);
-                }
-
-                showMessage(`User ${!isActive ? 'activated' : 'deactivated'} successfully`, 'success');
-
-                if (isPaginatedView) {
-                    fetchUsers();
-                } else {
-                    fetchAllUsers();
-                }
-            } catch (error) {
-                console.error("Error toggling user status:", error);
-                showMessage(`Error toggling user status: ${error.message}`, 'error');
-                if (isPaginatedView) fetchUsers();
-                else fetchAllUsers();
-            }
-        }
-
-        async function editUser(userId) {
-            try {
-                if (!userId || isNaN(Number(userId))) throw new Error('Invalid user ID');
-                const response = await fetch(`${BASE_URL}/users/${userId}`, { timeout: 5000 });
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const text = await response.text();
-                console.log('Raw API response (editUser):', text);
-
-                let user;
-                try {
-                    user = JSON.parse(text);
-                } catch (e) {
-                    console.error('Invalid JSON response:', text);
-                    if (text === 'Hello World!') {
-                        throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
-                    }
-                    throw new Error('Invalid JSON response from server');
-                }
-
-                const [deptResponse, desigResponse] = await Promise.all([
-                    fetch(`${BASE_URL}/department`, { timeout: 5000 }),
-                    fetch(`${BASE_URL}/designation`, { timeout: 5000 })
-                ]);
-
-                if (!deptResponse.ok || !desigResponse.ok) {
-                    throw new Error(`Failed to fetch departments or designations: ${deptResponse.status}, ${desigResponse.status}`);
-                }
-
-                const deptText = await deptResponse.text();
-                const desigText = await desigResponse.text();
-                let departments, designations;
-
-                try {
-                    departments = JSON.parse(deptText);
-                    designations = JSON.parse(desigText);
-                } catch (e) {
-                    console.error('Invalid JSON response from department/designation APIs:', deptText, desigText);
-                    throw new Error('Invalid JSON response from department/designation APIs');
-                }
-
-                const department = departments.find(d => d.name === user.department);
-                const designation = designations.find(d => d.name === user.designation);
-
-                document.getElementById('editFirstName').value = user.firstName || '';
-                document.getElementById('editLastName').value = user.lastName || '';
-                document.getElementById('editUserName').value = user.userName || '';
-                document.getElementById('editContactNo').value = user.contactNo || '';
-                document.getElementById('editEmailId').value = user.emailId || '';
-                document.getElementById('editAddress').value = user.address || '';
-                document.getElementById('editUserRoleId').value = user.userRoleId || '';
-                document.getElementById('editEmployeeNo').value = user.employeeNo || '';
-                document.getElementById('editDepartment').value = department ? department.id : '';
-                document.getElementById('editDesignation').value = designation ? designation.id : '';
-                document.getElementById('editNotes').value = user.notes || '';
-
-                if (jQuery.fn.niceSelect) {
-                    $("#editUserRoleId").val(user.userRoleId || '').niceSelect('update');
-                    $("#editDepartment").val(department ? department.id : '').niceSelect('update');
-                    $("#editDesignation").val(designation ? designation.id : '').niceSelect('update');
-                } else {
-                    console.error('NiceSelect is not loaded');
-                }
-
-                document.getElementById('editUserId').value = userId;
-                document.getElementById('editUserForm').dataset.userId = userId;
-                currentEditUserId = userId;
-
-                openEditUserModal();
-            } catch (error) {
-                console.error('Error fetching user or dropdown data:', error);
-                showMessage(`Error fetching user data: ${error.message}`, 'error');
-            }
-        }
-
-        async function deleteUser(userId) {
-            const swalWithBootstrapButtons = window.Swal.mixin({
-                confirmButtonClass: 'btn btn-secondary',
-                cancelButtonClass: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-                buttonsStyling: false,
-            });
-
-            try {
-                const result = await swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: 'You are about to delete this user.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
-                    reverseButtons: true,
-                    padding: '2em',
-                });
-
-                if (result.isConfirmed) {
-                    const response = await fetch(`${BASE_URL}/users/${userId}`, {
-                        method: 'DELETE',
-                        timeout: 5000,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-
-                    showMessage('User deleted successfully', 'success');
-
-                    if (isPaginatedView) {
-                        await fetchUsers();
-                    } else {
-                        await fetchAllUsers();
-                    }
-                }
-            } catch (error) {
-                console.error('Error deleting user:', error);
-                await swalWithBootstrapButtons.fire('Error', `Failed to delete user: ${error.message}`, 'error');
-            }
-        }
-
-        $(document).ready(function () {
-            if (jQuery.fn.niceSelect) {
-                $("#UserRoleId").niceSelect({ searchable: true });
-                $("#editUserRoleId").niceSelect({ searchable: true });
-                $("#Department").niceSelect({ searchable: true });
-                $("#editDepartment").niceSelect({ searchable: true });
-                $("#Designation").niceSelect({ searchable: true });
-                $("#editDesignation").niceSelect({ searchable: true });
-            } else {
-                console.error('NiceSelect library failed to load');
-            }
-
-            const permissions = getPermissions();
-            const addUserBtn = document.querySelector('button[onclick="openAddUserModal()"]');
-            if (addUserBtn) {
-                if (!permissions.canCreate) {
-                    addUserBtn.disabled = true;
-                    addUserBtn.style.opacity = '0.6';
-                    addUserBtn.style.cursor = 'not-allowed';
-                    addUserBtn.title = 'You do not have permission to create users';
-                    addUserBtn.setAttribute('aria-disabled', 'true');
-                } else {
-                    addUserBtn.disabled = false;
-                    addUserBtn.style.opacity = '1';
-                    addUserBtn.style.cursor = 'pointer';
-                    addUserBtn.title = '';
-                    addUserBtn.setAttribute('aria-disabled', 'false');
-                }
-                console.log('Add User button state:', {
-                    disabled: addUserBtn.disabled,
-                    opacity: addUserBtn.style.opacity,
-                    cursor: addUserBtn.style.cursor,
-                    title: addUserBtn.title,
-                    ariaDisabled: addUserBtn.getAttribute('aria-disabled')
-                });
-            }
-
-            const validateField = (name, value, formData = {}) => {
-                console.log(`Validating field: ${name}, value: "${value}"`);
-                let error = '';
-
-                const requiredFields = [
-                    'firstName',
-                    'lastName',
-                    'userName',
-                    'password',
-                    'ConfirmPassword',
-                    'contactNo',
-                    'emailId',
-                    'userRoleId',
-                    'employeeNo',
-                    'department',
-                    'designation'
-                ];
-
-                if (requiredFields.includes(name) && (!value || value.trim() === '')) {
-                    error = `${name === 'firstName' ? 'First Name' :
-                        name === 'lastName' ? 'Last Name' :
-                            name === 'userName' ? 'Username' :
-                                name === 'password' ? 'Password' :
-                                    name === 'ConfirmPassword' ? 'Confirm Password' :
-                                        name === 'contactNo' ? 'Contact Number' :
-                                            name === 'emailId' ? 'Email Address' :
-                                                name === 'userRoleId' ? 'User Role' :
-                                                    name === 'employeeNo' ? 'Employee Number' :
-                                                        name === 'department' ? 'Department' :
-                                                            name === 'designation' ? 'Designation' :
-                                                                name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')
-                    } is required`;
-                }
-
-                switch (name) {
-                    case 'firstName':
-                    case 'lastName':
-                        if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
-                            error = `${name === 'firstName' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
-                        }
-                        break;
-                    case 'userName':
-                        if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                            error = 'Username must be at least 4 characters (letters and numbers allowed)';
-                        }
-                        break;
-                    case 'password':
-                        if (!value) {
-                            error = 'Password is required';
-                        } else if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
-                            error = 'Password must be at least 4 characters (letters and numbers allowed)';
-                        }
-                        break;
-                    case 'confirmPassword':
-                        if (!value) {
-                            error = 'Confirm password is required';
-                        } else if (value !== formData.password) {
-                            error = 'Passwords do not match';
-                        }
-                        break;
-                    case 'contactNo':
-                        if (!value) {
-                            error = 'Contact Number is required';
-                        }
-                        break;
-                    case 'emailId':
-                        if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-                            error = 'Please enter a valid email address';
-                        }
-                        break;
-                    case 'employeeNo':
-                        if (!value) {
-                            error = 'Employee No is required';
-                        }
-                        break;
-                    case 'address':
-                        if (value && value.length < 5) {
-                            error = 'Address must be at least 5 characters';
-                        }
-                        break;
-                    case 'notes':
-                        if (value && value.length > 500) {
-                            error = 'Notes cannot exceed 500 characters';
-                        }
-                        break;
-                }
-
-                console.log(`Validation result for ${name}: ${error || 'No error'}`);
-                return error;
-            };
-
-            const handleChange = (e, formPrefix = '') => {
-                const { name, value } = e.target;
-                const error = validateField(name, value);
-                const errorElement = document.getElementById(`error-${formPrefix}${name}`);
-                const inputElement = document.getElementById(`${formPrefix}${name}`);
-                if (error) {
-                    errorElement.textContent = error;
-                    inputElement.classList.add('error');
-                    inputElement.classList.remove('has-success');
-                } else {
-                    errorElement.textContent = '';
-                    inputElement.classList.remove('error');
-                    inputElement.classList.add('has-success');
-                }
-            };
-
-            const validateForm = (formData, formPrefix = '') => {
-                const errors = {};
-                Object.keys(formData).forEach(key => {
-                    if (formPrefix === 'edit' && (key === 'password' || key === 'ConfirmPassword') && !formData[key]) {
-                        return;
-                    }
-                    const error = validateField(key, formData[key]);
-                    if (error) errors[key] = error;
-                });
-                Object.keys(errors).forEach(key => {
-                    const errorElement = document.getElementById(`error-${formPrefix}${key}`);
-                    const inputElement = document.getElementById(`${formPrefix}${key}`);
-                    if (errorElement) {
-                        errorElement.textContent = errors[key];
-                    } else {
-                        console.warn(`Error element not found: error-${formPrefix}${key}`);
-                    }
-                    if (inputElement) {
-                        inputElement.classList.add('error');
-                    } else {
-                        console.warn(`Input element not found: ${formPrefix}${key}`);
-                    }
-                });
-                return Object.keys(errors).length === 0;
-            };
-
-            $("#addUserForm").submit(async function (event) {
-                event.preventDefault();
-
-                const departmentSelect = document.getElementById('Department');
-                const designationSelect = document.getElementById('Designation');
-                const departmentName = departmentSelect.options[departmentSelect.selectedIndex]?.text || null;
-                const designationName = designationSelect.options[designationSelect.selectedIndex]?.text || null;
-
-                const formData = {
-                    firstName: $("#FirstName").val(),
-                    lastName: $("#LastName").val(),
-                    userName: $("#email").val(),
-                    password: $("#password").val(),
-                    ConfirmPassword: $("#ConfirmPassword").val(),
-                    contactNo: $("#ContactNo").val() || null,
-                    emailId: $("#EmailId").val() || null,
-                    address: $("#Address").val() || null,
-                    userRoleId: $("#UserRoleId").val(),
-                    employeeNo: $("#EmployeeNo").val() || null,
-                    department: departmentName,
-                    designation: designationName,
-                    notes: $("textarea[name='notes']").val() || null,
-                };
-
-                if (!validateForm(formData, '')) {
-                    showMessage('Please fix the errors in the form', 'error');
-                    return;
-                }
-
-                if (formData.password !== formData.ConfirmPassword) {
-                    document.getElementById('error-ConfirmPassword').textContent = 'Passwords do not match';
-                    document.getElementById('ConfirmPassword').classList.add('error');
-                    showMessage('Passwords do not match', 'error');
-                    return;
-                }
-
-                const payload = {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                    userName: formData.userName,
-                    password: formData.password,
-                    contactNo: formData.contactNo,
-                    emailId: formData.emailId,
-                    address: formData.address,
-                    userRoleId: parseInt(formData.userRoleId),
-                    employeeNo: formData.employeeNo,
-                    department: formData.department,
-                    designation: formData.designation,
-                    notes: formData.notes,
-                };
-
-                console.log('Add User Payload:', payload);
-
-                try {
-                    const response = await fetch(`${BASE_URL}/users`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
-                        timeout: 5000,
-                    });
-
-                    console.log('Response Status:', response.status);
-                    const text = await response.text();
-                    console.log('Raw Response:', text);
-
-                    if (!response.ok) {
-                        let errorData;
-                        try {
-                            errorData = JSON.parse(text);
-                        } catch (e) {
-                            throw new Error(`Server error: ${response.status} - ${text}`);
-                        }
-                        throw new Error(errorData.message || `Failed to create user: ${response.status}`);
-                    }
-
-                    const data = JSON.parse(text);
-                    showMessage(data.message || 'User created successfully', 'success');
-                    closeAddUserModal();
-                    if (isPaginatedView) fetchUsers();
-                    else fetchAllUsers();
-                } catch (error) {
-                    console.error('Error creating user:', error);
-                    showMessage(`Error creating user: ${error.message}`, 'error');
-                }
-            });
-
-            $("#editUserForm").submit(async function (event) {
-                event.preventDefault();
-
-                const userId = Number(document.getElementById('editUserId').value) || currentEditUserId;
-                if (isNaN(userId) || !userId) {
-                    showMessage('Invalid user ID', 'error');
-                    return;
-                }
-
-                const departmentSelect = document.getElementById('editDepartment');
-                const designationSelect = document.getElementById('editDesignation');
-                const departmentName = departmentSelect.options[departmentSelect.selectedIndex]?.text || null;
-                const designationName = designationSelect.options[designationSelect.selectedIndex]?.text || null;
-
-                const formData = {
-                    firstName: $("#editFirstName").val(),
-                    lastName: $("#editLastName").val(),
-                    userName: $("#editUserName").val(),
-                    password: $("#editPassword").val() || null,
-                    ConfirmPassword: $("#editConfirmPassword").val() || null,
-                    contactNo: $("#editContactNo").val() || null,
-                    emailId: $("#editEmailId").val() || null,
-                    address: $("#editAddress").val() || null,
-                    userRoleId: $("#editUserRoleId").val(),
-                    employeeNo: $("#editEmployeeNo").val() || null,
-                    department: departmentName,
-                    designation: designationName,
-                    notes: $("#editNotes").val() || null,
-                };
-
-                if (!validateForm(formData, 'edit')) {
-                    showMessage('Please fix the errors in the form', 'error');
-                    return;
-                }
-
-                if (formData.password && formData.password !== formData.ConfirmPassword) {
-                    document.getElementById('error-editConfirmPassword').textContent = 'Passwords do not match';
-                    document.getElementById('editConfirmPassword').classList.add('error');
-                    showMessage('Passwords do not match', 'error');
-                    return;
-                }
-
-                const payload = {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                    userName: formData.userName,
-                    contactNo: formData.contactNo,
-                    emailId: formData.emailId,
-                    address: formData.address,
-                    userRoleId: parseInt(formData.userRoleId),
-                    employeeNo: formData.employeeNo,
-                    department: formData.department,
-                    designation: formData.designation,
-                    notes: formData.notes,
-                };
-                if (formData.password) payload.password = formData.password;
-
-                console.log('Edit User Payload:', payload);
-
-                try {
-                    const response = await fetch(`${BASE_URL}/users/${userId}`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
-                        timeout: 5000,
-                    });
-
-                    console.log('Response Status:', response.status);
-                    const text = await response.text();
-                    console.log('Raw Response:', text);
-
-                    if (!response.ok) {
-                        let errorData;
-                        try {
-                            errorData = JSON.parse(text);
-                        } catch (e) {
-                            throw new Error(`Server error: ${response.status} - ${text}`);
-                        }
-                        throw new Error(errorData.message || `Failed to update user: ${response.status}`);
-                    }
-
-                    const data = JSON.parse(text);
-                    showMessage(data.message || 'User updated successfully', 'success');
-                    closeEditUserModal();
-                    currentEditUserId = null;
-                    if (isPaginatedView) fetchUsers();
-                    else fetchAllUsers();
-                } catch (error) {
-                    console.error('Error updating user:', error);
-                    showMessage(`Error updating user: ${error.message}`, 'error');
-                }
-            });
-
-            $("#FirstName, #LastName, #email, #password, #ConfirmPassword, #ContactNo, #EmailId, #Address, #UserRoleId, #EmployeeNo, #Department, #Designation").on("input change", function (e) {
-                handleChange(e, '');
-            });
-
-            $("#editFirstName, #editLastName, #editUserName, #editPassword, #editConfirmPassword, #editContactNo, #editEmailId, #editAddress, #editUserRoleId, #editEmployeeNo, #editDepartment, #editDesignation").on("input change", function (e) {
-                handleChange(e, 'edit');
-            });
-
-            $("#email, #editUserName").on("input", function () {
-                this.value = this.value.replace(/\s+/g, "").toLowerCase();
-            });
-
-            $(document).on('change', 'input[id^="toggleActive_"]', function () {
-                const userId = this.id.split('_')[1];
-                console.log(`Toggle clicked for user ${userId}`);
-                toggleUserStatus(Number(userId));
-            });
-
-            $("#entriesPerPage").on("change", function () {
-                entriesPerPage = this.value;
-                currentPage = 1;
-                fetchUsers();
-            });
-
-            $("#searchInput").on("input", function () {
-                currentPage = 1;
-                fetchUsers();
-            });
+            tbody.appendChild(row);
         });
 
-        (async () => {
-            const isServerUp = await checkServerHealth();
-            if (isServerUp) {
-                fetchAllUsers();
+        if (typeof data.start !== 'number' || typeof data.end !== 'number' || typeof data.total !== 'number') {
+            console.warn('Missing pagination data, using defaults');
+            data.start = 1;
+            data.end = data.users.length;
+            data.total = data.users.length;
+        }
+
+        document.getElementById('panelFooter').textContent = `Showing ${data.start} to ${data.end} of ${data.total} entries`;
+
+        const paginationControls = document.getElementById('paginationControls');
+        if (paginationControls) {
+            if (data.total <= entriesPerPage) {
+                paginationControls.style.display = 'none';
             } else {
-                showMessage('Backend server is not responding at ' + BASE_URL + '. Please check the server configuration.', 'error');
+                paginationControls.style.display = 'flex';
+                paginationControls.innerHTML = '';
+                const prevButton = document.createElement('button');
+                prevButton.className = 'btn btn-outline-primary';
+                prevButton.textContent = 'Previous';
+                prevButton.disabled = currentPage === 1;
+                prevButton.onclick = () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        fetchUsers();
+                    }
+                };
+                paginationControls.appendChild(prevButton);
+                const nextButton = document.createElement('button');
+                nextButton.className = 'btn btn-outline-primary';
+                nextButton.textContent = 'Next';
+                nextButton.disabled = data.end >= data.total;
+                nextButton.onclick = () => {
+                    if (data.end < data.total) {
+                        currentPage++;
+                        fetchUsers();
+                    }
+                };
+                paginationControls.appendChild(nextButton);
             }
-        })();
-   
+        }
+        isPaginatedView = true;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        showMessage(`Error fetching users: ${error.message}`, 'error');
+        checkServerHealth().then(isUp => {
+            if (isUp) fetchAllUsers();
+        });
+    }
+}
+
+async function toggleUserStatus(userId) {
+    try {
+        let toggleInput = document.getElementById(`toggleActive_${userId}`);
+        let isActive = toggleInput.checked;
+        console.log(`Toggling user ${userId}: isActive = ${isActive}`);
+
+        toggleInput.checked = !isActive;
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const response = await fetch(`${BASE_URL}/users/${userId}/toggle`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ isActive: !isActive }),
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        console.log(`API response status: ${response.status}`);
+        const text = await response.text();
+        console.log(`API response body: ${text}`);
+
+        if (!response.ok) {
+            toggleInput.checked = isActive;
+            throw new Error(`HTTP error! Status: ${response.status} - ${text}`);
+        }
+
+        showMessage(`User ${!isActive ? 'activated' : 'deactivated'} successfully`, 'success');
+
+        if (isPaginatedView) {
+            fetchUsers();
+        } else {
+            fetchAllUsers();
+        }
+    } catch (error) {
+        console.error("Error toggling user status:", error);
+        showMessage(`Error toggling user status: ${error.message}`, 'error');
+        if (isPaginatedView) fetchUsers();
+        else fetchAllUsers();
+    }
+}
+
+async function editUser(userId) {
+    try {
+        if (!userId || isNaN(Number(userId))) throw new Error('Invalid user ID');
+        const response = await fetch(`${BASE_URL}/users/${userId}`, { timeout: 5000 });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const text = await response.text();
+        console.log('Raw API response (editUser):', text);
+
+        let user;
+        try {
+            user = JSON.parse(text);
+        } catch (e) {
+            console.error('Invalid JSON response:', text);
+            if (text === 'Hello World!') {
+                throw new Error('Backend server is not properly configured. Expected JSON response from NestJS server.');
+            }
+            throw new Error('Invalid JSON response from server');
+        }
+
+        const [deptResponse, desigResponse] = await Promise.all([
+            fetch(`${BASE_URL}/department`, { timeout: 5000 }),
+            fetch(`${BASE_URL}/designation`, { timeout: 5000 })
+        ]);
+
+        if (!deptResponse.ok || !desigResponse.ok) {
+            throw new Error(`Failed to fetch departments or designations: ${deptResponse.status}, ${desigResponse.status}`);
+        }
+
+        const deptText = await deptResponse.text();
+        const desigText = await desigResponse.text();
+        let departments, designations;
+
+        try {
+            departments = JSON.parse(deptText);
+            designations = JSON.parse(desigText);
+        } catch (e) {
+            console.error('Invalid JSON response from department/designation APIs:', deptText, desigText);
+            throw new Error('Invalid JSON response from department/designation APIs');
+        }
+
+        const department = departments.find(d => d.name === user.department);
+        const designation = designations.find(d => d.name === user.designation);
+
+        document.getElementById('editFirstName').value = user.firstName || '';
+        document.getElementById('editLastName').value = user.lastName || '';
+        document.getElementById('editUserName').value = user.userName || '';
+        document.getElementById('editContactNo').value = user.contactNo || '';
+        document.getElementById('editEmailId').value = user.emailId || '';
+        document.getElementById('editAddress').value = user.address || '';
+        document.getElementById('editUserRoleId').value = user.userRoleId || '';
+        document.getElementById('editEmployeeNo').value = user.employeeNo || '';
+        document.getElementById('editDepartment').value = department ? department.id : '';
+        document.getElementById('editDesignation').value = designation ? designation.id : '';
+        document.getElementById('editNotes').value = user.notes || '';
+
+        if (jQuery.fn.niceSelect) {
+            $("#editUserRoleId").val(user.userRoleId || '').niceSelect('update');
+            $("#editDepartment").val(department ? department.id : '').niceSelect('update');
+            $("#editDesignation").val(designation ? designation.id : '').niceSelect('update');
+        } else {
+            console.error('NiceSelect is not loaded');
+        }
+
+        document.getElementById('editUserId').value = userId;
+        document.getElementById('editUserForm').dataset.userId = userId;
+        currentEditUserId = userId;
+
+        openEditUserModal();
+    } catch (error) {
+        console.error('Error fetching user or dropdown data:', error);
+        showMessage(`Error fetching user data: ${error.message}`, 'error');
+    }
+}
+
+async function deleteUser(userId) {
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        confirmButtonClass: 'btn btn-secondary',
+        cancelButtonClass: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        buttonsStyling: false,
+    });
+
+    try {
+        const result = await swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: 'You are about to delete this user.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        });
+
+        if (result.isConfirmed) {
+            const response = await fetch(`${BASE_URL}/users/${userId}`, {
+                method: 'DELETE',
+                timeout: 5000,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            showMessage('User deleted successfully', 'success');
+
+            if (isPaginatedView) {
+                await fetchUsers();
+            } else {
+                await fetchAllUsers();
+            }
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        await swalWithBootstrapButtons.fire('Error', `Failed to delete user: ${error.message}`, 'error');
+    }
+}
+
+$(document).ready(function () {
+    if (jQuery.fn.niceSelect) {
+        $("#UserRoleId").niceSelect({ searchable: true });
+        $("#editUserRoleId").niceSelect({ searchable: true });
+        $("#Department").niceSelect({ searchable: true });
+        $("#editDepartment").niceSelect({ searchable: true });
+        $("#Designation").niceSelect({ searchable: true });
+        $("#editDesignation").niceSelect({ searchable: true });
+    } else {
+        console.error('NiceSelect library failed to load');
+    }
+
+    const permissions = getPermissions();
+    const addUserBtn = document.querySelector('button[onclick="openAddUserModal()"]');
+    if (addUserBtn) {
+        if (!permissions.canCreate) {
+            addUserBtn.disabled = true;
+            addUserBtn.style.opacity = '0.6';
+            addUserBtn.style.cursor = 'not-allowed';
+            addUserBtn.title = 'You do not have permission to create users';
+            addUserBtn.setAttribute('aria-disabled', 'true');
+        } else {
+            addUserBtn.disabled = false;
+            addUserBtn.style.opacity = '1';
+            addUserBtn.style.cursor = 'pointer';
+            addUserBtn.title = '';
+            addUserBtn.setAttribute('aria-disabled', 'false');
+        }
+        console.log('Add User button state:', {
+            disabled: addUserBtn.disabled,
+            opacity: addUserBtn.style.opacity,
+            cursor: addUserBtn.style.cursor,
+            title: addUserBtn.title,
+            ariaDisabled: addUserBtn.getAttribute('aria-disabled')
+        });
+    }
+
+    const validateField = (name, value, formData = {}) => {
+        console.log(`Validating field: ${name}, value: "${value}"`);
+        let error = '';
+
+        const requiredFields = [
+            'firstName',
+            'lastName',
+            'userName',
+            'password',
+            'ConfirmPassword',
+            'contactNo',
+            'emailId',
+            'userRoleId',
+            'employeeNo',
+            'department',
+            'designation'
+        ];
+
+        if (requiredFields.includes(name) && (!value || value.trim() === '')) {
+            error = `${name === 'firstName' ? 'First Name' :
+                name === 'lastName' ? 'Last Name' :
+                    name === 'userName' ? 'Username' :
+                        name === 'password' ? 'Password' :
+                            name === 'ConfirmPassword' ? 'Confirm Password' :
+                                name === 'contactNo' ? 'Contact Number' :
+                                    name === 'emailId' ? 'Email Address' :
+                                        name === 'userRoleId' ? 'User Role' :
+                                            name === 'employeeNo' ? 'Employee Number' :
+                                                name === 'department' ? 'Department' :
+                                                    name === 'designation' ? 'Designation' :
+                                                        name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1')
+                } is required`;
+        }
+
+        switch (name) {
+            case 'firstName':
+            case 'lastName':
+                if (value && !/^[a-zA-Z\s]{2,}$/.test(value)) {
+                    error = `${name === 'firstName' ? 'First' : 'Last'} name must be at least 2 characters and contain only letters`;
+                }
+                break;
+            case 'userName':
+                if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                    error = 'Username must be at least 4 characters (letters and numbers allowed)';
+                }
+                break;
+            case 'password':
+                if (!value) {
+                    error = 'Password is required';
+                } else if (value && !/^[a-zA-Z0-9]{4,}$/.test(value)) {
+                    error = 'Password must be at least 4 characters (letters and numbers allowed)';
+                }
+                break;
+            case 'confirmPassword':
+                if (!value) {
+                    error = 'Confirm password is required';
+                } else if (value !== formData.password) {
+                    error = 'Passwords do not match';
+                }
+                break;
+            case 'contactNo':
+                if (!value) {
+                    error = 'Contact Number is required';
+                }
+                break;
+            case 'emailId':
+                if (value && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+                    error = 'Please enter a valid email address';
+                }
+                break;
+            case 'employeeNo':
+                if (!value) {
+                    error = 'Employee No is required';
+                }
+                break;
+            case 'address':
+                if (value && value.length < 5) {
+                    error = 'Address must be at least 5 characters';
+                }
+                break;
+            case 'notes':
+                if (value && value.length > 500) {
+                    error = 'Notes cannot exceed 500 characters';
+                }
+                break;
+        }
+
+        console.log(`Validation result for ${name}: ${error || 'No error'}`);
+        return error;
+    };
+
+    const handleChange = (e, formPrefix = '') => {
+        const { name, value } = e.target;
+        const error = validateField(name, value);
+        const errorElement = document.getElementById(`error-${formPrefix}${name}`);
+        const inputElement = document.getElementById(`${formPrefix}${name}`);
+        if (error) {
+            errorElement.textContent = error;
+            inputElement.classList.add('error');
+            inputElement.classList.remove('has-success');
+        } else {
+            errorElement.textContent = '';
+            inputElement.classList.remove('error');
+            inputElement.classList.add('has-success');
+        }
+    };
+
+    const validateForm = (formData, formPrefix = '') => {
+        const errors = {};
+        Object.keys(formData).forEach(key => {
+            if (formPrefix === 'edit' && (key === 'password' || key === 'ConfirmPassword') && !formData[key]) {
+                return;
+            }
+            const error = validateField(key, formData[key]);
+            if (error) errors[key] = error;
+        });
+        Object.keys(errors).forEach(key => {
+            const errorElement = document.getElementById(`error-${formPrefix}${key}`);
+            const inputElement = document.getElementById(`${formPrefix}${key}`);
+            if (errorElement) {
+                errorElement.textContent = errors[key];
+            } else {
+                console.warn(`Error element not found: error-${formPrefix}${key}`);
+            }
+            if (inputElement) {
+                inputElement.classList.add('error');
+            } else {
+                console.warn(`Input element not found: ${formPrefix}${key}`);
+            }
+        });
+        return Object.keys(errors).length === 0;
+    };
+
+    $("#addUserForm").submit(async function (event) {
+        event.preventDefault();
+
+        const departmentSelect = document.getElementById('Department');
+        const designationSelect = document.getElementById('Designation');
+        const departmentName = departmentSelect.options[departmentSelect.selectedIndex]?.text || null;
+        const designationName = designationSelect.options[designationSelect.selectedIndex]?.text || null;
+
+        const formData = {
+            firstName: $("#FirstName").val(),
+            lastName: $("#LastName").val(),
+            userName: $("#email").val(),
+            password: $("#password").val(),
+            ConfirmPassword: $("#ConfirmPassword").val(),
+            contactNo: $("#ContactNo").val() || null,
+            emailId: $("#EmailId").val() || null,
+            address: $("#Address").val() || null,
+            userRoleId: $("#UserRoleId").val(),
+            employeeNo: $("#EmployeeNo").val() || null,
+            department: departmentName,
+            designation: designationName,
+            notes: $("textarea[name='notes']").val() || null,
+        };
+
+        if (!validateForm(formData, '')) {
+            showMessage('Please fix the errors in the form', 'error');
+            return;
+        }
+
+        if (formData.password !== formData.ConfirmPassword) {
+            document.getElementById('error-ConfirmPassword').textContent = 'Passwords do not match';
+            document.getElementById('ConfirmPassword').classList.add('error');
+            showMessage('Passwords do not match', 'error');
+            return;
+        }
+
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            userName: formData.userName,
+            password: formData.password,
+            contactNo: formData.contactNo,
+            emailId: formData.emailId,
+            address: formData.address,
+            userRoleId: parseInt(formData.userRoleId),
+            employeeNo: formData.employeeNo,
+            department: formData.department,
+            designation: formData.designation,
+            notes: formData.notes,
+        };
+
+        console.log('Add User Payload:', payload);
+
+        try {
+            const response = await fetch(`${BASE_URL}/users`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                timeout: 5000,
+            });
+
+            console.log('Response Status:', response.status);
+            const text = await response.text();
+            console.log('Raw Response:', text);
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = JSON.parse(text);
+                } catch (e) {
+                    throw new Error(`Server error: ${response.status} - ${text}`);
+                }
+                throw new Error(errorData.message || `Failed to create user: ${response.status}`);
+            }
+
+            const data = JSON.parse(text);
+            showMessage(data.message || 'User created successfully', 'success');
+            closeAddUserModal();
+            if (isPaginatedView) fetchUsers();
+            else fetchAllUsers();
+        } catch (error) {
+            console.error('Error creating user:', error);
+            showMessage(`Error creating user: ${error.message}`, 'error');
+        }
+    });
+
+    $("#editUserForm").submit(async function (event) {
+        event.preventDefault();
+
+        const userId = Number(document.getElementById('editUserId').value) || currentEditUserId;
+        if (isNaN(userId) || !userId) {
+            showMessage('Invalid user ID', 'error');
+            return;
+        }
+
+        const departmentSelect = document.getElementById('editDepartment');
+        const designationSelect = document.getElementById('editDesignation');
+        const departmentName = departmentSelect.options[departmentSelect.selectedIndex]?.text || null;
+        const designationName = designationSelect.options[designationSelect.selectedIndex]?.text || null;
+
+        const formData = {
+            firstName: $("#editFirstName").val(),
+            lastName: $("#editLastName").val(),
+            userName: $("#editUserName").val(),
+            password: $("#editPassword").val() || null,
+            ConfirmPassword: $("#editConfirmPassword").val() || null,
+            contactNo: $("#editContactNo").val() || null,
+            emailId: $("#editEmailId").val() || null,
+            address: $("#editAddress").val() || null,
+            userRoleId: $("#editUserRoleId").val(),
+            employeeNo: $("#editEmployeeNo").val() || null,
+            department: departmentName,
+            designation: designationName,
+            notes: $("#editNotes").val() || null,
+        };
+
+        if (!validateForm(formData, 'edit')) {
+            showMessage('Please fix the errors in the form', 'error');
+            return;
+        }
+
+        if (formData.password && formData.password !== formData.ConfirmPassword) {
+            document.getElementById('error-editConfirmPassword').textContent = 'Passwords do not match';
+            document.getElementById('editConfirmPassword').classList.add('error');
+            showMessage('Passwords do not match', 'error');
+            return;
+        }
+
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            userName: formData.userName,
+            contactNo: formData.contactNo,
+            emailId: formData.emailId,
+            address: formData.address,
+            userRoleId: parseInt(formData.userRoleId),
+            employeeNo: formData.employeeNo,
+            department: formData.department,
+            designation: formData.designation,
+            notes: formData.notes,
+        };
+        if (formData.password) payload.password = formData.password;
+
+        console.log('Edit User Payload:', payload);
+
+        try {
+            const response = await fetch(`${BASE_URL}/users/${userId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                timeout: 5000,
+            });
+
+            console.log('Response Status:', response.status);
+            const text = await response.text();
+            console.log('Raw Response:', text);
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = JSON.parse(text);
+                } catch (e) {
+                    throw new Error(`Server error: ${response.status} - ${text}`);
+                }
+                throw new Error(errorData.message || `Failed to update user: ${response.status}`);
+            }
+
+            const data = JSON.parse(text);
+            showMessage(data.message || 'User updated successfully', 'success');
+            closeEditUserModal();
+            currentEditUserId = null;
+            if (isPaginatedView) fetchUsers();
+            else fetchAllUsers();
+        } catch (error) {
+            console.error('Error updating user:', error);
+            showMessage(`Error updating user: ${error.message}`, 'error');
+        }
+    });
+
+    $("#FirstName, #LastName, #email, #password, #ConfirmPassword, #ContactNo, #EmailId, #Address, #UserRoleId, #EmployeeNo, #Department, #Designation").on("input change", function (e) {
+        handleChange(e, '');
+    });
+
+    $("#editFirstName, #editLastName, #editUserName, #editPassword, #editConfirmPassword, #editContactNo, #editEmailId, #editAddress, #editUserRoleId, #editEmployeeNo, #editDepartment, #editDesignation").on("input change", function (e) {
+        handleChange(e, 'edit');
+    });
+
+    $("#email, #editUserName").on("input", function () {
+        this.value = this.value.replace(/\s+/g, "").toLowerCase();
+    });
+
+    $(document).on('change', 'input[id^="toggleActive_"]', function () {
+        const userId = this.id.split('_')[1];
+        console.log(`Toggle clicked for user ${userId}`);
+        toggleUserStatus(Number(userId));
+    });
+
+    $("#entriesPerPage").on("change", function () {
+        entriesPerPage = this.value;
+        currentPage = 1;
+        fetchUsers();
+    });
+
+    $("#searchInput").on("input", function () {
+        currentPage = 1;
+        fetchUsers();
+    });
+});
+
+(async () => {
+    const isServerUp = await checkServerHealth();
+    if (isServerUp) {
+        fetchAllUsers();
+    } else {
+        showMessage('Backend server is not responding at ' + BASE_URL + '. Please check the server configuration.', 'error');
+    }
+})();

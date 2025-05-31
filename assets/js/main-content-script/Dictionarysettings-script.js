@@ -1,97 +1,97 @@
 // Toast message function
-    const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
-        const toast = window.Swal.mixin({
-            toast: true,
-            position: position,
-            showConfirmButton: false,
-            timer: duration,
-            showCloseButton: showCloseButton,
-            padding: '10px 20px',
-        });
+const showMessage = (msg = 'Example notification text.', type = 'success', position = 'top-right', showCloseButton = true, duration = 2000) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: position,
+        showConfirmButton: false,
+        timer: duration,
+        showCloseButton: showCloseButton,
+        padding: '10px 20px',
+    });
 
-        toast.fire({
-            icon: type,
-            title: msg,
-        });
+    toast.fire({
+        icon: type,
+        title: msg,
+    });
+};
+
+// Base URL for the backend API
+const API_BASE_URL = 'https://192.168.3.73:3001';
+
+// Function to get Dictionarysettings permissions from localStorage
+function getPermissions() {
+    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+    const dictionarySettings = permissions.find(p => p.name === 'Dictionarysettings') || {
+        canRead: true,
+        canCreate: false,
+        canUpdate: false,
+        canDelete: false
     };
+    console.log('Retrieved Dictionarysettings permissions:', dictionarySettings);
+    return dictionarySettings;
+}
 
-    // Base URL for the backend API
-    const API_BASE_URL = 'https://192.168.3.73:3001';
-
-    // Function to get Dictionarysettings permissions from localStorage
-    function getPermissions() {
-        const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
-        const dictionarySettings = permissions.find(p => p.name === 'Dictionarysettings') || {
-            canRead: true,
-            canCreate: false,
-            canUpdate: false,
-            canDelete: false
-        };
-        console.log('Retrieved Dictionarysettings permissions:', dictionarySettings);
-        return dictionarySettings;
+// Helper function to handle API requests
+async function apiRequest(endpoint, method = 'GET', body = null) {
+    const options = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    if (body) {
+        options.body = JSON.stringify(body);
     }
-
-    // Helper function to handle API requests
-    async function apiRequest(endpoint, method = 'GET', body = null) {
-        const options = {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        if (body) {
-            options.body = JSON.stringify(body);
+    try {
+        const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
+        if (response.status === 204) {
+            return { message: 'Success' };
         }
-        try {
-            const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
-            if (response.status === 204) {
-                return { message: 'Success' };
-            }
-            const contentType = response.headers.get('content-type');
-            if (!response.ok) {
-                if (contentType && contentType.includes('application/json')) {
-                    const error = await response.json();
-                    throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
-                } else {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-            }
+        const contentType = response.headers.get('content-type');
+        if (!response.ok) {
             if (contentType && contentType.includes('application/json')) {
-                return response.json();
+                const error = await response.json();
+                throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
             } else {
-                return { message: 'Success' };
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-        } catch (error) {
-            console.error(`API request failed (${endpoint}):`, error);
-            throw error;
         }
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            return { message: 'Success' };
+        }
+    } catch (error) {
+        console.error(`API request failed (${endpoint}):`, error);
+        throw error;
+    }
+}
+
+// Generic function to render table data
+function renderTableData(tbodyId, data, editHandler, deleteHandler) {
+    const permissions = getPermissions();
+    const tbody = document.querySelector(`#${tbodyId} tbody`);
+    if (!tbody) {
+        console.error(`Table tbody not found for ${tbodyId}`);
+        showMessage(`Table not found for ${tbodyId}`, 'error');
+        return;
+    }
+    tbody.innerHTML = '';
+
+    if (!permissions.canRead) {
+        tbody.innerHTML = `<tr><td colspan="2">You do not have permission to view this data</td></tr>`;
+        showMessage('You do not have permission to view this data', 'error');
+        return;
     }
 
-    // Generic function to render table data
-    function renderTableData(tbodyId, data, editHandler, deleteHandler) {
-        const permissions = getPermissions();
-        const tbody = document.querySelector(`#${tbodyId} tbody`);
-        if (!tbody) {
-            console.error(`Table tbody not found for ${tbodyId}`);
-            showMessage(`Table not found for ${tbodyId}`, 'error');
-            return;
-        }
-        tbody.innerHTML = '';
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2">No data available</td></tr>`;
+        return;
+    }
 
-        if (!permissions.canRead) {
-            tbody.innerHTML = `<tr><td colspan="2">You do not have permission to view this data</td></tr>`;
-            showMessage('You do not have permission to view this data', 'error');
-            return;
-        }
-
-        if (!data || data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="2">No data available</td></tr>`;
-            return;
-        }
-
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
+    data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
                 <td>${item.name}</td>
                 <td>
                     <div class="action-buttons">
@@ -114,975 +114,975 @@
                     </div>
                 </td>
             `;
-            tbody.appendChild(tr);
-        });
+        tbody.appendChild(tr);
+    });
+}
+
+// Fetch and render data for each section
+async function fetchGenders() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('genderTable', [], 'openEditGenderModal', 'deleteGender');
+        return;
     }
-
-    // Fetch and render data for each section
-    async function fetchGenders() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('genderTable', [], 'openEditGenderModal', 'deleteGender');
-            return;
-        }
-        try {
-            const genders = await apiRequest('gender');
-            renderTableData('genderTable', genders, 'openEditGenderModal', 'deleteGender');
-        } catch (error) {
-            console.error('Error fetching genders:', error);
-            showMessage('Failed to load genders: ' + error.message, 'error');
-        }
+    try {
+        const genders = await apiRequest('gender');
+        renderTableData('genderTable', genders, 'openEditGenderModal', 'deleteGender');
+    } catch (error) {
+        console.error('Error fetching genders:', error);
+        showMessage('Failed to load genders: ' + error.message, 'error');
     }
+}
 
-    async function fetchTimeUnits() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('timeUnitTable', [], 'openEditTimeUnitModal', 'deleteTimeUnit');
-            return;
-        }
-        try {
-            const timeUnits = await apiRequest('time-duration-unit');
-            renderTableData('timeUnitTable', timeUnits, 'openEditTimeUnitModal', 'deleteTimeUnit');
-        } catch (error) {
-            console.error('Error fetching time units:', error);
-            showMessage('Failed to load time units: ' + error.message, 'error');
-        }
+async function fetchTimeUnits() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('timeUnitTable', [], 'openEditTimeUnitModal', 'deleteTimeUnit');
+        return;
     }
-
-    async function fetchVisitorTypes() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('visitorTypeTable', [], 'openEditVisitorTypeModal', 'deleteVisitorType');
-            return;
-        }
-        try {
-            const visitorTypes = await apiRequest('visitor-type');
-            renderTableData('visitorTypeTable', visitorTypes, 'openEditVisitorTypeModal', 'deleteVisitorType');
-        } catch (error) {
-            console.error('Error fetching visitor types:', error);
-            showMessage('Failed to load visitor types: ' + error.message, 'error');
-        }
+    try {
+        const timeUnits = await apiRequest('time-duration-unit');
+        renderTableData('timeUnitTable', timeUnits, 'openEditTimeUnitModal', 'deleteTimeUnit');
+    } catch (error) {
+        console.error('Error fetching time units:', error);
+        showMessage('Failed to load time units: ' + error.message, 'error');
     }
+}
 
-    async function fetchPurposeOfVisits() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('purposeTable', [], 'openEditPurposeModal', 'deletePurpose');
-            return;
-        }
-        try {
-            const purposes = await apiRequest('purpose-of-visit');
-            renderTableData('purposeTable', purposes, 'openEditPurposeModal', 'deletePurpose');
-        } catch (error) {
-            console.error('Error fetching purpose of visits:', error);
-            showMessage('Failed to load purpose of visits: ' + error.message, 'error');
-        }
+async function fetchVisitorTypes() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('visitorTypeTable', [], 'openEditVisitorTypeModal', 'deleteVisitorType');
+        return;
     }
-
-    async function fetchDepartments() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('departmentTable', [], 'openEditDepartmentModal', 'deleteDepartment');
-            return;
-        }
-        try {
-            const departments = await apiRequest('department');
-            renderTableData('departmentTable', departments, 'openEditDepartmentModal', 'deleteDepartment');
-        } catch (error) {
-            console.error('Error fetching departments:', error);
-            showMessage('Failed to load departments: ' + error.message, 'error');
-        }
+    try {
+        const visitorTypes = await apiRequest('visitor-type');
+        renderTableData('visitorTypeTable', visitorTypes, 'openEditVisitorTypeModal', 'deleteVisitorType');
+    } catch (error) {
+        console.error('Error fetching visitor types:', error);
+        showMessage('Failed to load visitor types: ' + error.message, 'error');
     }
+}
 
-    async function fetchDesignations() {
-        const permissions = getPermissions();
-        if (!permissions.canRead) {
-            renderTableData('DesignationTable', [], 'openEditDesignationModal', 'deleteDesignation');
-            return;
-        }
-        try {
-            const designations = await apiRequest('designation');
-            renderTableData('DesignationTable', designations, 'openEditDesignationModal', 'deleteDesignation');
-        } catch (error) {
-            console.error('Error fetching designations:', error);
-            showMessage('Failed to load designations: ' + error.message, 'error');
-        }
+async function fetchPurposeOfVisits() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('purposeTable', [], 'openEditPurposeModal', 'deletePurpose');
+        return;
     }
-
-    // Modal open/close functions
-    function openAddGenderModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create genders', 'error');
-            return;
-        }
-        const modal = document.getElementById('addGenderModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Gender Modal not found');
-            showMessage('Error: Add Gender Modal not found.', 'error');
-        }
+    try {
+        const purposes = await apiRequest('purpose-of-visit');
+        renderTableData('purposeTable', purposes, 'openEditPurposeModal', 'deletePurpose');
+    } catch (error) {
+        console.error('Error fetching purpose of visits:', error);
+        showMessage('Failed to load purpose of visits: ' + error.message, 'error');
     }
+}
 
-    function closeAddGenderModal() {
-        const modal = document.getElementById('addGenderModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addGenderForm').reset();
-        }
+async function fetchDepartments() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('departmentTable', [], 'openEditDepartmentModal', 'deleteDepartment');
+        return;
     }
-
-    function openEditGenderModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update genders', 'error');
-            return;
-        }
-        apiRequest(`gender/${id}`).then(gender => {
-            document.getElementById('editGenderName').value = gender.name;
-            document.getElementById('editGenderForm').dataset.id = id;
-            document.getElementById('editGenderModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching gender:', error);
-            showMessage('Failed to load gender: ' + error.message, 'error');
-        });
+    try {
+        const departments = await apiRequest('department');
+        renderTableData('departmentTable', departments, 'openEditDepartmentModal', 'deleteDepartment');
+    } catch (error) {
+        console.error('Error fetching departments:', error);
+        showMessage('Failed to load departments: ' + error.message, 'error');
     }
+}
 
-    function closeEditGenderModal() {
-        const modal = document.getElementById('editGenderModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editGenderForm').reset();
-        }
+async function fetchDesignations() {
+    const permissions = getPermissions();
+    if (!permissions.canRead) {
+        renderTableData('DesignationTable', [], 'openEditDesignationModal', 'deleteDesignation');
+        return;
     }
-
-    function openAddTimeUnitModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create time units', 'error');
-            return;
-        }
-        const modal = document.getElementById('addTimeUnitModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Time Unit Modal not found');
-            showMessage('Error: Add Time Unit Modal not found.', 'error');
-        }
+    try {
+        const designations = await apiRequest('designation');
+        renderTableData('DesignationTable', designations, 'openEditDesignationModal', 'deleteDesignation');
+    } catch (error) {
+        console.error('Error fetching designations:', error);
+        showMessage('Failed to load designations: ' + error.message, 'error');
     }
+}
 
-    function closeAddTimeUnitModal() {
-        const modal = document.getElementById('addTimeUnitModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addTimeUnitForm').reset();
-        }
+// Modal open/close functions
+function openAddGenderModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create genders', 'error');
+        return;
     }
-
-    function openEditTimeUnitModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update time units', 'error');
-            return;
-        }
-        apiRequest(`time-duration-unit/${id}`).then(timeUnit => {
-            document.getElementById('editTimeUnitName').value = timeUnit.name;
-            document.getElementById('editTimeUnitForm').dataset.id = id;
-            document.getElementById('editTimeUnitModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching time unit:', error);
-            showMessage('Failed to load time unit: ' + error.message, 'error');
-        });
+    const modal = document.getElementById('addGenderModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Gender Modal not found');
+        showMessage('Error: Add Gender Modal not found.', 'error');
     }
+}
 
-    function closeEditTimeUnitModal() {
-        const modal = document.getElementById('editTimeUnitModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editTimeUnitForm').reset();
-        }
+function closeAddGenderModal() {
+    const modal = document.getElementById('addGenderModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addGenderForm').reset();
     }
+}
 
-    function openAddVisitorTypeModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create visitor types', 'error');
-            return;
-        }
-        const modal = document.getElementById('addVisitorTypeModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Visitor Type Modal not found');
-            showMessage('Error: Add Visitor Type Modal not found.', 'error');
-        }
+function openEditGenderModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update genders', 'error');
+        return;
     }
+    apiRequest(`gender/${id}`).then(gender => {
+        document.getElementById('editGenderName').value = gender.name;
+        document.getElementById('editGenderForm').dataset.id = id;
+        document.getElementById('editGenderModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching gender:', error);
+        showMessage('Failed to load gender: ' + error.message, 'error');
+    });
+}
 
-    function closeAddVisitorTypeModal() {
-        const modal = document.getElementById('addVisitorTypeModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addVisitorTypeForm').reset();
-        }
+function closeEditGenderModal() {
+    const modal = document.getElementById('editGenderModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editGenderForm').reset();
     }
+}
 
-    function openEditVisitorTypeModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update visitor types', 'error');
-            return;
-        }
-        apiRequest(`visitor-type/${id}`).then(visitorType => {
-            document.getElementById('editVisitorTypeName').value = visitorType.name;
-            document.getElementById('editVisitorTypeForm').dataset.id = id;
-            document.getElementById('editVisitorTypeModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching visitor type:', error);
-            showMessage('Failed to load visitor type: ' + error.message, 'error');
-        });
+function openAddTimeUnitModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create time units', 'error');
+        return;
     }
-
-    function closeEditVisitorTypeModal() {
-        const modal = document.getElementById('editVisitorTypeModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editVisitorTypeForm').reset();
-        }
+    const modal = document.getElementById('addTimeUnitModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Time Unit Modal not found');
+        showMessage('Error: Add Time Unit Modal not found.', 'error');
     }
+}
 
-    function openAddPurposeModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create purposes', 'error');
-            return;
-        }
-        const modal = document.getElementById('addPurposeModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Purpose Modal not found');
-            showMessage('Error: Add Purpose Modal not found.', 'error');
-        }
+function closeAddTimeUnitModal() {
+    const modal = document.getElementById('addTimeUnitModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addTimeUnitForm').reset();
     }
+}
 
-    function closeAddPurposeModal() {
-        const modal = document.getElementById('addPurposeModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addPurposeForm').reset();
-        }
+function openEditTimeUnitModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update time units', 'error');
+        return;
     }
+    apiRequest(`time-duration-unit/${id}`).then(timeUnit => {
+        document.getElementById('editTimeUnitName').value = timeUnit.name;
+        document.getElementById('editTimeUnitForm').dataset.id = id;
+        document.getElementById('editTimeUnitModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching time unit:', error);
+        showMessage('Failed to load time unit: ' + error.message, 'error');
+    });
+}
 
-    function openEditPurposeModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update purposes', 'error');
-            return;
-        }
-        apiRequest(`purpose-of-visit/${id}`).then(purpose => {
-            document.getElementById('editPurposeName').value = purpose.name;
-            document.getElementById('editPurposeForm').dataset.id = id;
-            document.getElementById('editPurposeModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching purpose:', error);
-            showMessage('Failed to load purpose: ' + error.message, 'error');
-        });
+function closeEditTimeUnitModal() {
+    const modal = document.getElementById('editTimeUnitModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editTimeUnitForm').reset();
     }
+}
 
-    function closeEditPurposeModal() {
-        const modal = document.getElementById('editPurposeModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editPurposeForm').reset();
-        }
+function openAddVisitorTypeModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create visitor types', 'error');
+        return;
     }
-
-    function openAddDepartmentModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create departments', 'error');
-            return;
-        }
-        const modal = document.getElementById('addDepartmentModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Department Modal not found');
-            showMessage('Error: Add Department Modal not found.', 'error');
-        }
+    const modal = document.getElementById('addVisitorTypeModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Visitor Type Modal not found');
+        showMessage('Error: Add Visitor Type Modal not found.', 'error');
     }
+}
 
-    function closeAddDepartmentModal() {
-        const modal = document.getElementById('addDepartmentModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addDepartmentForm').reset();
-        }
+function closeAddVisitorTypeModal() {
+    const modal = document.getElementById('addVisitorTypeModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addVisitorTypeForm').reset();
     }
+}
 
-    function openEditDepartmentModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update departments', 'error');
-            return;
-        }
-        apiRequest(`department/${id}`).then(department => {
-            document.getElementById('editDepartmentName').value = department.name;
-            document.getElementById('editDepartmentForm').dataset.id = id;
-            document.getElementById('editDepartmentModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching department:', error);
-            showMessage('Failed to load department: ' + error.message, 'error');
-        });
+function openEditVisitorTypeModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update visitor types', 'error');
+        return;
     }
+    apiRequest(`visitor-type/${id}`).then(visitorType => {
+        document.getElementById('editVisitorTypeName').value = visitorType.name;
+        document.getElementById('editVisitorTypeForm').dataset.id = id;
+        document.getElementById('editVisitorTypeModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching visitor type:', error);
+        showMessage('Failed to load visitor type: ' + error.message, 'error');
+    });
+}
 
-    function closeEditDepartmentModal() {
-        const modal = document.getElementById('editDepartmentModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editDepartmentForm').reset();
-        }
+function closeEditVisitorTypeModal() {
+    const modal = document.getElementById('editVisitorTypeModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editVisitorTypeForm').reset();
     }
+}
 
-    function openAddDesignationModal() {
-        const permissions = getPermissions();
-        if (!permissions.canCreate) {
-            showMessage('You do not have permission to create designations', 'error');
-            return;
-        }
-        const modal = document.getElementById('addDesignationModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        } else {
-            console.error('Add Designation Modal not found');
-            showMessage('Error: Add Designation Modal not found.', 'error');
-        }
+function openAddPurposeModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create purposes', 'error');
+        return;
     }
-
-    function closeAddDesignationModal() {
-        const modal = document.getElementById('addDesignationModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('addDesignationForm').reset();
-        }
+    const modal = document.getElementById('addPurposeModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Purpose Modal not found');
+        showMessage('Error: Add Purpose Modal not found.', 'error');
     }
+}
 
-    function openEditDesignationModal(id) {
-        const permissions = getPermissions();
-        if (!permissions.canUpdate) {
-            showMessage('You do not have permission to update designations', 'error');
-            return;
-        }
-        apiRequest(`designation/${id}`).then(designation => {
-            document.getElementById('editDesignationName').value = designation.name;
-            document.getElementById('editDesignationForm').dataset.id = id;
-            document.getElementById('editDesignationModal').classList.remove('hidden');
-        }).catch(error => {
-            console.error('Error fetching designation:', error);
-            showMessage('Failed to load designation: ' + error.message, 'error');
-        });
+function closeAddPurposeModal() {
+    const modal = document.getElementById('addPurposeModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addPurposeForm').reset();
     }
+}
 
-    function closeEditDesignationModal() {
-        const modal = document.getElementById('editDesignationModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.getElementById('editDesignationForm').reset();
-        }
+function openEditPurposeModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update purposes', 'error');
+        return;
     }
+    apiRequest(`purpose-of-visit/${id}`).then(purpose => {
+        document.getElementById('editPurposeName').value = purpose.name;
+        document.getElementById('editPurposeForm').dataset.id = id;
+        document.getElementById('editPurposeModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching purpose:', error);
+        showMessage('Failed to load purpose: ' + error.message, 'error');
+    });
+}
 
-    // Delete functions
-    async function deleteGender(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete genders', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
+function closeEditPurposeModal() {
+    const modal = document.getElementById('editPurposeModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editPurposeForm').reset();
+    }
+}
 
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This gender entry will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`gender/${id}`, 'DELETE');
-                        fetchGenders();
-                        showMessage('Gender deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting gender:', error);
-                        showMessage(`Failed to delete gender: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete gender', 'error');
-                    }
+function openAddDepartmentModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create departments', 'error');
+        return;
+    }
+    const modal = document.getElementById('addDepartmentModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Department Modal not found');
+        showMessage('Error: Add Department Modal not found.', 'error');
+    }
+}
+
+function closeAddDepartmentModal() {
+    const modal = document.getElementById('addDepartmentModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addDepartmentForm').reset();
+    }
+}
+
+function openEditDepartmentModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update departments', 'error');
+        return;
+    }
+    apiRequest(`department/${id}`).then(department => {
+        document.getElementById('editDepartmentName').value = department.name;
+        document.getElementById('editDepartmentForm').dataset.id = id;
+        document.getElementById('editDepartmentModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching department:', error);
+        showMessage('Failed to load department: ' + error.message, 'error');
+    });
+}
+
+function closeEditDepartmentModal() {
+    const modal = document.getElementById('editDepartmentModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editDepartmentForm').reset();
+    }
+}
+
+function openAddDesignationModal() {
+    const permissions = getPermissions();
+    if (!permissions.canCreate) {
+        showMessage('You do not have permission to create designations', 'error');
+        return;
+    }
+    const modal = document.getElementById('addDesignationModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    } else {
+        console.error('Add Designation Modal not found');
+        showMessage('Error: Add Designation Modal not found.', 'error');
+    }
+}
+
+function closeAddDesignationModal() {
+    const modal = document.getElementById('addDesignationModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('addDesignationForm').reset();
+    }
+}
+
+function openEditDesignationModal(id) {
+    const permissions = getPermissions();
+    if (!permissions.canUpdate) {
+        showMessage('You do not have permission to update designations', 'error');
+        return;
+    }
+    apiRequest(`designation/${id}`).then(designation => {
+        document.getElementById('editDesignationName').value = designation.name;
+        document.getElementById('editDesignationForm').dataset.id = id;
+        document.getElementById('editDesignationModal').classList.remove('hidden');
+    }).catch(error => {
+        console.error('Error fetching designation:', error);
+        showMessage('Failed to load designation: ' + error.message, 'error');
+    });
+}
+
+function closeEditDesignationModal() {
+    const modal = document.getElementById('editDesignationModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('editDesignationForm').reset();
+    }
+}
+
+// Delete functions
+async function deleteGender(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete genders', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This gender entry will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`gender/${id}`, 'DELETE');
+                    fetchGenders();
+                    showMessage('Gender deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting gender:', error);
+                    showMessage(`Failed to delete gender: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete gender', 'error');
                 }
-            });
-    }
-
-    async function deleteTimeUnit(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete time units', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This time unit will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`time-duration-unit/${id}`, 'DELETE');
-                        fetchTimeUnits();
-                        showMessage('Time unit deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting time unit:', error);
-                        showMessage(`Failed to delete time unit: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete time unit', 'error');
-                    }
-                }
-            });
-    }
-
-    async function deleteVisitorType(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete visitor types', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This visitor type will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`visitor-type/${id}`, 'DELETE');
-                        fetchVisitorTypes();
-                        showMessage('Visitor type deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting visitor type:', error);
-                        showMessage(`Failed to delete visitor type: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor type', 'error');
-                    }
-                }
-            });
-    }
-
-    async function deletePurpose(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete purposes', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This purpose of visit will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`purpose-of-visit/${id}`, 'DELETE');
-                        fetchPurposeOfVisits();
-                        showMessage('Purpose of visit deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting purpose:', error);
-                        showMessage(`Failed to delete purpose: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete purpose of visit', 'error');
-                    }
-                }
-            });
-    }
-
-    async function deleteDepartment(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete departments', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This department will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`department/${id}`, 'DELETE');
-                        fetchDepartments();
-                        showMessage('Department deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting department:', error);
-                        showMessage(`Failed to delete department: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete department', 'error');
-                    }
-                }
-            });
-    }
-
-    async function deleteDesignation(id) {
-        const permissions = getPermissions();
-        if (!permissions.canDelete) {
-            showMessage('You do not have permission to delete designations', 'error');
-            return;
-        }
-        const swalWithBootstrapButtons = window.Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
-            },
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: 'This designation will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-                padding: '2em',
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        await apiRequest(`designation/${id}`, 'DELETE');
-                        fetchDesignations();
-                        showMessage('Designation deleted successfully', 'success');
-                    } catch (error) {
-                        console.error('Error deleting designation:', error);
-                        showMessage(`Failed to delete designation: ${error.message || 'Unknown error'}`, 'error');
-                        swalWithBootstrapButtons.fire('Error', 'Failed to delete designation', 'error');
-                    }
-                }
-            });
-    }
-
-    // Form submission handlers
-    document.addEventListener('DOMContentLoaded', () => {
-        const permissions = getPermissions();
-        console.log('DOM fully loaded, initializing with permissions:', permissions);
-
-        // Disable Add buttons if no create permission
-        const addButtons = [
-            { id: 'addGenderBtn', handler: openAddGenderModal, label: 'Add Gender' },
-            { id: 'addTimeUnitBtn', handler: openAddTimeUnitModal, label: 'Add Time Unit' },
-            { id: 'addVisitorTypeBtn', handler: openAddVisitorTypeModal, label: 'Add Visitor Type' },
-            { id: 'addPurposeBtn', handler: openAddPurposeModal, label: 'Add Purpose' },
-            { id: 'addDepartmentBtn', handler: openAddDepartmentModal, label: 'Add Department' },
-            { id: 'addDesignationBtn', handler: openAddDesignationModal, label: 'Add Designation' },
-        ];
-
-        addButtons.forEach(btn => {
-            const button = document.getElementById(btn.id);
-            if (button) {
-                if (!permissions.canCreate) {
-                    button.classList.add('disabled');
-                    button.style.pointerEvents = 'none';
-                    button.style.opacity = '0.6';
-                    button.title = `You do not have permission to create ${btn.label.toLowerCase()}`;
-                    button.setAttribute('aria-disabled', 'true');
-                    console.log(`${btn.label} button disabled:`, button);
-                } else {
-                    button.addEventListener('click', btn.handler);
-                }
-            } else {
-                console.warn(`Button with ID ${btn.id} not found`);
             }
         });
+}
 
-        // Gender Form
-        const addGenderForm = document.getElementById('addGenderForm');
-        if (addGenderForm) {
-            addGenderForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create genders', 'error');
-                    return;
-                }
-                const name = document.getElementById('genderName').value.trim();
-                if (!name) {
-                    showMessage('Gender name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('gender', 'POST', { name });
-                    closeAddGenderModal();
-                    fetchGenders();
-                    showMessage('Gender added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding gender:', error);
-                    showMessage(`Failed to add gender: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        const editGenderForm = document.getElementById('editGenderForm');
-        if (editGenderForm) {
-            editGenderForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update genders', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editGenderName').value.trim();
-                if (!name) {
-                    showMessage('Gender name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`gender/${id}`, 'PUT', { name });
-                    closeEditGenderModal();
-                    fetchGenders();
-                    showMessage('Gender updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating gender:', error);
-                    showMessage(`Failed to update gender: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        // Time Unit Form
-        const addTimeUnitForm = document.getElementById('addTimeUnitForm');
-        if (addTimeUnitForm) {
-            addTimeUnitForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create time units', 'error');
-                    return;
-                }
-                const name = document.getElementById('timeUnitName').value.trim();
-                if (!name) {
-                    showMessage('Time unit name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('time-duration-unit', 'POST', { name });
-                    closeAddTimeUnitModal();
-                    fetchTimeUnits();
-                    showMessage('Time unit added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding time unit:', error);
-                    showMessage(`Failed to add time unit: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        const editTimeUnitForm = document.getElementById('editTimeUnitForm');
-        if (editTimeUnitForm) {
-            editTimeUnitForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update time units', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editTimeUnitName').value.trim();
-                if (!name) {
-                    showMessage('Time unit name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`time-duration-unit/${id}`, 'PUT', { name });
-                    closeEditTimeUnitModal();
-                    fetchTimeUnits();
-                    showMessage('Time unit updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating time unit:', error);
-                    showMessage(`Failed to update time unit: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        // Visitor Type Form
-        const addVisitorTypeForm = document.getElementById('addVisitorTypeForm');
-        if (addVisitorTypeForm) {
-            addVisitorTypeForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create visitor types', 'error');
-                    return;
-                }
-                const name = document.getElementById('visitorTypeName').value.trim();
-                if (!name) {
-                    showMessage('Visitor type name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('visitor-type', 'POST', { name });
-                    closeAddVisitorTypeModal();
-                    fetchVisitorTypes();
-                    showMessage('Visitor type added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding visitor type:', error);
-                    showMessage(`Failed to add visitor type: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        const editVisitorTypeForm = document.getElementById('editVisitorTypeForm');
-        if (editVisitorTypeForm) {
-            editVisitorTypeForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update visitor types', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editVisitorTypeName').value.trim();
-                if (!name) {
-                    showMessage('Visitor type name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`visitor-type/${id}`, 'PUT', { name });
-                    closeEditVisitorTypeModal();
-                    fetchVisitorTypes();
-                    showMessage('Visitor type updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating visitor type:', error);
-                    showMessage(`Failed to update visitor type: ${error.message}`, 'error');
-                }
-            });
-        }
-
-        // Purpose of Visit Form
-        const addPurposeForm = document.getElementById('addPurposeForm');
-        if (addPurposeForm) {
-            addPurposeForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create purposes', 'error');
-                    return;
-                }
-                const name = document.getElementById('purposeName').value.trim();
-                if (!name) {
-                    showMessage('Purpose name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('purpose-of-visit', 'POST', { name });
-                    closeAddPurposeModal();
-                    fetchPurposeOfVisits();
-                    showMessage('Purpose of visit added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding purpose:', error);
-                    showMessage('Failed to add purpose: ' + error.message, 'error');
-                }
-            });
-        }
-
-        const editPurposeForm = document.getElementById('editPurposeForm');
-        if (editPurposeForm) {
-            editPurposeForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update purposes', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editPurposeName').value.trim();
-                if (!name) {
-                    showMessage('Purpose name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`purpose-of-visit/${id}`, 'PUT', { name });
-                    closeEditPurposeModal();
-                    fetchPurposeOfVisits();
-                    showMessage('Purpose of visit updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating purpose:', error);
-                    showMessage('Failed to update purpose: ' + error.message, 'error');
-                }
-            });
-        }
-
-        // Department Form
-        const addDepartmentForm = document.getElementById('addDepartmentForm');
-        if (addDepartmentForm) {
-            addDepartmentForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create departments', 'error');
-                    return;
-                }
-                const name = document.getElementById('departmentName').value.trim();
-                if (!name) {
-                    showMessage('Department name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('department', 'POST', { name });
-                    closeAddDepartmentModal();
-                    fetchDepartments();
-                    showMessage('Department added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding department:', error);
-                    showMessage('Failed to add department: ' + error.message, 'error');
-                }
-            });
-        }
-
-        const editDepartmentForm = document.getElementById('editDepartmentForm');
-        if (editDepartmentForm) {
-            editDepartmentForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update departments', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editDepartmentName').value.trim();
-                if (!name) {
-                    showMessage('Department name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`department/${id}`, 'PUT', { name });
-                    closeEditDepartmentModal();
-                    fetchDepartments();
-                    showMessage('Department updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating department:', error);
-                    showMessage('Failed to update department: ' + error.message, 'error');
-                }
-            });
-        }
-
-        // Designation Form
-        const addDesignationForm = document.getElementById('addDesignationForm');
-        if (addDesignationForm) {
-            addDesignationForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canCreate) {
-                    showMessage('You do not have permission to create designations', 'error');
-                    return;
-                }
-                const name = document.getElementById('DesignationName').value.trim();
-                if (!name) {
-                    showMessage('Designation name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest('designation', 'POST', { name });
-                    closeAddDesignationModal();
-                    fetchDesignations();
-                    showMessage('Designation added successfully', 'success');
-                } catch (error) {
-                    console.error('Error adding designation:', error);
-                    showMessage(`Failed to add designation: ${error.message || 'Unknown error'}`, 'error');
-                }
-            });
-        }
-
-        const editDesignationForm = document.getElementById('editDesignationForm');
-        if (editDesignationForm) {
-            editDesignationForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!permissions.canUpdate) {
-                    showMessage('You do not have permission to update designations', 'error');
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const name = document.getElementById('editDesignationName').value.trim();
-                if (!name) {
-                    showMessage('Designation name is required', 'error');
-                    return;
-                }
-                try {
-                    await apiRequest(`designation/${id}`, 'PUT', { name });
-                    closeEditDesignationModal();
-                    fetchDesignations();
-                    showMessage('Designation updated successfully', 'success');
-                } catch (error) {
-                    console.error('Error updating designation:', error);
-                    showMessage(`Failed to update designation: ${error.message || 'Unknown error'}`, 'error');
-                }
-            });
-        }
-
-        // Initialize data
-        fetchGenders();
-        fetchTimeUnits();
-        fetchVisitorTypes();
-        fetchPurposeOfVisits();
-        fetchDepartments();
-        fetchDesignations();
+async function deleteTimeUnit(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete time units', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
     });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This time unit will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`time-duration-unit/${id}`, 'DELETE');
+                    fetchTimeUnits();
+                    showMessage('Time unit deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting time unit:', error);
+                    showMessage(`Failed to delete time unit: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete time unit', 'error');
+                }
+            }
+        });
+}
+
+async function deleteVisitorType(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete visitor types', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This visitor type will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`visitor-type/${id}`, 'DELETE');
+                    fetchVisitorTypes();
+                    showMessage('Visitor type deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting visitor type:', error);
+                    showMessage(`Failed to delete visitor type: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete visitor type', 'error');
+                }
+            }
+        });
+}
+
+async function deletePurpose(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete purposes', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This purpose of visit will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`purpose-of-visit/${id}`, 'DELETE');
+                    fetchPurposeOfVisits();
+                    showMessage('Purpose of visit deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting purpose:', error);
+                    showMessage(`Failed to delete purpose: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete purpose of visit', 'error');
+                }
+            }
+        });
+}
+
+async function deleteDepartment(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete departments', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This department will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`department/${id}`, 'DELETE');
+                    fetchDepartments();
+                    showMessage('Department deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting department:', error);
+                    showMessage(`Failed to delete department: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete department', 'error');
+                }
+            }
+        });
+}
+
+async function deleteDesignation(id) {
+    const permissions = getPermissions();
+    if (!permissions.canDelete) {
+        showMessage('You do not have permission to delete designations', 'error');
+        return;
+    }
+    const swalWithBootstrapButtons = window.Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-secondary',
+            cancelButton: 'btn btn-dark ltr:mr-3 rtl:ml-3',
+        },
+        buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+        .fire({
+            title: 'Are you sure?',
+            text: 'This designation will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            padding: '2em',
+        })
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiRequest(`designation/${id}`, 'DELETE');
+                    fetchDesignations();
+                    showMessage('Designation deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting designation:', error);
+                    showMessage(`Failed to delete designation: ${error.message || 'Unknown error'}`, 'error');
+                    swalWithBootstrapButtons.fire('Error', 'Failed to delete designation', 'error');
+                }
+            }
+        });
+}
+
+// Form submission handlers
+document.addEventListener('DOMContentLoaded', () => {
+    const permissions = getPermissions();
+    console.log('DOM fully loaded, initializing with permissions:', permissions);
+
+    // Disable Add buttons if no create permission
+    const addButtons = [
+        { id: 'addGenderBtn', handler: openAddGenderModal, label: 'Add Gender' },
+        { id: 'addTimeUnitBtn', handler: openAddTimeUnitModal, label: 'Add Time Unit' },
+        { id: 'addVisitorTypeBtn', handler: openAddVisitorTypeModal, label: 'Add Visitor Type' },
+        { id: 'addPurposeBtn', handler: openAddPurposeModal, label: 'Add Purpose' },
+        { id: 'addDepartmentBtn', handler: openAddDepartmentModal, label: 'Add Department' },
+        { id: 'addDesignationBtn', handler: openAddDesignationModal, label: 'Add Designation' },
+    ];
+
+    addButtons.forEach(btn => {
+        const button = document.getElementById(btn.id);
+        if (button) {
+            if (!permissions.canCreate) {
+                button.classList.add('disabled');
+                button.style.pointerEvents = 'none';
+                button.style.opacity = '0.6';
+                button.title = `You do not have permission to create ${btn.label.toLowerCase()}`;
+                button.setAttribute('aria-disabled', 'true');
+                console.log(`${btn.label} button disabled:`, button);
+            } else {
+                button.addEventListener('click', btn.handler);
+            }
+        } else {
+            console.warn(`Button with ID ${btn.id} not found`);
+        }
+    });
+
+    // Gender Form
+    const addGenderForm = document.getElementById('addGenderForm');
+    if (addGenderForm) {
+        addGenderForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create genders', 'error');
+                return;
+            }
+            const name = document.getElementById('genderName').value.trim();
+            if (!name) {
+                showMessage('Gender name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('gender', 'POST', { name });
+                closeAddGenderModal();
+                fetchGenders();
+                showMessage('Gender added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding gender:', error);
+                showMessage(`Failed to add gender: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    const editGenderForm = document.getElementById('editGenderForm');
+    if (editGenderForm) {
+        editGenderForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update genders', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editGenderName').value.trim();
+            if (!name) {
+                showMessage('Gender name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`gender/${id}`, 'PUT', { name });
+                closeEditGenderModal();
+                fetchGenders();
+                showMessage('Gender updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating gender:', error);
+                showMessage(`Failed to update gender: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    // Time Unit Form
+    const addTimeUnitForm = document.getElementById('addTimeUnitForm');
+    if (addTimeUnitForm) {
+        addTimeUnitForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create time units', 'error');
+                return;
+            }
+            const name = document.getElementById('timeUnitName').value.trim();
+            if (!name) {
+                showMessage('Time unit name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('time-duration-unit', 'POST', { name });
+                closeAddTimeUnitModal();
+                fetchTimeUnits();
+                showMessage('Time unit added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding time unit:', error);
+                showMessage(`Failed to add time unit: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    const editTimeUnitForm = document.getElementById('editTimeUnitForm');
+    if (editTimeUnitForm) {
+        editTimeUnitForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update time units', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editTimeUnitName').value.trim();
+            if (!name) {
+                showMessage('Time unit name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`time-duration-unit/${id}`, 'PUT', { name });
+                closeEditTimeUnitModal();
+                fetchTimeUnits();
+                showMessage('Time unit updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating time unit:', error);
+                showMessage(`Failed to update time unit: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    // Visitor Type Form
+    const addVisitorTypeForm = document.getElementById('addVisitorTypeForm');
+    if (addVisitorTypeForm) {
+        addVisitorTypeForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create visitor types', 'error');
+                return;
+            }
+            const name = document.getElementById('visitorTypeName').value.trim();
+            if (!name) {
+                showMessage('Visitor type name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('visitor-type', 'POST', { name });
+                closeAddVisitorTypeModal();
+                fetchVisitorTypes();
+                showMessage('Visitor type added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding visitor type:', error);
+                showMessage(`Failed to add visitor type: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    const editVisitorTypeForm = document.getElementById('editVisitorTypeForm');
+    if (editVisitorTypeForm) {
+        editVisitorTypeForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update visitor types', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editVisitorTypeName').value.trim();
+            if (!name) {
+                showMessage('Visitor type name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`visitor-type/${id}`, 'PUT', { name });
+                closeEditVisitorTypeModal();
+                fetchVisitorTypes();
+                showMessage('Visitor type updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating visitor type:', error);
+                showMessage(`Failed to update visitor type: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    // Purpose of Visit Form
+    const addPurposeForm = document.getElementById('addPurposeForm');
+    if (addPurposeForm) {
+        addPurposeForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create purposes', 'error');
+                return;
+            }
+            const name = document.getElementById('purposeName').value.trim();
+            if (!name) {
+                showMessage('Purpose name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('purpose-of-visit', 'POST', { name });
+                closeAddPurposeModal();
+                fetchPurposeOfVisits();
+                showMessage('Purpose of visit added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding purpose:', error);
+                showMessage('Failed to add purpose: ' + error.message, 'error');
+            }
+        });
+    }
+
+    const editPurposeForm = document.getElementById('editPurposeForm');
+    if (editPurposeForm) {
+        editPurposeForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update purposes', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editPurposeName').value.trim();
+            if (!name) {
+                showMessage('Purpose name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`purpose-of-visit/${id}`, 'PUT', { name });
+                closeEditPurposeModal();
+                fetchPurposeOfVisits();
+                showMessage('Purpose of visit updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating purpose:', error);
+                showMessage('Failed to update purpose: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // Department Form
+    const addDepartmentForm = document.getElementById('addDepartmentForm');
+    if (addDepartmentForm) {
+        addDepartmentForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create departments', 'error');
+                return;
+            }
+            const name = document.getElementById('departmentName').value.trim();
+            if (!name) {
+                showMessage('Department name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('department', 'POST', { name });
+                closeAddDepartmentModal();
+                fetchDepartments();
+                showMessage('Department added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding department:', error);
+                showMessage('Failed to add department: ' + error.message, 'error');
+            }
+        });
+    }
+
+    const editDepartmentForm = document.getElementById('editDepartmentForm');
+    if (editDepartmentForm) {
+        editDepartmentForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update departments', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editDepartmentName').value.trim();
+            if (!name) {
+                showMessage('Department name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`department/${id}`, 'PUT', { name });
+                closeEditDepartmentModal();
+                fetchDepartments();
+                showMessage('Department updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating department:', error);
+                showMessage('Failed to update department: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // Designation Form
+    const addDesignationForm = document.getElementById('addDesignationForm');
+    if (addDesignationForm) {
+        addDesignationForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canCreate) {
+                showMessage('You do not have permission to create designations', 'error');
+                return;
+            }
+            const name = document.getElementById('DesignationName').value.trim();
+            if (!name) {
+                showMessage('Designation name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest('designation', 'POST', { name });
+                closeAddDesignationModal();
+                fetchDesignations();
+                showMessage('Designation added successfully', 'success');
+            } catch (error) {
+                console.error('Error adding designation:', error);
+                showMessage(`Failed to add designation: ${error.message || 'Unknown error'}`, 'error');
+            }
+        });
+    }
+
+    const editDesignationForm = document.getElementById('editDesignationForm');
+    if (editDesignationForm) {
+        editDesignationForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!permissions.canUpdate) {
+                showMessage('You do not have permission to update designations', 'error');
+                return;
+            }
+            const id = e.target.dataset.id;
+            const name = document.getElementById('editDesignationName').value.trim();
+            if (!name) {
+                showMessage('Designation name is required', 'error');
+                return;
+            }
+            try {
+                await apiRequest(`designation/${id}`, 'PUT', { name });
+                closeEditDesignationModal();
+                fetchDesignations();
+                showMessage('Designation updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating designation:', error);
+                showMessage(`Failed to update designation: ${error.message || 'Unknown error'}`, 'error');
+            }
+        });
+    }
+
+    // Initialize data
+    fetchGenders();
+    fetchTimeUnits();
+    fetchVisitorTypes();
+    fetchPurposeOfVisits();
+    fetchDepartments();
+    fetchDesignations();
+});
