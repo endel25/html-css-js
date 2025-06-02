@@ -342,6 +342,7 @@ const validateField = (name, value, formData = {}) => {
         'visit',
         'personname',
         'department',
+        'durationunit',
         'durationtime',
         'visitortype',
     ];
