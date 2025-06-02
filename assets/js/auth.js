@@ -8,11 +8,11 @@
 
     // List of pages that require authentication
     const protectedPages = [
-        // 'index.html',
-        // 'PreApprovalEntry.html',
-        // 'SpotEntry.html',
-        // 'UserManagement.html',
-        // 'UserRole.html',
+        'index.html',
+        'PreApprovalEntry.html',
+        'SpotEntry.html',
+        'UserManagement.html',
+        'UserRole.html',
         
         // Add more protected pages here
     ];
