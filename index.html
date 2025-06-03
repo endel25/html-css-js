@@ -71,9 +71,7 @@
                                 <div class="text-3xl font-bold text-right" id="totalVisitorsCount">0</div>
                             </div>
                         </div>
-                    
-                    
-                    
+
                         <!-- Approved Passes -->
                         <div class="panel max-w-md mx-200 bg-gradient-to-r from-violet-500 to-violet-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Approvedpasses.html'">
@@ -86,8 +84,8 @@
                                 <div class="text-3xl font-bold text-right" id="approvedCount">0</div>
                             </div>
                         </div>
-                    
-                    
+
+
                         <!-- Disapproved Passes -->
                         <div class="panel max-w-md mx-200 bg-gradient-to-r from-blue-500 to-blue-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Disapprovedpasses.html'">
@@ -100,8 +98,8 @@
                                 <div class="text-3xl font-bold text-right" id="disapprovedCount">0</div>
                             </div>
                         </div>
-                    
-                    
+
+
                         <!-- Total Exit Passes -->
                         <div class="panel max-w-md mx-200 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Totalexitpasses.html'">
@@ -114,9 +112,9 @@
                                 <div class="text-3xl font-bold text-right" id="exitCount">0</div>
                             </div>
                         </div>
-                    
+
                     </div>
-                    
+
                     <!-- Existing Tables -->
                     <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
                         <!-- ✅ Upcoming Appointments Panel with Working Search -->
@@ -234,7 +232,6 @@
 
                                 </div>
                             </div>
-
                             <div class="overflow-x-auto">
                                 <div class="table-container1">
                                     <table class="table-hover whitespace-nowrap w-full">
@@ -242,7 +239,6 @@
                                             <tr>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
-                                                <th>Date</th>
                                                 <th>Visit Time</th>
                                                 <th>Type Of Passes</th>
                                                 <th>Host</th>
@@ -264,9 +260,12 @@
                                                 <tr>
                                                     <td x-text="visitor.firstName"></td>
                                                     <td x-text="visitor.lastName"></td>
-                                                    <td x-text="visitor.date"></td>
                                                     <td x-text="visitor.allocatedTime"></td>
-                                                    <td x-text="visitor.host"></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <span class="host-name" x-text="visitor.host"
+                                                            :title="`Department: ${visitor.department}, Designation: ${visitor.designation}`"></span>
+                                                    </td>
                                                     <td x-text="visitor.purpose"></td>
                                                     <td x-text="visitor.nationalId"></td>
                                                     <!-- Progress Steps -->

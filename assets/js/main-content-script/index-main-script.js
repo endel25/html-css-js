@@ -414,6 +414,7 @@ document.addEventListener('alpine:init', () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+
                 const data = await response.json();
                 console.log('API Response for Visitor Details:', JSON.stringify(data, null, 2));
 
@@ -421,87 +422,65 @@ document.addEventListener('alpine:init', () => {
                 const todayStr = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
                 console.log('Today\'s date:', todayStr);
 
-                const apiData = Array.isArray(data)
-                    ? data
-                        .map(item => {
-                            let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
-                            if (exitDateToUse?.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                                const [year, month, day] = exitDateToUse.split('-').map(Number);
-                                exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
-                            }
-                            if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                                console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
-                                exitDateToUse = todayStr;
-                            }
+                const normalizeData = (item) => {
+                    let hostName = 'Unknown';
+                    let department = 'N/A';
+                    let designation = 'N/A';
 
-                            return {
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                                pendingApproval: true,
-                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                                complete: item.complete ?? false,
-                                exitApproval: item.exit ?? false,
-                                exitDate: exitDateToUse,
-                                isApproved: item.isApproved ?? true
-                            };
-                        })
-                        .filter(item => {
-                            if (item.exitApproval && item.exitDate) {
-                                const [exitDay, exitMonth, exitYear] = item.exitDate.split('-').map(Number);
-                                const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
-                                const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-                                console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
-                                return exitDate >= todayDate;
-                            }
-                            console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
-                            return true;
-                        })
-                    : (data.data || [])
-                        .map(item => {
-                            let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
-                            if (exitDateToUse?.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                                const [year, month, day] = exitDateToUse.split('-').map(Number);
-                                exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
-                            }
-                            if (!exitDateToUse || !exitDateToUse.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                                console.warn(`Invalid exitDate format for visitor ID ${item.id}: exitDate=${item.exitDate}, date=${item.date}, using fallback`);
-                                exitDateToUse = todayStr;
-                            }
+                    if (item.personname) {
+                        const match = item.personname.match(/^(.+?)\s*\((.+?)\s*&\s*(.+?)\)$/);
+                        if (match) {
+                            hostName = match[1].trim();
+                            department = match[2].trim();
+                            designation = match[3].trim();
+                        } else {
+                            hostName = item.personname;
+                        }
+                    }
 
-                            return {
-                                id: item.id,
-                                firstName: item.firstname || 'Unknown',
-                                lastName: item.lastname || 'Unknown',
-                                date: item.date || 'N/A',
-                                allocatedTime: item.time || 'N/A',
-                                host: item.personname || 'Unknown',
-                                purpose: item.visit || 'N/A',
-                                nationalId: item.nationalid || 'N/A',
-                                pendingApproval: true,
-                                inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
-                                complete: item.complete ?? false,
-                                exitApproval: item.exit ?? false,
-                                exitDate: exitDateToUse,
-                                isApproved: item.isApproved ?? true
-                            };
-                        })
-                        .filter(item => {
-                            if (item.exitApproval && item.exitDate) {
-                                const [exitDay, exitModule, exitYear] = item.exitDate.split('-').map(Number);
-                                const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
-                                const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-                                console.log(`Visitor ID ${item.id}: exitDate=${item.exitDate} (${exitDate.toISOString().split('T')[0]}), today=${todayStr} (${todayDate.toISOString().split('T')[0]}), exitDate < todayDate=${exitDate < todayDate}`);
-                                return exitDate >= todayDate;
-                            }
-                            console.log(`Visitor ID ${item.id}: Not exited or no exitDate, keeping in list`);
-                            return true;
-                        });
+                    let exitDateToUse = item.exitDate || localStorage.getItem(`exitDate_${item.id}`) || item.date;
+                    if (exitDateToUse?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                        const [year, month, day] = exitDateToUse.split('-').map(Number);
+                        exitDateToUse = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+                    }
+
+                    if (!exitDateToUse?.match(/^\d{2}-\d{2}-\d{4}$/)) {
+                        console.warn(`Invalid exitDate format for visitor ID ${item.id}. Fallback used.`);
+                        exitDateToUse = todayStr;
+                    }
+
+                    return {
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: hostName,
+                        department,
+                        designation,
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                        pendingApproval: true,
+                        inCampus: (item.isApproved ?? true) ? true : (item.inprogress ?? false),
+                        complete: item.complete ?? false,
+                        exitApproval: item.exit ?? false,
+                        exitDate: exitDateToUse,
+                        isApproved: item.isApproved ?? true
+                    };
+                };
+
+                const processedData = Array.isArray(data) ? data : data.data || [];
+                const apiData = processedData
+                    .map(normalizeData)
+                    .filter(item => {
+                        if (item.exitApproval && item.exitDate) {
+                            const [exitDay, exitMonth, exitYear] = item.exitDate.split('-').map(Number);
+                            const exitDate = new Date(Date.UTC(exitYear, exitMonth - 1, exitDay));
+                            const todayDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+                            return exitDate >= todayDate;
+                        }
+                        return true;
+                    });
 
                 this.visitorsList = apiData;
                 console.log('Mapped Visitor List:', JSON.stringify(this.visitorsList, null, 2));
