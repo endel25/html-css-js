@@ -552,29 +552,29 @@ document.addEventListener('alpine:init', () => {
             console.log(`Rendering progress steps for visitor ID ${visitor.id}: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`);
             return `
                 <div class="progress-steps" data-status="${status}" data-is-disapproved="${isDisapproved}" data-is-exited="${isExited}">
-                    <div class="step" data-step="pending">
+                    <div class="step gap-after1" data-step="pending">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Pending Approval</div>
+                        <div class="step-label"></div>
                     </div>
-                    <div class="step" data-step="incampus">
+                    <div class="step gap-after1" data-step="incampus">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
-                        <div class="step-label">InCampus</div>
+                        <div class="step-label"></div>
                     </div>
-                    <div class="step" data-step="complete">
+                    <div class="step gap-after" data-step="complete">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Complete</div>
+                        <div class="step-label"></div>
                     </div>
                     <div class="step" data-step="exit">
                         <div class="step-circle">
@@ -582,7 +582,7 @@ document.addEventListener('alpine:init', () => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Exit Approval</div>
+                        <div class="step-label"></div>
                     </div>
                 </div>
             `;
