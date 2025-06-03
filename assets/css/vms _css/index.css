@@ -161,10 +161,14 @@ thead th {
     background: white;
     z-index: 1;
 }
+.p-6{
+    padding: 18px;
+}
 
 img {
-    max-width: 70%;
-    height: auto;
+    max-width: 40%;
+    height: 10;
+    opacity: 0.5;
 }
 
 #img1 {
