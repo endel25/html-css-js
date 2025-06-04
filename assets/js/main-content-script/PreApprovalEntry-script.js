@@ -952,7 +952,7 @@ async function updateVisitorStatus(visitorId, status, resetStatus = {}, maxAttem
 
             setButtonVisibility(visitorId, updatedVisitor);
 
-            showMessage(`Visitor status updated to ${status}`, 'success');
+            // showMessage(`Visitor status updated to ${status}`, 'success');
             originalVisitorData = null;
             await loadVisitorData();
             return updatedVisitor;
@@ -973,63 +973,96 @@ async function updateVisitorStatus(visitorId, status, resetStatus = {}, maxAttem
 
 // Append event listeners to DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('approveBtn')?.addEventListener('click', async () => {
-        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        if (await updateVisitorStatus(visitorId, 'approve')) {
-            const visitor = await fetchVisitorById(visitorId);
-            if (visitor) {
-                setButtonVisibility(visitorId, visitor);
-                window.location.href = 'PreApprovalEntry.html';
+        document.getElementById('approveBtn')?.addEventListener('click', async () => {
+            const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+            if (await updateVisitorStatus(visitorId, 'approve')) {
+                const visitor = await fetchVisitorById(visitorId);
+                if (visitor) {
+                    setButtonVisibility(visitorId, visitor);
+                    // Set success message before redirect
+                    sessionStorage.setItem('successMessage', 'Visitor status approved successfully');
+                    window.location.href = 'PreApprovalEntry.html';
+                }
             }
-        }
-    });
+        });
 
-    document.getElementById('disapproveBtn')?.addEventListener('click', async () => {
-        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        let visitor = await updateVisitorStatus(visitorId, 'disapprove');
-        if (visitor) {
-            visitor = await updateVisitorStatus(visitorId, 'complete');
+        const message = sessionStorage.getItem('successMessage');
+        if (message) {
+            showMessage(message, 'success');
+            sessionStorage.removeItem('successMessage'); // Clear after showing
+        }
+
+        document.getElementById('disapproveBtn')?.addEventListener('click', async () => {
+            const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+            let visitor = await updateVisitorStatus(visitorId, 'disapprove');
             if (visitor) {
-                setButtonVisibility(visitorId, visitor);
-                window.location.href = 'PreApprovalEntry.html';
+                visitor = await updateVisitorStatus(visitorId, 'complete');
+                if (visitor) {
+                    setButtonVisibility(visitorId, visitor);
+                    // Set success message before redirect
+                    sessionStorage.setItem('successMessage', 'Visitor status disapproved successfully');
+                    window.location.href = 'PreApprovalEntry.html';
+                }
             }
-        }
-    });
+        });
 
-    document.getElementById('completeBtn')?.addEventListener('click', async () => {
-        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        if (await updateVisitorStatus(visitorId, 'complete')) {
-            const visitor = await fetchVisitorById(visitorId);
-            if (visitor) {
-                setButtonVisibility(visitorId, visitor);
-                window.location.href = 'PreApprovalEntry.html';
+        const message1 = sessionStorage.getItem('successMessage');
+        if (message1) {
+            showMessage(message, 'success');
+            sessionStorage.removeItem('successMessage'); // clear after showing
+        }
+
+
+        document.getElementById('completeBtn')?.addEventListener('click', async () => {
+            const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+            if (await updateVisitorStatus(visitorId, 'complete')) {
+                const visitor = await fetchVisitorById(visitorId);
+                if (visitor) {
+                    setButtonVisibility(visitorId, visitor);
+                    // Set success message before redirect
+                    sessionStorage.setItem('successMessage', 'Visitor status marked as complete successfully');
+                    window.location.href = 'PreApprovalEntry.html';
+                }
             }
-        }
-    });
+        });
 
-    document.getElementById('exitBtn')?.addEventListener('click', async () => {
-        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        if (await updateVisitorStatus(visitorId, 'exit')) {
-            const visitor = await fetchVisitorById(visitorId);
-            if (visitor) {
-                setButtonVisibility(visitorId, visitor);
-                window.location.href = 'PreApprovalEntry.html';
+        const message2 = sessionStorage.getItem('successMessage');
+        if (message2) {
+            showMessage(message, 'success');
+            sessionStorage.removeItem('successMessage');
+        }
+
+        document.getElementById('exitBtn')?.addEventListener('click', async () => {
+            const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+            if (await updateVisitorStatus(visitorId, 'exit')) {
+                const visitor = await fetchVisitorById(visitorId);
+                if (visitor) {
+                    setButtonVisibility(visitorId, visitor);
+                    // Set success message before redirect
+                    sessionStorage.setItem('successMessage', 'Visitor has exited successfully');
+                    window.location.href = 'PreApprovalEntry.html';
+                }
             }
-        }
-    });
+        });
 
-    document.getElementById('noteBtn')?.addEventListener('click', async () => {
-        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        const noteInput = document.getElementById('edit-notes');
-        if (!noteInput) {
-            showMessage('Note input field not found', 'error');
-            return;
+        const message3 = sessionStorage.getItem('successMessage');
+        if (message3) {
+            showMessage(message, 'success');
+            sessionStorage.removeItem('successMessage'); // Clear after showing
         }
-        const note = noteInput.value.trim();
-        if (!note) {
-            showMessage('Please enter a note', 'error');
-            return;
-        }
-        await saveVisitorNote(visitorId, note);
-    });
+
+        document.getElementById('noteBtn')?.addEventListener('click', async () => {
+            const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+            const noteInput = document.getElementById('edit-notes');
+            if (!noteInput) {
+                showMessage('Note input field not found', 'error');
+                return;
+            }
+            const note = noteInput.value.trim();
+            if (!note) {
+                showMessage('Please enter a note', 'error');
+                return;
+            }
+            await saveVisitorNote(visitorId, note);
+        });
 });
