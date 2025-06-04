@@ -75,10 +75,22 @@ table tbody tr td {
     --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    height: 280px; /* Fixed height to match table panel */
+    height: 286px; /* Fixed height to match table panel */
     overflow: hidden;
 }
 
+.panel3 {
+    position: relative;
+    border-radius: .375rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    padding: 1.5rem;
+    --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    height: 355px; /* Fixed height to match table panel */
+    overflow: hidden;
+}
 table tbody tr td:where([dir=ltr], [dir=ltr] *),
 table tfoot tr th:where([dir=ltr], [dir=ltr] *),
 table thead tr th:where([dir=ltr], [dir=ltr] *) {
@@ -148,12 +160,12 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
 }
 
 .table-container {
-    max-height: 280px;
+    max-height: 250px;
     overflow-y: auto;
 }
 
 .table-container1 {
-    max-height: 520px;
+    max-height: 350px;
     overflow-y: auto;
 }
 

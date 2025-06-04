@@ -217,15 +217,12 @@
                         <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
                         
                             <!-- Visitors by Status Chart -->
-<!-- Visitors by Status Chart -->
-<div class="panel1">
-    <h3 class="mb-2 text-lg font-bold"><b>Visitors Status</b></h3>
-    <div class="chart-container">
-        <canvas id="chart-status" class="h-40"></canvas>
-    </div>
-</div>
-
-                        
+                            <div class="panel1">
+                                <h3 class="mb-2 text-lg font-bold"><b>Visitors Status</b></h3>
+                                <div class="chart-container">
+                                    <canvas id="chart-status" class="h-40"></canvas>
+                                </div>
+                            </div>
                             <!-- Types of Passes Chart -->
                             <div class="panel1">
                                 <h3 class="mb-2 text-lg font-bold"><b>Types of Passes</b></h3>
@@ -238,7 +235,7 @@
 
                     <div class="mb-5 grid grid-cols-1">
                         <!-- ✅ Visitor Details Table Panel with Search -->
-                        <div class="panel" x-data="visitorDetails" x-init="fetchVisitorDetails()">
+                        <div class="panel3" x-data="visitorDetails" x-init="fetchVisitorDetails()">
                             <div class="mb-3 flex items-center justify-between">
                                 <h3 class="text-lg font-bold"><b>Today's Visitor Details</b></h3>
                                 <div class="dataTable-search">
