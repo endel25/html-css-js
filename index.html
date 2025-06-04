@@ -60,7 +60,7 @@
                     <!--start main content-->
                     <div class="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
                         <!-- Total Visitors -->
-                        <div class="panel max-w-md mx-200 bg-gradient-to-r from-blue-500 to-cyan-400 p-6 rounded-lg shadow-lg card cursor-pointer"
+                        <div class="panel2 max-w-md mx-200 bg-gradient-to-r from-blue-500 to-cyan-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='SpotEntry.html'">
                             <div class="grid grid-cols-2 items-center text-white">
                                 <!-- Left side: label + icon -->
@@ -73,7 +73,7 @@
                         </div>
 
                         <!-- Approved Passes -->
-                        <div class="panel max-w-md mx-200 bg-gradient-to-r from-violet-500 to-violet-400 p-6 rounded-lg shadow-lg card cursor-pointer"
+                        <div class="panel2 max-w-md mx-200 bg-gradient-to-r from-violet-500 to-violet-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Approvedpasses.html'">
                             <div class="grid grid-cols-2 items-center text-white">
                                 <!-- Left side: icon + label -->
@@ -87,7 +87,7 @@
 
 
                         <!-- Disapproved Passes -->
-                        <div class="panel max-w-md mx-200 bg-gradient-to-r from-blue-500 to-blue-400 p-6 rounded-lg shadow-lg card cursor-pointer"
+                        <div class="panel2 max-w-md mx-200 bg-gradient-to-r from-blue-500 to-blue-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Disapprovedpasses.html'">
                             <div class="grid grid-cols-2 items-center text-white">
                                 <!-- Left: icon + label -->
@@ -101,7 +101,7 @@
 
 
                         <!-- Total Exit Passes -->
-                        <div class="panel max-w-md mx-200 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 p-6 rounded-lg shadow-lg card cursor-pointer"
+                        <div class="panel2 max-w-md mx-200 bg-gradient-to-r from-fuchsia-500 to-fuchsia-400 p-6 rounded-lg shadow-lg card cursor-pointer"
                             onclick="window.location.href='Totalexitpasses.html'">
                             <div class="grid grid-cols-2 items-center text-white">
                                 <!-- Left: icon + label -->
@@ -116,7 +116,7 @@
                     </div>
 
                     <!-- Existing Tables -->
-                    <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
+                    <div class="mb-0 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                         <!-- ✅ Upcoming Appointments Panel with Working Search -->
                         <div class="panel" x-data="upcomingAppointments" x-init="fetchUpcomingAppointments()">
                             <div class="mb-3 flex items-center justify-between">
@@ -136,10 +136,8 @@
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Date</th>
-                                                <th>Allocated Time</th>
+                                                <th>Visit Time</th>
                                                 <th>Host</th>
-                                                <th>Purpose</th>
-                                                <th>National ID</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -157,9 +155,10 @@
                                                     <td x-text="appointment.lastName"></td>
                                                     <td x-text="appointment.date"></td>
                                                     <td x-text="appointment.allocatedTime"></td>
-                                                    <td x-text="appointment.host"></td>
-                                                    <td x-text="appointment.purpose"></td>
-                                                    <td x-text="appointment.nationalId"></td>
+                                                    <td>
+                                                        <span class="host-name" x-text="appointment.host"
+                                                            :title="`Department: ${appointment.department}, Designation: ${appointment.designation}`"></span>
+                                                    </td>
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -173,12 +172,11 @@
                             <div class="mb-3 flex items-center justify-between">
                                 <h3 class="text-lg font-bold"><b>Today's Visitor</b></h3>
                                 <div class="dataTable-search">
-                                    <input class="dataTable-input" placeholder="Search..." type="text"
-                                        :value="searchQuery" @input="searchQuery = $event.target.value"
-                                        autocomplete="off" spellcheck="false" />
+                                    <input class="dataTable-input" placeholder="Search..." type="text" :value="searchQuery"
+                                        @input="searchQuery = $event.target.value" autocomplete="off" spellcheck="false" />
                                 </div>
                             </div>
-
+                        
                             <div class="overflow-x-auto">
                                 <div class="table-container">
                                     <table class="table-hover whitespace-nowrap w-full">
@@ -186,11 +184,8 @@
                                             <tr>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
-                                                <th>Date</th>
-                                                <th>Allocated Time</th>
+                                                <th>Visit Time</th>
                                                 <th>Host</th>
-                                                <th>Purpose</th>
-                                                <th>National ID</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -200,21 +195,42 @@
                                                     <td colspan="8" class="text-center">No visitors available</td>
                                                 </tr>
                                             </template>
-
+                        
                                             <!-- Loop through filtered list -->
                                             <template x-for="(visitor, index) in filteredVisitors" :key="visitor.id">
                                                 <tr>
                                                     <td x-text="visitor.firstName"></td>
                                                     <td x-text="visitor.lastName"></td>
-                                                    <td x-text="visitor.date"></td>
                                                     <td x-text="visitor.allocatedTime"></td>
-                                                    <td x-text="visitor.host"></td>
-                                                    <td x-text="visitor.purpose"></td>
-                                                    <td x-text="visitor.nationalId"></td>
+                                                    <td>
+                                                        <span class="host-name" x-text="visitor.host"
+                                                            :title="`Department: ${visitor.department}, Designation: ${visitor.designation}`"></span>
+                                                    </td>
                                                 </tr>
                                             </template>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Charts Section in 2 Columns -->
+                        <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
+                        
+                            <!-- Visitors by Status Chart -->
+<!-- Visitors by Status Chart -->
+<div class="panel1">
+    <h3 class="mb-2 text-lg font-bold"><b>Visitors Status</b></h3>
+    <div class="chart-container">
+        <canvas id="chart-status" class="h-40"></canvas>
+    </div>
+</div>
+
+                        
+                            <!-- Types of Passes Chart -->
+                            <div class="panel1">
+                                <h3 class="mb-2 text-lg font-bold"><b>Types of Passes</b></h3>
+                                <div class="chart-container">
+                                    <canvas id="chart-type" class="h-40"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -244,7 +260,10 @@
                                                 <th>Host</th>
                                                 <th>Purpose</th>
                                                 <th>National ID</th>
-                                                <th colspan="4" class="text-center">Status</th>
+                                                <th>Pending</th>
+                                                <th>InCampus</th>
+                                                <th>Complete</th>
+                                                <th>Exit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -269,7 +288,7 @@
                                                     <td x-text="visitor.purpose"></td>
                                                     <td x-text="visitor.nationalId"></td>
                                                     <!-- Progress Steps -->
-                                                    <td colspan="4">
+                                                    <td colspan="4" class="td1">
                                                         <!-- Use renderProgressSteps to dynamically render the progress steps -->
                                                         <div x-html="renderProgressSteps(visitor)"></div>
                                                     </td>
@@ -290,7 +309,6 @@
             <!-- end footer section -->
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/alpine-collaspe.min.js"></script>
     <script src="assets/js/alpine-persist.min.js"></script>

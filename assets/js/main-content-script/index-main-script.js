@@ -265,31 +265,46 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 const data = await response.json();
-                const apiData = Array.isArray(data)
-                    ? data.map(item => ({
+
+                const normalizeData = (item) => {
+                    let hostName = 'Unknown';
+                    let department = 'N/A';
+                    let designation = 'N/A';
+
+                    // Parse personname to extract host, department, and designation
+                    if (item.personname) {
+                        const match = item.personname.match(/^(.+?)\s*\((.+?)\s*&\s*(.+?)\)$/);
+                        if (match) {
+                            hostName = match[1].trim();
+                            department = match[2].trim();
+                            designation = match[3].trim();
+                        } else {
+                            hostName = item.personname;
+                        }
+                    }
+
+                    return {
                         id: item.id,
                         firstName: item.firstname || 'Unknown',
                         lastName: item.lastname || 'Unknown',
                         date: item.date || 'N/A',
                         allocatedTime: item.time || 'N/A',
-                        host: item.personname || 'Unknown',
+                        host: hostName,
+                        department, // Add department
+                        designation, // Add designation
                         purpose: item.visit || 'N/A',
                         nationalId: item.nationalid || 'N/A'
-                    }))
-                    : (data.data || []).map(item => ({
-                        id: item.id,
-                        firstName: item.firstname || 'Unknown',
-                        lastName: item.lastname || 'Unknown',
-                        date: item.date || 'N/A',
-                        allocatedTime: item.time || 'N/A',
-                        host: item.personname || 'Unknown',
-                        purpose: item.visit || 'N/A',
-                        nationalId: item.nationalid || 'N/A'
-                    }));
+                    };
+                };
+
+                const processedData = Array.isArray(data) ? data : data.data || [];
+                const apiData = processedData.map(normalizeData);
 
                 this.appointmentsList = apiData;
+                console.log('Mapped Upcoming Appointments List:', JSON.stringify(this.appointmentsList, null, 2));
             } catch (error) {
-                console.error('Error fetching visitor details:', error);
+                console.error('Error fetching upcoming appointments:', error);
+                this.showMessage('Failed to load upcoming appointments.', 'error');
             }
         }
     }));
@@ -318,34 +333,46 @@ document.addEventListener('alpine:init', () => {
 
                 const data = await response.json();
                 const today = new Date().toISOString().split('T')[0];
-                const apiData = Array.isArray(data)
-                    ? data
-                        .filter(item => item.date === today)
-                        .map(item => ({
-                            id: item.id,
-                            firstName: item.firstname || 'Unknown',
-                            lastName: item.lastname || 'Unknown',
-                            date: item.date || 'N/A',
-                            allocatedTime: item.time || 'N/A',
-                            host: item.personname || 'Unknown',
-                            purpose: item.visit || 'N/A',
-                            nationalId: item.nationalid || 'N/A',
-                            pendingApproval: item.isApproved ?? true
-                        }))
-                    : (data.data || [])
-                        .filter(item => item.date === today)
-                        .map(item => ({
-                            id: item.id,
-                            firstName: item.firstname || 'Unknown',
-                            lastName: item.lastname || 'Unknown',
-                            date: item.date || 'N/A',
-                            allocatedTime: item.time || 'N/A',
-                            host: item.personname || 'Unknown',
-                            purpose: item.visit || 'N/A',
-                            nationalId: item.nationalid || 'N/A',
-                            pendingApproval: item.isApproved ?? true
-                        }));
+
+                const normalizeData = (item) => {
+                    let hostName = 'Unknown';
+                    let department = 'N/A';
+                    let designation = 'N/A';
+
+                    // Parse personname to extract host, department, and designation
+                    if (item.personname) {
+                        const match = item.personname.match(/^(.+?)\s*\((.+?)\s*&\s*(.+?)\)$/);
+                        if (match) {
+                            hostName = match[1].trim();
+                            department = match[2].trim();
+                            designation = match[3].trim();
+                        } else {
+                            hostName = item.personname;
+                        }
+                    }
+
+                    return {
+                        id: item.id,
+                        firstName: item.firstname || 'Unknown',
+                        lastName: item.lastname || 'Unknown',
+                        date: item.date || 'N/A',
+                        allocatedTime: item.time || 'N/A',
+                        host: hostName,
+                        department, // Add department
+                        designation, // Add designation
+                        purpose: item.visit || 'N/A',
+                        nationalId: item.nationalid || 'N/A',
+                        pendingApproval: item.isApproved ?? true
+                    };
+                };
+
+                const processedData = Array.isArray(data) ? data : data.data || [];
+                const apiData = processedData
+                    .filter(item => item.date === today)
+                    .map(normalizeData);
+
                 this.visitorsList = apiData;
+                console.log('Mapped Today\'s Visitor List:', JSON.stringify(this.visitorsList, null, 2));
             } catch (error) {
                 console.error("Error fetching today's visitors:", error);
                 this.showMessage("Failed to load today's visitors.", 'error');
@@ -552,29 +579,29 @@ document.addEventListener('alpine:init', () => {
             console.log(`Rendering progress steps for visitor ID ${visitor.id}: status=${status}, isDisapproved=${isDisapproved}, isExited=${isExited}`);
             return `
                 <div class="progress-steps" data-status="${status}" data-is-disapproved="${isDisapproved}" data-is-exited="${isExited}">
-                    <div class="step" data-step="pending">
+                    <div class="step gap-after1" data-step="pending">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Pending Approval</div>
+                        <div class="step-label"></div>
                     </div>
-                    <div class="step" data-step="incampus">
+                    <div class="step gap-after1" data-step="incampus">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
-                        <div class="step-label">InCampus</div>
+                        <div class="step-label"></div>
                     </div>
-                    <div class="step" data-step="complete">
+                    <div class="step gap-after" data-step="complete">
                         <div class="step-circle">
                             <svg class="step-icon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Complete</div>
+                        <div class="step-label"></div>
                     </div>
                     <div class="step" data-step="exit">
                         <div class="step-circle">
@@ -582,7 +609,7 @@ document.addEventListener('alpine:init', () => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
                         </div>
-                        <div class="step-label">Exit Approval</div>
+                        <div class="step-label"></div>
                     </div>
                 </div>
             `;
@@ -761,3 +788,77 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchExitVisitors();
     fetchVisitors();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const isDarkMode = document.documentElement.classList.contains('dark');
+
+    const backgroundColors = isDarkMode
+        ? ['#f87171', '#facc15', '#4ade80', '#60a5fa', '#a78bfa']
+        : ['#ef4444', '#fbbf24', '#10b981', '#3b82f6', '#8b5cf6'];
+
+    const borderColor = isDarkMode ? '#1f2937' : '#ffffff';
+
+    // Visitors by Status Chart
+    const ctxStatus = document.getElementById('chart-status').getContext('2d');
+    new Chart(ctxStatus, {
+        type: 'pie',
+        data: {
+            labels: ['Total Visitors', 'Approved Passes', 'Disapproved Passes', 'Total Exit Passes'],
+            datasets: [{
+                label: 'Visitor Status',
+                data: [25, 15, 10, 12],
+                backgroundColor: backgroundColors,
+                borderColor: borderColor,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: isDarkMode ? '#e5e7eb' : '#111827'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
+                    titleColor: isDarkMode ? '#f9fafb' : '#111827',
+                    bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
+                }
+            }
+        }
+    });
+
+    // Types of Passes Chart
+    const ctxType = document.getElementById('chart-type').getContext('2d');
+    new Chart(ctxType, {
+        type: 'pie',
+        data: {
+            labels: ['SpotEntry', 'PreApprovalEntry'],
+            datasets: [{
+                label: 'Pass Types',
+                data: [40, 60], // Replace with real-time data if needed
+                backgroundColor: [backgroundColors[0], backgroundColors[1]],
+                borderColor: borderColor,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: isDarkMode ? '#e5e7eb' : '#111827'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
+                    titleColor: isDarkMode ? '#f9fafb' : '#111827',
+                    bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
+                }
+            }
+        }
+    });
+});
+
+
