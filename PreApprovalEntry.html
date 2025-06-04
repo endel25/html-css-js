@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <link defer rel="stylesheet" type="text/css" media="screen" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/css/vms _css/PreApprovalEntry.css">
+    
 </head>
 
 <body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased"
@@ -83,7 +84,6 @@
                                     <th>National ID</th>
                                     <th>NDA Approve</th>
                                     <th>Safety Approve</th>
-                                    <th>Gatepass Approve</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -393,12 +393,11 @@
                             <div class="button-group">
                                 <button type="submit" form="visitorForm" id="save-details"
                                     class="btn btn-outline-primary btn-sm rounded-full !mt-6">Save Details</button>
-                                <button type="button" id="approveGatepass"
-                                    class="btn btn-outline-success btn-sm rounded-full !mt-6">Approve
-                                    Gatepass</button>
-                                <button type="button" id="disapproveGatepass"
-                                    class="btn btn-outline-danger btn-sm rounded-full !mt-6">Disapprove
-                                    Gatepass</button>
+                                    <button type="button" id="approveBtn" class="btn btn-outline-success btn-sm rounded-full">Approve</button>
+                                    <button type="button" id="disapproveBtn" class="btn btn-outline-danger btn-sm rounded-full">Disapprove</button>
+                                    <button type="button" id="completeBtn" class="btn btn-sm btn-outline-primary rounded-full">Complete</button>
+                                    <button type="button" id="exitBtn" class="btn btn-sm btn-outline-primary rounded-full">Exit</button>
+                                
                             </div>
                         </form>
                     </div>
