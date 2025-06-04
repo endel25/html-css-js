@@ -798,67 +798,76 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const borderColor = isDarkMode ? '#1f2937' : '#ffffff';
 
-    // Visitors by Status Chart
-    const ctxStatus = document.getElementById('chart-status').getContext('2d');
-    new Chart(ctxStatus, {
-        type: 'pie',
-        data: {
-            labels: ['Total Visitors', 'Approved Passes', 'Disapproved Passes', 'Total Exit Passes'],
-            datasets: [{
-                label: 'Visitor Status',
-                data: [25, 15, 10, 12],
-                backgroundColor: backgroundColors,
-                borderColor: borderColor,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: isDarkMode ? '#e5e7eb' : '#111827'
+    // Wait until visitor data is available
+    setTimeout(() => {
+        // Visitors by Status Chart
+        const ctxStatus = document.getElementById('chart-status').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'pie',
+            data: {
+                labels: ['Total Visitors', 'Approved Passes', 'Disapproved Passes', 'Total Exit Passes'],
+                datasets: [{
+                    label: 'Visitor Status',
+                    data: [
+                        visitors.length,
+                        approvedVisitors.length,
+                        disapprovedVisitors.length,
+                        exitVisitors.length
+                    ],
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e5e7eb' : '#111827'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
+                        titleColor: isDarkMode ? '#f9fafb' : '#111827',
+                        bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
                     }
-                },
-                tooltip: {
-                    backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
-                    titleColor: isDarkMode ? '#f9fafb' : '#111827',
-                    bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
                 }
             }
-        }
-    });
+        });
 
-    // Types of Passes Chart
-    const ctxType = document.getElementById('chart-type').getContext('2d');
-    new Chart(ctxType, {
-        type: 'pie',
-        data: {
-            labels: ['SpotEntry', 'PreApprovalEntry'],
-            datasets: [{
-                label: 'Pass Types',
-                data: [40, 60], // Replace with real-time data if needed
-                backgroundColor: [backgroundColors[0], backgroundColors[1]],
-                borderColor: borderColor,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: isDarkMode ? '#e5e7eb' : '#111827'
+        // Types of Passes Chart
+        const ctxType = document.getElementById('chart-type').getContext('2d');
+        new Chart(ctxType, {
+            type: 'pie',
+            data: {
+                labels: ['SpotEntry', 'PreApprovalEntry'],
+                datasets: [{
+                    label: 'Pass Types',
+                    data: [40, 60], // Replace with dynamic values if needed
+                    backgroundColor: [backgroundColors[0], backgroundColors[1]],
+                    borderColor: borderColor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e5e7eb' : '#111827'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
+                        titleColor: isDarkMode ? '#f9fafb' : '#111827',
+                        bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
                     }
-                },
-                tooltip: {
-                    backgroundColor: isDarkMode ? '#374151' : '#f9fafb',
-                    titleColor: isDarkMode ? '#f9fafb' : '#111827',
-                    bodyColor: isDarkMode ? '#d1d5db' : '#1f2937'
                 }
             }
-        }
-    });
+        });
+    }, 500); // Adjust delay as needed based on when your visitors arrays are filled
 });
+
 
 
