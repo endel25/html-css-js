@@ -51,7 +51,11 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
     text-align: center;
 }
 
-.panel {
+table tbody tr td {
+    padding: 0px 8px;
+}
+
+.panel2 {
     position: relative;
     border-radius: .375rem;
     --tw-bg-opacity: 1;
@@ -62,7 +66,7 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.panel1 {
+.panel, .panel1 {
     position: relative;
     border-radius: .375rem;
     --tw-bg-opacity: 1;
@@ -71,9 +75,8 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
     --tw-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    height: 280px; /* Fixed height to match table panel */
     overflow: hidden;
-    min-height: 350px;
-    max-height: 400px;
 }
 
 table tbody tr td:where([dir=ltr], [dir=ltr] *),
@@ -149,7 +152,6 @@ table thead tr th:where([dir=ltr], [dir=ltr] *) {
     overflow-y: auto;
 }
 
-
 .table-container1 {
     max-height: 520px;
     overflow-y: auto;
@@ -161,7 +163,8 @@ thead th {
     background: white;
     z-index: 1;
 }
-.p-6{
+
+.p-6 {
     padding: 18px;
 }
 
@@ -178,9 +181,7 @@ img {
 
 .chart-container {
     width: 100%;
-    height: 100%;
-    min-height: 300px;
-    max-height: 350px;
+    height: 240px; /* Match the table-container height */
     max-width: 100%;
     position: relative;
 }
@@ -188,12 +189,26 @@ img {
 #chart-time,
 #chart-status,
 #chart-frequent,
-#chart-purpose {
+#chart-status,
+#chart-type {
     width: 100% !important;
-    height: 100% !important;
-    min-height: 300px !important;
-    max-height: 350px !important;
+    height: 200px !important; /* Match the chart-container */
     max-width: 100% !important;
+}
+
+/* Dark Mode Styling */
+.dark .panel, .dark .panel1 {
+    background-color: #1f2937; /* Tailwind gray-800 */
+    color: #f9fafb !important; /* Tailwind gray-50 */
+    border-color: #374151; /* Optional: Tailwind gray-700 for border */
+}
+
+.dark .chart-container {
+    background-color: #111827; /* Tailwind gray-900 */
+}
+
+.dark h3 {
+    color: #f3f4f6; /* Tailwind gray-100 */
 }
 
 /* Progress Steps */
@@ -202,10 +217,8 @@ img {
     align-items: center;
     justify-content: space-between;
     position: relative;
-    padding: 10px 0;
     flex-wrap: nowrap;
 }
-
 
 .step {
     display: flex;
@@ -213,10 +226,7 @@ img {
     align-items: center;
     width: 25%;
     position: relative;
-    /* z-index: 1; */
 }
-
-
 
 .step-circle {
     width: 28px;
@@ -250,23 +260,10 @@ img {
     text-align: center;
 }
 
-/* Line connecting the steps */
-/* .progress-steps::before {
-    content: '';
-    position: absolute;
-    top: 25px;
-    left: 12.5%;
-    width: 75%;
-    height: 3px;
-    background: linear-gradient(to right, #e0e0e0 50%, #e0e0e0 50%);
-    z-index: 0;
-} */
-
-
 .progress-steps::before {
     content: '';
     position: absolute;
-    top: 25px;
+    top: 12.5px;
     left: 0;
     right: 0;
     height: 3px;
@@ -363,16 +360,6 @@ img {
 }
 
 /* Dark Mode Styling */
-.dark .panel1 {
-    background-color: #1f2937;
-    color: #888ea8;
-    border-color: #374151;
-}
-
-.dark .chart-container {
-    background-color: #111827;
-}
-
 .dark h3 {
     color: #888ea8;
 }
@@ -389,4 +376,8 @@ img {
 
 .dark tr:hover {
     background-color: #2d3748;
+}
+
+.td1 {
+    padding: 0px 16px;
 }
