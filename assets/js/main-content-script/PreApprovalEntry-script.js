@@ -449,14 +449,6 @@ function updatePagination(visitors, total) {
                         disabled>
                     <label for="safety-${visitor.id || ''}"></label>
                 </td>
-                <td class="center-checkbox">
-                    <input type="checkbox" 
-                        class="gatepass-approve ${visitor.gatepassApproved == null ? 'unset' : ''}" 
-                        id="gatepass-${visitor.id || ''}" 
-                        ${visitor.gatepassApproved === true ? 'checked' : ''} 
-                        disabled>
-                    <label for="gatepass-${visitor.id || ''}"></label>
-                </td>
                 <td>
                     <button class="btn-sm btn-outline-primary1 rounded-full details-btn" 
                             data-id="${visitor.id || ''}" 
@@ -617,7 +609,7 @@ async function openVisitorModal(visitorId) {
 
     const populateField = (id, value, defaultValue = '') => {
         const element = document.getElementById(`edit-${id}`);
-        if (element) element.value = value ?? defaultValue;
+        if (element) element.value = value ?? '';
     };
 
     populateField('firstname', visitor.firstname);
@@ -700,7 +692,7 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
 
     try {
         if (!originalVisitorData) {
-            showMessage('Original data not loaded', 'error');
+            showMessage('Data not loaded', 'error');
             return;
         }
 
@@ -744,7 +736,6 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             const currentValue = element.value;
             const originalValue = originalVisitorData[field] ?? '';
             if (currentValue !== originalValue.toString()) {
-                // Fix: assign to correct key, mapping durationUnit to durationunit
                 const key = field === 'durationUnit' ? 'durationunit' : field;
                 changedData[key] = currentValue;
             }
@@ -811,7 +802,7 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
                 showMessage('Appointment Details saved successfully!', 'success');
 
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnContent;
+                submitBtn.innerHTML = 'Save Details'; // Restore original button text
                 return true;
             } catch (error) {
                 console.error(`Attempt ${attempt} failed:`, error);
@@ -821,7 +812,7 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
                 } else {
                     showMessage(`Failed to update visitor: ${error.message}`, 'error');
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnContent;
+                    submitBtn.innerHTML = 'Save Details'; // Restore original button text
                     return false;
                 }
             }
@@ -832,7 +823,6 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
         showMessage('An error occurred during submission', 'error');
     }
 });
-
 
 // Close modal
 function closeVisitorModal() {
@@ -909,23 +899,29 @@ function setButtonVisibility(visitorId, visitor) {
     buttons.forEach(btnId => {
         const btn = document.getElementById(btnId);
         if (btn) {
-            btn.style.display = btnId === 'save-details' || btnId === 'noteBtn' ? 'inline-block' : 'none';
+            // Initially hide all buttons except noteBtn and save-details (until exit)
+            btn.style.display = (btnId === 'noteBtn' || btnId === 'save-details') ? 'inline-block' : 'none';
         }
     });
 
     if (visitor.exit) {
-        // Only Save Details and Note buttons visible
+        // Only Note button visible after exit
+        const saveDetailsBtn = document.getElementById('save-details');
+        if (saveDetailsBtn) saveDetailsBtn.style.display = 'none';
     } else if (visitor.complete || visitor.disapproved) {
         const exitBtn = document.getElementById('exitBtn');
         if (exitBtn) exitBtn.style.display = 'inline-block';
+        // Save Details remains visible
     } else if (visitor.isApproved) {
         const completeBtn = document.getElementById('completeBtn');
         if (completeBtn) completeBtn.style.display = 'inline-block';
+        // Save Details remains visible
     } else {
         const approveBtn = document.getElementById('approveBtn');
         const disapproveBtn = document.getElementById('disapproveBtn');
         if (approveBtn) approveBtn.style.display = 'inline-block';
         if (disapproveBtn) disapproveBtn.style.display = 'inline-block';
+        // Save Details remains visible
     }
 
     const state = visitor.exit ? 'none' : (visitor.complete || visitor.disapproved) ? 'exit' : visitor.isApproved ? 'complete' : 'approve';
@@ -981,18 +977,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
         if (await updateVisitorStatus(visitorId, 'approve')) {
             const visitor = await fetchVisitorById(visitorId);
-            if (visitor) setButtonVisibility(visitorId, visitor);
+            if (visitor) {
+                setButtonVisibility(visitorId, visitor);
+                window.location.href = 'PreApprovalEntry.html';
+            }
         }
     });
 
     document.getElementById('disapproveBtn')?.addEventListener('click', async () => {
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-        // First, disapprove the visitor
         let visitor = await updateVisitorStatus(visitorId, 'disapprove');
         if (visitor) {
-            // Then, mark as complete to enable Exit button
             visitor = await updateVisitorStatus(visitorId, 'complete');
-            if (visitor) setButtonVisibility(visitorId, visitor);
+            if (visitor) {
+                setButtonVisibility(visitorId, visitor);
+                window.location.href = 'PreApprovalEntry.html';
+            }
         }
     });
 
@@ -1000,7 +1000,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
         if (await updateVisitorStatus(visitorId, 'complete')) {
             const visitor = await fetchVisitorById(visitorId);
-            if (visitor) setButtonVisibility(visitorId, visitor);
+            if (visitor) {
+                setButtonVisibility(visitorId, visitor);
+                window.location.href = 'PreApprovalEntry.html';
+            }
         }
     });
 
@@ -1008,7 +1011,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
         if (await updateVisitorStatus(visitorId, 'exit')) {
             const visitor = await fetchVisitorById(visitorId);
-            if (visitor) setButtonVisibility(visitorId, visitor);
+            if (visitor) {
+                setButtonVisibility(visitorId, visitor);
+                window.location.href = 'PreApprovalEntry.html';
+            }
         }
     });
 
