@@ -1,13 +1,13 @@
 let currentPage = 1;
-let rowsPerPage = 10; // Default from dropdown
+let rowsPerPage = 10;
 let totalRows = 0;
-let allVisitors = []; // Store current page for client-side search
+let allVisitors = [];
 let currentFileInputId = '';
 let originalVisitorData = null;
-let isPersonNameValid = false; // Track person name validity
+let isPersonNameValid = false;
 
 // Define API base URL
-const API_BASE_URL = 'https://192.168.3.73:3001';
+const API_BASE_URL = 'https://192.168.3.75:3001';
 
 // Helper function to handle API requests
 async function apiRequest(endpoint, method = 'GET', body = null) {
@@ -78,7 +78,7 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
 
     try {
         const response = await fetch(
-            `https://192.168.3.73:3001/users/search?query=${encodeURIComponent(query)}`,
+            `https://192.168.3.75:3001/users/search?query=${encodeURIComponent(query)}`,
             {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -91,7 +91,6 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
             const users = data.users || [];
 
             if (isValidationCheck) {
-                // For validation check, we only care if the person exists
                 const matched = users.some(user => {
                     const displayName = user.userName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
                     return displayName.toLowerCase() === query.toLowerCase();
@@ -106,7 +105,6 @@ async function fetchPersonNameSuggestions(query, isValidationCheck = false) {
                 return true;
             }
 
-            // For suggestion display
             suggestionsContainer.innerHTML = '';
             if (users.length === 0) {
                 suggestionsContainer.classList.add('hidden');
@@ -208,21 +206,15 @@ function populateDropdown(selectId, data, valueKey = 'name', selectedValue = '')
 // Fetch and populate dropdowns
 async function fetchAndPopulateDropdowns(visitor) {
     try {
-        // Fetch Genders
         const genders = await apiRequest('gender');
         populateDropdown('edit-gender', genders, 'name', visitor.gender || '');
 
-        // Fetch Purpose of Visits
         const purposes = await apiRequest('purpose-of-visit');
         populateDropdown('edit-visit', purposes, 'name', visitor.visit || '');
-        // Add 'Others' option for Purpose of Visit
-        const visitSelect = document.getElementById('edit-visit');
 
-        // Fetch Visitor Types
         const visitorTypes = await apiRequest('visitor-type');
         populateDropdown('edit-visitortype', visitorTypes, 'name', visitor.visitortype || '');
 
-        // Fetch Time Units
         const timeUnits = await apiRequest('time-duration-unit');
         populateDropdown('edit-durationUnit', timeUnits, 'name', visitor.durationunit || visitor.durationUnit || '');
     } catch (error) {
@@ -272,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
     errorMessage.className = 'text-red-500 text-sm mt-2 text-center hidden';
     document.querySelector('.table-container').appendChild(errorMessage);
 
-    // Apply permissions to buttons
     const permissions = getPermissions();
     const scheduleBtn = document.querySelector('a[href="PreApproval.html"]');
     if (scheduleBtn && !permissions.canCreate) {
@@ -282,8 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
         scheduleBtn.title = 'You do not have permission to create appointments';
     }
 
-    loadVisitorData(); // Load initial data
-    attachPersonNameListeners(); // Attach person name listeners on page load
+    loadVisitorData();
+    attachPersonNameListeners();
 });
 
 // Modal functions for photo capture
@@ -382,7 +373,7 @@ async function fetchVisitorData(page = 1, limit = 10, retries = 3) {
     console.log(`📡 Fetching visitor data: page=${page}, limit=${limit}`);
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const url = `https://192.168.3.73:3001/appointment?page=${page}&limit=${limit}`;
+            const url = `https://192.168.3.75:3001/appointment?page=${page}&limit=${limit}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -397,7 +388,7 @@ async function fetchVisitorData(page = 1, limit = 10, retries = 3) {
                 throw new Error('Invalid response format: expected { data, total }');
             }
             return {
-                data: (data.data || []).sort((a, b) => b.id - a.id), // Sort by id in descending order
+                data: (data.data || []).sort((a, b) => b.id - a.id),
                 total: data.total || 0,
             };
         } catch (error) {
@@ -428,7 +419,6 @@ function updatePagination(visitors, total) {
 
     totalRows = total;
 
-    // Render server-side paginated data
     tableBody.innerHTML = '';
     if (!visitors || visitors.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="no-data">No visitor data available</td></tr>';
@@ -480,17 +470,14 @@ function updatePagination(visitors, total) {
         console.log('✅ Rendered table with', visitors.length, 'rows');
     }
 
-    // Update footer text
     const startIndex = totalRows > 0 ? (currentPage - 1) * rowsPerPage + 1 : 0;
     const endIndex = Math.min(currentPage * rowsPerPage, totalRows);
     footerText.textContent = `Showing ${startIndex} to ${endIndex} of ${totalRows} entries`;
 
-    // Show/hide pagination buttons
     paginationButtons.style.display = totalRows > rowsPerPage ? 'flex' : 'none';
     previousBtn.disabled = currentPage === 1;
     nextBtn.disabled = currentPage * rowsPerPage >= totalRows;
 
-    // Reattach event listeners for details buttons
     document.querySelectorAll('.details-btn').forEach(button => {
         if (!button.disabled) {
             button.addEventListener('click', () => {
@@ -504,12 +491,10 @@ function updatePagination(visitors, total) {
 // Load visitor data and set up event listeners
 async function loadVisitorData() {
     try {
-        // Initial fetch
         const { data: visitors, total } = await fetchVisitorData(currentPage, rowsPerPage);
-        allVisitors = visitors; // Store for search
+        allVisitors = visitors;
         updatePagination(visitors, total);
 
-        // Entries per page change
         document.getElementById('entriesPerPage').addEventListener('change', async (e) => {
             rowsPerPage = parseInt(e.target.value) || 10;
             currentPage = 1;
@@ -518,12 +503,10 @@ async function loadVisitorData() {
             updatePagination(visitors, total);
         });
 
-        // Search functionality (client-side)
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', async () => {
             const searchTerm = searchInput.value.toLowerCase();
             if (searchTerm) {
-                // Client-side search on current page data
                 const filteredData = allVisitors.filter(visitor =>
                     (visitor.id && visitor.id.toString().toLowerCase().includes(searchTerm)) ||
                     (visitor.firstname && visitor.firstname.toLowerCase().includes(searchTerm)) ||
@@ -533,14 +516,12 @@ async function loadVisitorData() {
                 );
                 updatePagination(filteredData, filteredData.length);
             } else {
-                // Reset to server-side data
                 const { data: visitors, total } = await fetchVisitorData(currentPage, rowsPerPage);
                 allVisitors = visitors;
                 updatePagination(visitors, total);
             }
         });
 
-        // Previous button
         document.getElementById('previousBtn').addEventListener('click', async () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -550,7 +531,6 @@ async function loadVisitorData() {
             }
         });
 
-        // Next button
         document.getElementById('nextBtn').addEventListener('click', async () => {
             const maxPages = Math.ceil(totalRows / rowsPerPage);
             console.log(`🖱️ Next button clicked: currentPage=${currentPage}, maxPages=${maxPages}, totalRows=${totalRows}`);
@@ -579,7 +559,7 @@ async function loadVisitorData() {
 async function fetchVisitorById(visitorId, retries = 3) {
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const response = await fetch(`https://192.168.3.73:3001/appointment/${visitorId}`, {
+            const response = await fetch(`https://192.168.3.75:3001/appointment/${visitorId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -640,7 +620,6 @@ async function openVisitorModal(visitorId) {
         if (element) element.value = value ?? defaultValue;
     };
 
-    // Populate existing fields
     populateField('firstname', visitor.firstname);
     populateField('lastname', visitor.lastname);
     populateField('gender', visitor.gender);
@@ -662,17 +641,15 @@ async function openVisitorModal(visitorId) {
     populateField('drivernationalid', visitor.drivernationalid);
     populateField('notes', visitor.notes);
 
-    // Validate personname on modal open without showing suggestions
     if (visitor.personname) {
         const nameMatch = visitor.personname.match(/^(.+?)\s*\(/);
         const queryName = nameMatch ? nameMatch[1].trim() : visitor.personname;
-        await fetchPersonNameSuggestions(queryName, true); // Validation check only
+        await fetchPersonNameSuggestions(queryName, true);
     } else {
         isPersonNameValid = false;
         document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
     }
 
-    // Handle driver details checkbox
     const driverToggle = document.getElementById('edit-driverToggle');
     const driverDetails = document.getElementById('driverDetails');
     const hasDriverDetails = visitor.drivername || visitor.drivermobile || visitor.drivernationalid || visitor.driverphoto;
@@ -681,7 +658,6 @@ async function openVisitorModal(visitorId) {
         driverDetails.classList.toggle('hidden', !hasDriverDetails);
     }
 
-    // Populate dropdowns
     await fetchAndPopulateDropdowns(visitor);
 
     const setPhotoPreview = async (previewId, path, visitorId, type) => {
@@ -692,7 +668,7 @@ async function openVisitorModal(visitorId) {
 
         if (path && path.trim() !== '') {
             try {
-                const photoUrl = `https://192.168.3.73:3001/appointment/${visitorId}/photo?type=${type}`;
+                const photoUrl = `https://192.168.3.75:3001/appointment/${visitorId}/photo?type=${type}`;
                 const response = await fetch(photoUrl, { method: 'GET', mode: 'cors' });
                 if (!response.ok) throw new Error('Photo fetch failed');
                 const blob = await response.blob();
@@ -710,6 +686,8 @@ async function openVisitorModal(visitorId) {
 
     await setPhotoPreview('mainPreview', visitor.photo, visitorId, 'photo');
     await setPhotoPreview('driverPreview', visitor.driverphoto, visitorId, 'driverphoto');
+
+    setButtonVisibility(visitorId, visitor);
 
     document.getElementById('visitorForm').setAttribute('data-id', visitorId);
     document.getElementById('visitorModal').style.display = 'block';
@@ -749,7 +727,6 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             return;
         }
 
-        // Validate personname
         if (!isPersonNameValid) {
             showMessage('Person name must be selected from suggestions', 'error');
             document.getElementById('error-personname').textContent = 'Person name must be selected from suggestions';
@@ -757,7 +734,7 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
         }
 
         const changedData = {};
-        const fields = ['firstname', 'lastname', 'gender', 'contactnumber', 'email', 'date', 'time', 'nationalid', 'visit', 'personname', 'department', 'durationtime', 'durationUnit', 'visitortype', 'vehicletype', 'vehiclenumber', 'drivername', 'drivermobile', 'drivernationalid', 'notes'];
+        const fields = ['firstname', 'lastname', 'gender', 'contactnumber', 'email', 'date', 'time', 'nationalid', 'visit', 'personname', 'department', 'durationtime', 'durationunit', 'visitortype', 'vehicletype', 'vehiclenumber', 'drivername', 'drivermobile', 'drivernationalid', 'notes'];
         fields.forEach(field => {
             const element = document.getElementById(`edit-${field}`);
             if (!element) {
@@ -767,7 +744,9 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             const currentValue = element.value;
             const originalValue = originalVisitorData[field] ?? '';
             if (currentValue !== originalValue.toString()) {
-                changedData[field === 'durationUnit' ? 'durationunit' : field] = currentValue;
+                // Fix: assign to correct key, mapping durationUnit to durationunit
+                const key = field === 'durationUnit' ? 'durationunit' : field;
+                changedData[key] = currentValue;
             }
         });
 
@@ -796,9 +775,9 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
             }
         });
 
-        console.log('📤 Submitting FormData:');
+        console.log('📤 Submitting FormData:Data');
         for (const [key, value] of body.entries()) {
-            console.log(`  ${key}: ${value instanceof File ? value.name : value}`);
+            console.log(`${key}: ${value instanceof File ? value.name : value}`);
         }
 
         async function attemptUpdate(attempt = 1, maxAttempts = 3) {
@@ -808,8 +787,6 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
                 return false;
             }
 
-            const originalBtnContent = submitBtn.innerHTML;
-
             submitBtn.disabled = true;
             submitBtn.innerHTML = `
                 <svg style="width: 20px; height: 20px; color: #4361ee; display: inline-block; margin-right: 8px; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -818,13 +795,11 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
                 </svg>
                 Saving...
             `;
-
             try {
-                const response = await fetch(`https://192.168.3.73:3001/appointment/${visitorId}`, {
+                const response = await fetch(`https://192.168.3.75:3001/appointment/${visitorId}`, {
                     method: 'PUT',
                     body,
                 });
-
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.message || 'Update failed');
@@ -853,78 +828,11 @@ document.getElementById('visitorForm').addEventListener('submit', async (e) => {
         }
         await attemptUpdate();
     } catch (error) {
-        console.error('Form submission error:', error);
+        console.error('Error submitting form:', error);
         showMessage('An error occurred during submission', 'error');
     }
 });
 
-// Approve gatepass
-document.getElementById('approveGatepass').addEventListener('click', async () => {
-    const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-    async function attemptApprove(attempt = 1, maxAttempts = 3) {
-        try {
-            const response = await fetch(`https://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ gatepassApproved: true }),
-            });
-
-            if (!response.ok) throw new Error('Approval failed');
-            const data = await response.json();
-            const row = document.querySelector(`tr[data-id="${visitorId}"]`);
-            if (row) {
-                row.querySelector('.gatepass-approve').checked = data.gatepassApproved;
-            }
-            showMessage('Gatepass Approved successfully!', 'success');
-            document.getElementById('visitorModal').style.display = 'none';
-            originalVisitorData = null;
-            await loadVisitorData();
-            return true;
-        } catch (error) {
-            if (attempt === maxAttempts) {
-                showMessage('Failed to approve: ' + error.message, 'error');
-                return false;
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
-            return await attemptApprove(attempt + 1);
-        }
-    }
-    await attemptApprove();
-});
-
-// Disapprove gatepass
-document.getElementById('disapproveGatepass').addEventListener('click', async () => {
-    const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
-    async function attemptDisapprove(attempt = 1, maxAttempts = 3) {
-        try {
-            const response = await fetch(`https://192.168.3.73:3001/appointment/${visitorId}/gatepass`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ gatepassApproved: false }),
-            });
-
-            if (!response.ok) throw new Error('Disapproval failed');
-            const data = await response.json();
-            const row = document.querySelector(`tr[data-id="${visitorId}"]`);
-            if (row) {
-                row.querySelector('.gatepass-approve').checked = data.gatepassApproved;
-            }
-            showMessage('Gatepass disapproved successfully!', 'success');
-            document.getElementById('visitorModal').style.display = 'none';
-            originalVisitorData = null;
-            await loadVisitorData();
-            return true;
-        } catch (error) {
-            if (attempt === maxAttempts) {
-                showMessage('Failed to disapprove: ' + error.message, 'error');
-                return false;
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
-            return await attemptDisapprove(attempt + 1);
-        }
-    }
-    await attemptDisapprove();
-});
 
 // Close modal
 function closeVisitorModal() {
@@ -947,7 +855,7 @@ function closeVisitorModal() {
 
 document.querySelector('.modal .close')?.addEventListener('click', closeVisitorModal);
 
-// Toggle driver details visibility
+// Toggle driver details modal
 window.toggleDriverDetails = function () {
     const driverDetails = document.getElementById('driverDetails');
     const driverToggle = document.getElementById('edit-driverToggle');
@@ -955,3 +863,167 @@ window.toggleDriverDetails = function () {
         driverDetails.classList.toggle('hidden', !driverToggle.checked);
     }
 };
+
+// Save visitor note
+async function saveVisitorNote(visitorId, note, maxAttempts = 3) {
+    if (!visitorId) {
+        showMessage('No visitor ID provided', 'error');
+        return false;
+    }
+
+    async function attemptUpdate(attempt = 1) {
+        try {
+            const response = await fetch(`https://192.168.3.75:3001/appointment/${visitorId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ notes: note }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to save note');
+            }
+
+            await response.json();
+            showMessage('Note saved successfully', 'success');
+            originalVisitorData.notes = note;
+            await loadVisitorData();
+            return true;
+        } catch (error) {
+            console.error(`Attempt ${attempt} failed to save note:`, error);
+            if (attempt < maxAttempts) {
+                await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+                return attemptUpdate(attempt + 1);
+            } else {
+                showMessage(`Failed to save note: ${error.message}`, 'error');
+                return false;
+            }
+        }
+    }
+
+    return await attemptUpdate();
+}
+
+function setButtonVisibility(visitorId, visitor) {
+    const buttons = ['approveBtn', 'disapproveBtn', 'completeBtn', 'exitBtn', 'save-details', 'noteBtn'];
+    buttons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.style.display = btnId === 'save-details' || btnId === 'noteBtn' ? 'inline-block' : 'none';
+        }
+    });
+
+    if (visitor.exit) {
+        // Only Save Details and Note buttons visible
+    } else if (visitor.complete || visitor.disapproved) {
+        const exitBtn = document.getElementById('exitBtn');
+        if (exitBtn) exitBtn.style.display = 'inline-block';
+    } else if (visitor.isApproved) {
+        const completeBtn = document.getElementById('completeBtn');
+        if (completeBtn) completeBtn.style.display = 'inline-block';
+    } else {
+        const approveBtn = document.getElementById('approveBtn');
+        const disapproveBtn = document.getElementById('disapproveBtn');
+        if (approveBtn) approveBtn.style.display = 'inline-block';
+        if (disapproveBtn) disapproveBtn.style.display = 'inline-block';
+    }
+
+    const state = visitor.exit ? 'none' : (visitor.complete || visitor.disapproved) ? 'exit' : visitor.isApproved ? 'complete' : 'approve';
+    sessionStorage.setItem(`buttonState_${visitorId}`, state);
+}
+
+async function updateVisitorStatus(visitorId, status, resetStatus = {}, maxAttempts = 3) {
+    if (!visitorId) {
+        showMessage('No visitor ID provided', 'error');
+        return false;
+    }
+
+    async function attemptUpdate(attempt = 1) {
+        try {
+            const response = await fetch(`https://192.168.3.75:3001/appointment/${visitorId}/status/${status}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sendEmail: false, ...resetStatus }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `Failed to update status: ${response.statusText}`);
+            }
+
+            const updatedVisitor = await response.json();
+            console.log(`Visitor status updated to ${status}: | isApproved: ${updatedVisitor.isApproved} | complete: ${updatedVisitor.complete} | exit: ${updatedVisitor.exit} | disapproved: ${updatedVisitor.disapproved || false}`, updatedVisitor);
+
+            setButtonVisibility(visitorId, updatedVisitor);
+
+            showMessage(`Visitor status updated to ${status}`, 'success');
+            originalVisitorData = null;
+            await loadVisitorData();
+            return updatedVisitor;
+        } catch (error) {
+            console.error(`Attempt ${attempt} failed to update status to ${status}:`, error);
+            if (attempt < maxAttempts) {
+                await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+                return attemptUpdate(attempt + 1);
+            } else {
+                showMessage(`Failed to update status: ${error.message}`, 'error');
+                return false;
+            }
+        }
+    }
+
+    return await attemptUpdate();
+}
+
+// Append event listeners to DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('approveBtn')?.addEventListener('click', async () => {
+        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+        if (await updateVisitorStatus(visitorId, 'approve')) {
+            const visitor = await fetchVisitorById(visitorId);
+            if (visitor) setButtonVisibility(visitorId, visitor);
+        }
+    });
+
+    document.getElementById('disapproveBtn')?.addEventListener('click', async () => {
+        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+        // First, disapprove the visitor
+        let visitor = await updateVisitorStatus(visitorId, 'disapprove');
+        if (visitor) {
+            // Then, mark as complete to enable Exit button
+            visitor = await updateVisitorStatus(visitorId, 'complete');
+            if (visitor) setButtonVisibility(visitorId, visitor);
+        }
+    });
+
+    document.getElementById('completeBtn')?.addEventListener('click', async () => {
+        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+        if (await updateVisitorStatus(visitorId, 'complete')) {
+            const visitor = await fetchVisitorById(visitorId);
+            if (visitor) setButtonVisibility(visitorId, visitor);
+        }
+    });
+
+    document.getElementById('exitBtn')?.addEventListener('click', async () => {
+        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+        if (await updateVisitorStatus(visitorId, 'exit')) {
+            const visitor = await fetchVisitorById(visitorId);
+            if (visitor) setButtonVisibility(visitorId, visitor);
+        }
+    });
+
+    document.getElementById('noteBtn')?.addEventListener('click', async () => {
+        const visitorId = document.getElementById('visitorForm').getAttribute('data-id');
+        const noteInput = document.getElementById('edit-notes');
+        if (!noteInput) {
+            showMessage('Note input field not found', 'error');
+            return;
+        }
+        const note = noteInput.value.trim();
+        if (!note) {
+            showMessage('Please enter a note', 'error');
+            return;
+        }
+        await saveVisitorNote(visitorId, note);
+    });
+});
